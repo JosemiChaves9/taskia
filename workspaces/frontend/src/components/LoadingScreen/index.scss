@@ -1,4 +1,4 @@
-.container-loading-screen {
+.loading-screen-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,11 +7,11 @@
   flex-direction: column;
 }
 
-.logo {
+.loading-screen-logo {
   width: 100%;
 }
 
-.loading {
+.loading-screen-loading-animation {
   width: 30px;
   margin-left: 15px;
   animation: loading 2s linear infinite;

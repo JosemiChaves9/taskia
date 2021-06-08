@@ -1,26 +1,12 @@
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
 import './index.scss';
 
-export const TopBar = (props: { projectName: string }) => {
-  const [lateralMenu, setLateralMenu] = useState(false);
+export const Header = (props: { projectName: string }) => {
   return (
-    <div className='main'>
-      <div className='container'>
-        {lateralMenu ? (
-          <FontAwesomeIcon
-            icon={faTimes}
-            className={'menuIcon'}
-            onClick={() => setLateralMenu(false)}
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={faBars}
-            className={'menuIcon'}
-            onClick={() => setLateralMenu(true)}
-          />
-        )}
+    <div className='header-main-wrapper'>
+      <div className='header-container'>
+        <FontAwesomeIcon icon={faBars} />
         <p>{props.projectName}</p>
       </div>
     </div>
