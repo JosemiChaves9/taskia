@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .homepage-checkbox {
   margin-right: 0.5rem;
 }
@@ -16,4 +18,12 @@
 
 .homepage-finished {
   text-decoration: line-through;
+}
+
+.homepage-plus-icon {
+  font-size: 4rem;
+  position: relative;
+  left: 20rem;
+  top: -7rem;
+  color: $mainColor;
 }

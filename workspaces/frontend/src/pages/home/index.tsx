@@ -1,9 +1,14 @@
 import { Header } from '../../components/TopBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckSquare,
+  faPlusCircle,
+  faSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import './index.scss';
 import { useState } from 'react';
 import { LoadingScreen } from '../../components/LoadingScreen';
+import { Sidebar } from '../../components/SideBar';
 
 export const Home = () => {
   // eslint-disable-next-line
@@ -13,11 +18,16 @@ export const Home = () => {
     'Task #3',
   ]);
 
+  const [lateralMenu, setLateralMenu] = useState<boolean>(false);
+
   const [loading, setLoading] = useState(true);
   setTimeout(() => {
     setLoading(false);
   }, 2000);
 
+  if (lateralMenu) {
+    return <Sidebar username='John Miles' />;
+  }
   return (
     <>
       {loading && <LoadingScreen />}
@@ -41,11 +51,13 @@ export const Home = () => {
             <FontAwesomeIcon
               icon={faCheckSquare}
               className='homepage-checkbox'
+              onClick={() => setLateralMenu(true)}
             />
             Task #4
-            <hr />
+            <hr className='homepage-separator' />
           </li>
         </ul>
+        <FontAwesomeIcon icon={faPlusCircle} className='homepage-plus-icon' />
       </div>
     </>
   );
