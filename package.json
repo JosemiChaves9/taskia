@@ -1,0 +1,12 @@
+{
+  "name": "taskia",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JosemiChaves9/taskia",
+  "author": "Josemi Chaves <josemichaves@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "workspaces/*"
+  ]
+}
