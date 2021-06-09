@@ -4,16 +4,17 @@ import reportWebVitals from './reportWebVitals';
 import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './pages/home';
 import './index.scss';
-import { Test } from './pages/testPages';
 import { LoginScreen } from './pages/login';
+import { LoadingScreen } from './components/LoadingScreen';
+import { NewTask } from './pages/newTask';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route exact path='/login' component={LoginScreen} />
-        <Route exact path='/test' component={Test} />
+        <Route path='/login' component={LoginScreen} />
+        <Route path='/newTask' component={NewTask} />
       </Switch>
     </Router>
   </React.StrictMode>,
