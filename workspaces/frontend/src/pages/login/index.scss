@@ -1,0 +1,12 @@
+@import '../../index.scss';
+.login-container {
+  line-height: 10rem;
+  input {
+    padding: 1rem;
+  }
+  .material-icons {
+    margin-left: 1rem;
+    font-size: 2.5rem;
+    color: $primary-color;
+  }
+}

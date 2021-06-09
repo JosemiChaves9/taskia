@@ -1,5 +1,5 @@
-import { Sidebar } from '../../components/SideBar';
+import { ShareCode } from '../../components/ShareCode';
 
 export const Test = () => {
-  return <Sidebar username='John Miles' />;
+  return <ShareCode shareCode='Q2B0qD' />;
 };

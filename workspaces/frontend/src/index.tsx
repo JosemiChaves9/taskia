@@ -5,12 +5,14 @@ import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './pages/home';
 import './index.scss';
 import { Test } from './pages/testPages';
+import { LoginScreen } from './pages/login';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
         <Route exact path='/' component={Home} />
+        <Route exact path='/login' component={LoginScreen} />
         <Route exact path='/test' component={Test} />
       </Switch>
     </Router>
