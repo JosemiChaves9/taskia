@@ -1,11 +1,3 @@
-import {
-  faChevronDown,
-  faCircle,
-  faFolder,
-  faShare,
-  faTimes,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import './index.scss';
 
@@ -17,38 +9,36 @@ export const Sidebar = (props: { username: string }) => {
     'Project #3',
   ]);
   return (
-    <div className='sidebar-container'>
-      <div className='sidebar-top-bar'>
-        <FontAwesomeIcon icon={faTimes} />
-        <img src='avatarIcon.png' alt='iconAvatar' className='sidebar-avatar' />
-        <p>{props.username}</p>
-      </div>
-      <div className='sidebar-options'>
-        <p>
-          <FontAwesomeIcon icon={faFolder} className='sidebar-folder-icon' />
-          Projects
-          <FontAwesomeIcon
-            icon={faChevronDown}
-            className='sidebar-chevron-down-icon'
-          />
-        </p>
-        <ul className='sidebar-options-list'>
-          {projects.map((project) => {
-            return (
-              <li>
-                <FontAwesomeIcon
-                  icon={faCircle}
-                  className='sidebar-project-circle'
-                />
-                {project}
-              </li>
-            );
-          })}
-        </ul>
-        <p className='sidebar-share'>
-          <FontAwesomeIcon icon={faShare} className='sidebar-share-icon' />
-          Share this project
-        </p>
+    <div>
+      <div>
+        <div className='sidebar-container'>
+          <div className='sidebar-top-bar'>
+            <img
+              src='avatarIcon.png'
+              alt='iconAvatar'
+              className='sidebar-avatar'
+            />
+            <p>{props.username}</p>
+          </div>
+          <div>
+            <ul className='collection '>
+              <h5 className='sidebar-options-header  '>
+                <i className='material-icons'>folder_open</i>Projects
+              </h5>
+              {projects.map((project: string, idx: number) => {
+                if (idx === 1) {
+                  return <li className='collection-item active'>{project}</li>;
+                } else {
+                  return <li className='collection-item'>{project}</li>;
+                }
+              })}
+            </ul>
+            <p className='sidebar-share'>
+              <i className='material-icons'>share</i>
+              Share this project
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -5,18 +5,15 @@ export const LoadingScreen = () => {
     <>
       <div className='loading-screen-container'>
         <img
-          src='logoTaskia.png'
+          src='LogoTaskia.png'
           alt='Logo of Taskia'
           className='loading-screen-logo'
         />
-        <h1>
-          Loading...
-          <img
-            src='loadingIcon.png'
-            alt=''
-            className='loading-screen-loading-animation'
-          />
-        </h1>
+        <img
+          src='loadingIcon.png'
+          alt=''
+          className='loading-screen-loading-animation'
+        />
       </div>
     </>
   );

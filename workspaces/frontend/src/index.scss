@@ -1,3 +1,17 @@
+$primary-color: #0bc772;
+$collection-active-bg-color: #5cffb5;
+$collection-active-color: black;
+@import 'lib/sass/components/color-variables';
+@import 'lib/sass/components/color-classes';
+@import 'lib/sass/components/variables';
+@import 'lib/sass/components/normalize';
+@import 'lib/sass/components/global';
+
+@import 'lib/sass/components/navbar';
+@import 'lib/sass/components/sidenav';
+@import 'lib/sass/components/typography';
+@import 'lib/sass/components/badges';
+
 * {
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -5,5 +19,3 @@
 }
 
 // Variables
-
-$mainColor: #096366;

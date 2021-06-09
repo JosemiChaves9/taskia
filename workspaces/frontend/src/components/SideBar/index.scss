@@ -7,9 +7,9 @@
 }
 
 .sidebar-top-bar {
-  height: 4rem;
+  height: 5.5rem;
   font-size: 2rem;
-  background-color: $mainColor;
+  background-color: $primary-color;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -20,34 +20,23 @@
   width: 3rem;
 }
 
-.sidebar-options {
-  font-size: 2rem;
-  margin: 2rem;
-}
-
-.sidebar-folder-icon {
-  margin-right: 0.5rem;
-}
-
-.sidebar-chevron-down-icon {
-  margin-left: 0.5rem;
-}
-
-.sidebar-options-list {
-  margin: 0.5rem 2rem;
-  list-style: none;
-  line-height: 70px;
-}
 .sidebar-share {
-  font-size: 1.5rem;
-}
-.sidebar-share-icon {
-  margin-right: 0.5rem;
+  margin-left: 1rem;
+  i {
+    margin-right: 0.5rem;
+  }
 }
 
-.sidebar-project-circle {
-  font-size: 1rem;
-  vertical-align: middle;
-  color: yellowgreen;
-  margin-right: 0.5rem;
+.sidebar-options-header {
+  margin-left: 1rem;
+  font-weight: bold;
+  i {
+    margin-right: 0.5rem;
+  }
+}
+
+.collection {
+  .collection-item {
+    padding-left: 4rem;
+  }
 }

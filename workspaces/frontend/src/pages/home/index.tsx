@@ -1,13 +1,6 @@
-import { Header } from '../../components/TopBar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCheckSquare,
-  faPlusCircle,
-  faSquare,
-} from '@fortawesome/free-solid-svg-icons';
+import { Header } from '../../components/Header';
 import './index.scss';
 import { useState } from 'react';
-import { LoadingScreen } from '../../components/LoadingScreen';
 import { Sidebar } from '../../components/SideBar';
 
 export const Home = () => {
@@ -17,47 +10,31 @@ export const Home = () => {
     'Task #2',
     'Task #3',
   ]);
-
+  const [checked, setChecked] = useState<boolean>(false);
   const [lateralMenu, setLateralMenu] = useState<boolean>(false);
 
-  const [loading, setLoading] = useState(true);
-  setTimeout(() => {
-    setLoading(false);
-  }, 2000);
-
-  if (lateralMenu) {
-    return <Sidebar username='John Miles' />;
-  }
   return (
     <>
-      {loading && <LoadingScreen />}
+      {lateralMenu && <Sidebar username='John Miles' />}
       <Header projectName='Project #1' />
-
-      <div>
-        <ul className='homepage-tasklist'>
-          {tasks.map((task) => {
-            return (
-              <li>
-                <FontAwesomeIcon
-                  icon={faSquare}
-                  className='homepage-checkbox'
-                />
-                {task}
-                <hr className='homepage-separator' />
-              </li>
-            );
-          })}
-          <li className='homepage-finished'>
-            <FontAwesomeIcon
-              icon={faCheckSquare}
-              className='homepage-checkbox'
-              onClick={() => setLateralMenu(true)}
-            />
-            Task #4
-            <hr className='homepage-separator' />
-          </li>
-        </ul>
-        <FontAwesomeIcon icon={faPlusCircle} className='homepage-plus-icon' />
+      <ul className='collection tasklist'>
+        {tasks.map((task) => {
+          return (
+            <li
+              className={
+                checked ? 'collection-item finished' : 'collection-item'
+              }
+              onClick={() => setChecked(!checked)}>
+              <i className='material-icons'>
+                {checked ? 'check_box' : 'check_box_outline_blank'}
+              </i>
+              {task}
+            </li>
+          );
+        })}
+      </ul>
+      <div className='container-button'>
+        <button className='material-icons add-task'>add_circle</button>
       </div>
     </>
   );
