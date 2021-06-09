@@ -5,7 +5,6 @@ import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './pages/home';
 import './index.scss';
 import { LoginScreen } from './pages/login';
-import { LoadingScreen } from './components/LoadingScreen';
 import { NewTask } from './pages/newTask';
 
 ReactDOM.render(
