@@ -1,10 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
+import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+import { Home } from './pages/home';
+import './index.scss';
+import { LoginScreen } from './pages/login';
+import { NewTask } from './pages/newTask';
 
 ReactDOM.render(
   <React.StrictMode>
-    <h1>Hello</h1>
+    <Router>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/login' component={LoginScreen} />
+        <Route path='/newTask' component={NewTask} />
+        {/* <Route path='/test' component={Test} /> */}
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

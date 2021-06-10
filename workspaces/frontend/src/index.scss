@@ -1,0 +1,27 @@
+$primary-color: #0bc772;
+$collection-active-bg-color: #5cffb5;
+$collection-active-color: black;
+@import 'materialize-css/sass/components/color-variables';
+@import 'materialize-css/sass/components/color-classes';
+@import 'materialize-css/sass/components/variables';
+@import 'materialize-css/sass/components/normalize';
+@import 'materialize-css/sass/components/global';
+
+@import 'materialize-css/sass/components/navbar';
+@import 'materialize-css/sass/components/grid';
+@import 'materialize-css/sass/components/sidenav';
+@import 'materialize-css/sass/components/typography';
+@import 'materialize-css/sass/components/badges';
+@import 'materialize-css/sass/components/cards';
+@import 'materialize-css/sass/components/forms/forms';
+@import 'materialize-css/sass/components/forms/file-input';
+@import 'materialize-css/sass/components/modal';
+@import 'materialize-css/sass/components/buttons';
+
+* {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+// Variables
