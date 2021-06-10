@@ -13,7 +13,7 @@ export const Home = () => {
   ]);
   const [checked, setChecked] = useState<boolean>(false);
   // eslint-disable-next-line
-  const [lateralMenu, _setLateralMenu] = useState<boolean>(false);
+  const [lateralMenu, _setLateralMenu] = useState<boolean>(true);
   // eslint-disable-next-line
   const [logged, _setLogged] = useState<boolean>(true);
 
