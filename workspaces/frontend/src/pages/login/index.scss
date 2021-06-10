@@ -1,8 +1,9 @@
 @import '../../index.scss';
 .login-container {
   line-height: 10rem;
-  input {
+  .email {
     padding: 1rem;
+    width: 80% !important;
   }
   .material-icons {
     margin-left: 1rem;

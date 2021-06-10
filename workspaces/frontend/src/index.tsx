@@ -14,6 +14,7 @@ ReactDOM.render(
         <Route exact path='/' component={Home} />
         <Route path='/login' component={LoginScreen} />
         <Route path='/newTask' component={NewTask} />
+        {/* <Route path='/test' component={Test} /> */}
       </Switch>
     </Router>
   </React.StrictMode>,

@@ -1,8 +1,7 @@
-import { Header } from '../../components/Header';
 import './index.scss';
 import { useState } from 'react';
-import { Sidebar } from '../../components/SideBar';
 import { Redirect } from 'react-router-dom';
+import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 
 export const Home = () => {
   // eslint-disable-next-line
@@ -13,16 +12,14 @@ export const Home = () => {
   ]);
   const [checked, setChecked] = useState<boolean>(false);
   // eslint-disable-next-line
-  const [lateralMenu, _setLateralMenu] = useState<boolean>(true);
   // eslint-disable-next-line
   const [logged, _setLogged] = useState<boolean>(true);
 
   return (
     <>
       {!logged && <Redirect to='/login' />}
-      {lateralMenu && <Sidebar username='John Miles' />}
-      <Header projectName='Project #1' />
       <ul className='collection tasklist'>
+        <SidenavAndHeader />
         {tasks.map((task) => {
           return (
             <li

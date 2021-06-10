@@ -1,10 +1,10 @@
-import { Header } from '../../components/Header';
+import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import './index.scss';
 
 export const NewTask = () => {
   return (
     <>
-      <Header projectName='Project #1' />
+      <SidenavAndHeader />
       <div className='row'>
         <form className='col s12'>
           <div className='row'>
