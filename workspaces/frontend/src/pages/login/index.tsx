@@ -10,6 +10,13 @@ export const LoginScreen = () => {
         <h4>Just type your email</h4>
         <input
           type='email'
+          name='name'
+          className='email'
+          id=''
+          placeholder='John Doe'
+        />
+        <input
+          type='email'
           name='email'
           className='email'
           id=''
