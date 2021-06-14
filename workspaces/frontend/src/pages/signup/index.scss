@@ -1,0 +1,19 @@
+@import '../../index.scss';
+.login-container {
+  line-height: 10rem;
+  .email {
+    width: 80% !important;
+  }
+  button {
+    margin-left: 1rem;
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 5%;
+    color: whitesmoke;
+    border: none;
+    background-color: $primary-color;
+  }
+  button:active {
+    background-color: $secondary-color;
+  }
+}

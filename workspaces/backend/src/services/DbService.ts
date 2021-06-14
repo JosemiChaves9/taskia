@@ -20,15 +20,19 @@ export class DbService {
   }
 
   static async newUser(email: string, name: string) {
-    await DbService.getDb()
-      .collection('users')
-      .insertOne({ name: name, email: email });
+    await DbService.getDb().collection('users').insertOne({ name, email });
   }
 
   static async getUserByEmail(email: string) {
-    return await DbService.getDb()
-      .collection('users')
-      .findOne({ email: email });
+    return await DbService.getDb().collection('users').findOne({ email });
+  }
+
+  static async newTask(name: string) {
+    await DbService.getDb().collection('tasks').insertOne({ name });
+  }
+
+  static async newProject(name: string) {
+    await DbService.getDb().collection('projects').insertOne({ name });
   }
 
   private static getDb(): Db {

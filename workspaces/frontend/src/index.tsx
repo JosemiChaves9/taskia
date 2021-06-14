@@ -6,18 +6,28 @@ import { Home } from './pages/home';
 import './index.scss';
 import { LoginScreen } from './pages/login';
 import { NewTask } from './pages/newTask';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { SignupScreen } from './pages/signup';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/login' component={LoginScreen} />
-        <Route path='/newTask' component={NewTask} />
-        {/* <Route path='/test' component={Test} /> */}
-      </Switch>
-    </Router>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/login' component={LoginScreen} />
+          <Route path='/signup' component={SignupScreen} />
+
+          <Route path='/newTask' component={NewTask} />
+        </Switch>
+      </Router>
+    </React.StrictMode>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 

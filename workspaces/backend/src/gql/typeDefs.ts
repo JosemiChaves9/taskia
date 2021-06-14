@@ -25,12 +25,14 @@ export const typeDefs = gql`
   }
 
   type Query {
-    user(email: String!): User
+    getUser(email: String!): User
     project: Project
     projects: [Project]
   }
 
   type Mutation {
     signup(email: String!, name: String!): GenericResponse!
+    newTask(name: String!): GenericResponse!
+    newProject(name: String!): GenericResponse!
   }
 `;
