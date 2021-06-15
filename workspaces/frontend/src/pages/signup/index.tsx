@@ -26,6 +26,7 @@ export const SignupScreen = () => {
     }).then((res) => {
       if (res.data.signup.ok) {
         setSuccess('User created');
+        localStorage.setItem('userLogged', data.email);
       } else {
         setError(res.data.signup.err);
       }

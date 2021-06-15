@@ -1,10 +1,14 @@
+import { stringify } from 'querystring';
 import { DbService } from '../services/DbService';
 
 export const signup = async (
   source: any,
   { email, name }: { email: string; name: string }
 ) => {
-  const userExists = await DbService.getUserByEmail(email).then((res) => res);
+  const userExists = await DbService.getUserByEmail(email).then(
+    (res) => res,
+    (rej) => rej
+  );
   if (userExists) {
     return {
       ok: false,
@@ -13,10 +17,12 @@ export const signup = async (
   }
 
   return DbService.newUser(email, name).then(
-    (_res) => ({
-      ok: true,
-      err: '',
-    }),
+    (_res) => {
+      return {
+        ok: true,
+        err: '',
+      };
+    },
     (rej) => {
       return {
         ok: false,

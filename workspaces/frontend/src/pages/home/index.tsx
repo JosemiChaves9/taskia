@@ -17,7 +17,7 @@ export const Home = () => {
 
   return (
     <>
-      {!logged && <Redirect to='/login' />}
+      {!localStorage.getItem('userLogged') && <Redirect to='/login' />}
       <ul className='collection tasklist'>
         <SidenavAndHeader />
         {tasks.map((task) => {
