@@ -1,18 +1,27 @@
 import { DbService } from '../services/DbService';
 
-export const signup = (
+export const signup = async (
   source: any,
   { email, name }: { email: string; name: string }
 ) => {
-  try {
-    return DbService.newUser(email, name).then(() => ({
-      ok: true,
-      err: '',
-    }));
-  } catch (error) {
+  const userExists = await DbService.getUserByEmail(email).then((res) => res);
+  if (userExists) {
     return {
       ok: false,
-      err: error,
+      err: 'User already exists',
     };
   }
+
+  return DbService.newUser(email, name).then(
+    (_res) => ({
+      ok: true,
+      err: '',
+    }),
+    (rej) => {
+      return {
+        ok: false,
+        err: rej,
+      };
+    }
+  );
 };

@@ -5,17 +5,18 @@ export const typeDefs = gql`
     _id: ID!
     name: String!
     email: String!
-    projects: [ID]
   }
 
   type Task {
     _id: ID!
     name: String!
+    completed: Boolean!
   }
 
   type Project {
     _id: ID!
     name: String!
+    participants: [String!]
     tasks: [Task]
   }
 

@@ -3,6 +3,7 @@ import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { SIGNUP } from '../../gql/userMutations';
 import { useForm } from 'react-hook-form';
 import './index.scss';
+import { useState } from 'react';
 
 interface Inputs {
   name: string;
@@ -11,15 +12,24 @@ interface Inputs {
 
 export const SignupScreen = () => {
   const { register, handleSubmit } = useForm<Inputs>();
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [signup] = useMutation(SIGNUP);
   const onSubmit = (data: Inputs) => {
+    setError(null);
+    setSuccess(null);
     signup({
       variables: {
         email: data.email,
         name: data.name,
       },
+    }).then((res) => {
+      if (res.data.signup.ok) {
+        setSuccess('User created');
+      } else {
+        setError(res.data.signup.err);
+      }
     });
-    console.log(data);
   };
 
   return (
@@ -28,6 +38,12 @@ export const SignupScreen = () => {
       <div className='center-align login-container'>
         <h3>Signup now!</h3>
         <h4>It's that easy, no password needed</h4>
+        {success && (
+          <h5 className='card-panel green lighten-2'>Signup successful!</h5>
+        )}
+        {error && (
+          <h5 className='card-panel red lighten-2'>User already exists!</h5>
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type='text'
@@ -43,7 +59,7 @@ export const SignupScreen = () => {
             placeholder='example@mail.com'
             {...register('email', { required: true })}
           />
-          <button>Signup</button>
+          <button className='waves-effect waves-green btn-large'>Signup</button>
         </form>
       </div>
     </>

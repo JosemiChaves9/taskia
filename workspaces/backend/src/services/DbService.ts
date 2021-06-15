@@ -1,4 +1,5 @@
 import { Db, MongoClient } from 'mongodb';
+import { user } from '../types';
 
 let db: Db | undefined;
 export class DbService {
@@ -23,7 +24,7 @@ export class DbService {
     await DbService.getDb().collection('users').insertOne({ name, email });
   }
 
-  static async getUserByEmail(email: string) {
+  static async getUserByEmail(email: string): Promise<user> {
     return await DbService.getDb().collection('users').findOne({ email });
   }
 
