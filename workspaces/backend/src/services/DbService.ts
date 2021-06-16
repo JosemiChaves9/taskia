@@ -1,5 +1,5 @@
-import { Db, MongoClient } from 'mongodb';
-import { user } from '../types';
+import { Db, MongoClient, ObjectID } from 'mongodb';
+import { User } from '../types';
 
 let db: Db | undefined;
 export class DbService {
@@ -21,11 +21,20 @@ export class DbService {
   }
 
   static async newUser(email: string, name: string) {
-    await DbService.getDb().collection('users').insertOne({ name, email });
+    await DbService.getDb()
+      .collection('users')
+      .insertOne({ name, email })
+      .then((res) =>
+        DbService.getDb()
+          .collection('projects')
+          .insertOne({ name: 'Default', participants: [res.insertedId] })
+      );
   }
 
-  static async getUserByEmail(email: string): Promise<user> {
-    return await DbService.getDb().collection('users').findOne({ email });
+  static async getUserByEmail(email: string): Promise<User | null> {
+    return DbService.getDb()
+      .collection('users')
+      .findOne({ email }, { timeout: true });
   }
 
   static async newTask(name: string) {
@@ -35,6 +44,13 @@ export class DbService {
   static async newProject(name: string) {
     await DbService.getDb().collection('projects').insertOne({ name });
   }
+
+  // static async getProjectsForUser(email: string) {
+  //   return await DbService.getDb()
+  //     .collection('projects')
+  //     .findOne( })
+  //     .then((res) => console.log(res));
+  // }
 
   private static getDb(): Db {
     if (!db) {

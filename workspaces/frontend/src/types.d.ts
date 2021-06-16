@@ -2,14 +2,14 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  projects?: [project];
+  projects?: [Project];
 }
 
 export interface Project {
   _id: string;
   name: string;
-  participants: [string];
-  tasks: [task];
+  participants: [User];
+  tasks: [Task];
 }
 
 export interface Task {

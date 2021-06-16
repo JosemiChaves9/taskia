@@ -23,19 +23,28 @@ export const SignupScreen = () => {
         email: data.email,
         name: data.name,
       },
-    }).then((res) => {
-      if (res.data.signup.ok) {
-        setSuccess('User created');
-        localStorage.setItem('userLogged', data.email);
-      } else {
-        setError(res.data.signup.err);
+    }).then(
+      (res) => {
+        if (res.data.signup.ok) {
+          setSuccess('User created');
+          localStorage.setItem('userLogged', data.email);
+        } else {
+          setError(res.data.signup.err);
+        }
+      },
+      (rej) => {
+        setError('There was an error');
       }
-    });
+    );
   };
 
   return (
     <>
-      <SidenavAndHeader />
+      <nav>
+        <div className='nav-wrapper'>
+          <p className='brand-logo'>Taskia</p>
+        </div>
+      </nav>
       <div className='center-align login-container'>
         <h3>Signup now!</h3>
         <h4>It's that easy, no password needed</h4>

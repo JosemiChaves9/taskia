@@ -1,5 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { SidenavAndHeader } from '../../components/SidenavAndHeader';
+import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '../../gql/userQuery';
 import { useForm } from 'react-hook-form';
 
@@ -19,7 +18,11 @@ export const LoginScreen = () => {
 
   return (
     <>
-      <SidenavAndHeader />
+      <nav>
+        <div className='nav-wrapper'>
+          <p className='brand-logo'>Taskia</p>
+        </div>
+      </nav>
       <div className='center-align login-container'>
         <h3>You're not logged!</h3>
         <h4>Just type your email</h4>

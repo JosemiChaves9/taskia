@@ -9,6 +9,7 @@ import { NewTask } from './pages/newTask';
 import { ApolloProvider } from '@apollo/client';
 import { SignupScreen } from './pages/signup';
 import { apolloClient } from './services/ApolloClient';
+import { Test } from './pages/testPages';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
@@ -19,6 +20,7 @@ ReactDOM.render(
           <Route path='/login' component={LoginScreen} />
           <Route path='/signup' component={SignupScreen} />
           <Route path='/newTask' component={NewTask} />
+          <Route path='/test' component={Test} />
         </Switch>
       </Router>
     </React.StrictMode>
