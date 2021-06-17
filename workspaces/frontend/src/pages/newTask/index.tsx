@@ -1,36 +1,82 @@
-import { useEffect, useRef } from 'react';
-import { SidenavAndHeader } from '../../components/SidenavAndHeader';
+import { useContext, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import './index.scss';
 import M from 'materialize-css';
+import { userContext } from '../../components/context';
+import { Project } from '../../types';
+import { useMutation } from '@apollo/client';
+import { NEW_TASK } from '../../gql/newTaskMutation';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 
 export const NewTask = () => {
   const project = useRef<HTMLSelectElement | null>(null);
+  const history = useHistory();
+  const { handleSubmit, register } = useForm();
+  const [error, setError] = useState<string | null>(null);
+  const { userProjects } = useContext(userContext);
+  const [newTask] = useMutation(NEW_TASK);
 
   useEffect(() => {
     M.FormSelect.init(project.current as Element);
   });
+
+  const onSubmit = (input: { projectId: string; taskName: string }) => {
+    setError(null);
+    console.log(input.projectId);
+    newTask({
+      variables: {
+        projectId: input.projectId,
+        taskName: input.taskName,
+      },
+    }).then(
+      (res) => {
+        if (res.data.newTask.ok) {
+          history.push('/');
+        } else {
+          setError('There was an error');
+        }
+      },
+      (rej) => {
+        setError('There was an error');
+      }
+    );
+  };
   return (
     <>
-      {/* <SidenavAndHeader /> */}
-      <div className='row'>
-        <div className='input-field col s12'>
-          <select ref={project}>
-            <option value='' disabled selected>
-              Choose your project
-            </option>
-            <option value='1'>Option 1</option>
-            <option value='2'>Option 2</option>
-            <option value='3'>Option 3</option>
-          </select>
+      <nav>
+        <div className='nav-wrapper'>
+          <p className='brand-logo'>Taskia</p>
         </div>
-        <form className='col s12'>
+      </nav>
+      <div className='row'>
+        <form className='col s12' onSubmit={handleSubmit(onSubmit)}>
+          <div className='input-field col s12'>
+            {error && (
+              <h5 className='card-panel red lighten-2'>There was an error!</h5>
+            )}
+            <select
+              {...register('projectId', { required: true })}
+              ref={project}>
+              <option value='' disabled selected>
+                Choose your project
+              </option>
+              {userProjects ? (
+                userProjects.map((project: Project) => {
+                  return <option value={project._id}>{project.name}</option>;
+                })
+              ) : (
+                <p>Loading...</p>
+              )}
+            </select>
+          </div>
           <div className='row'>
             <div className='input-field col s12'>
               <input
-                id='first_name'
                 type='text'
                 className='validate'
                 placeholder='New task...'
+                {...register('taskName', { required: true })}
               />
             </div>
             <div className='col s12'></div>

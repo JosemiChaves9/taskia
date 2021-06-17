@@ -37,17 +37,16 @@ export class DbService {
       .findOne({ email }, { timeout: true });
   }
 
-  static async newTask(name: string, project: string) {
+  static async newTask(taskName: string, projectId: string) {
     await DbService.getDb()
       .collection('projects')
       .findOneAndUpdate(
         {
-          name: project,
-          participants: { $in: [new ObjectID('60cb12f36beab172c216a1d0')] },
+          _id: new ObjectID(projectId),
         },
         {
           $push: {
-            tasks: { name: name, completed: false },
+            tasks: { name: taskName, completed: false },
           },
         },
         { upsert: true }

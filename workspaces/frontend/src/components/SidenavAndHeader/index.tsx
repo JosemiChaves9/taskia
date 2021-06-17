@@ -8,11 +8,17 @@ import { GET_ALL_USER_PROJECTS } from '../../gql/getAllUserProjects';
 import { useContext } from 'react';
 import { userContext } from '../context';
 
-export const SidenavAndHeader = (props: { data: string }) => {
-  const { user } = useContext(userContext);
+export const SidenavAndHeader = () => {
+  const {
+    user,
+    activeProject,
+    setActiveProject,
+    setUserProjects,
+    userProjects,
+  } = useContext(userContext);
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
-  const [projects, setProjects] = useState<Project[] | undefined>(undefined);
+
   const [getAllUserProjects, { loading, data }] = useLazyQuery<{
     getAllUserProjects: Project[];
   }>(GET_ALL_USER_PROJECTS);
@@ -30,15 +36,18 @@ export const SidenavAndHeader = (props: { data: string }) => {
         },
       });
     }
-    setProjects(data?.getAllUserProjects);
+    setUserProjects(data?.getAllUserProjects);
+    setActiveProject(data?.getAllUserProjects[0]);
   }, [user, loading]);
+
+  console.log(data);
 
   return (
     <>
       <nav>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo'>
-            {props.data}
+            {activeProject?.name}
           </a>
           <a href='#'>
             <i
@@ -63,13 +72,13 @@ export const SidenavAndHeader = (props: { data: string }) => {
             <h5 className='sidebar-options-header '>
               <i className='material-icons'>folder_open</i>Projects
             </h5>
-            {projects ? (
-              projects.map((project: Project, idx: number) => {
+            {userProjects ? (
+              userProjects.map((project: Project, idx: number) => {
                 return (
                   <li
                     className='collection-item'
-                    key={projects[0]._id}
-                    onClick={() => console.log(projects[idx]._id)}>
+                    key={userProjects[0]._id}
+                    onClick={() => setActiveProject(project)}>
                     {project.name}
                   </li>
                 );

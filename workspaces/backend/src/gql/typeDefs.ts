@@ -32,7 +32,7 @@ export const typeDefs = gql`
 
   type Mutation {
     signup(email: String!, name: String!): GenericResponse!
-    newTask(name: String!, project: String!): GenericResponse!
+    newTask(taskName: String!, projectId: String!): GenericResponse!
     newProject(name: String!): GenericResponse!
   }
 `;

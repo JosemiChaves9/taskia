@@ -10,15 +10,19 @@ export const LoginScreen = () => {
   const { setUser } = useContext(userContext);
   const [login, { data }] = useLazyQuery(GET_USER_BY_EMAIL);
   const history = useHistory();
-
   const { register, handleSubmit } = useForm();
+
   const onSubmit = async (input: { email: string }) => {
     login({
       variables: {
         email: input.email,
       },
     });
-    setUser(data.getUserByEmail);
+    if (data) {
+      localStorage.setItem('userLogged', data.getUserByEmail.email);
+      setUser(data.getUserByEmail);
+      history.push('/');
+    }
   };
   return (
     <>

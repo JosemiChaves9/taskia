@@ -2,10 +2,10 @@ import { DbService } from '../services/DbService';
 
 export const newTask = (
   source: any,
-  { name, project }: { name: string; project: string }
+  { taskName, projectId }: { taskName: string; projectId: string }
 ) => {
   try {
-    return DbService.newTask(name, project).then(() => ({
+    return DbService.newTask(taskName, projectId).then(() => ({
       ok: true,
       err: '',
     }));
