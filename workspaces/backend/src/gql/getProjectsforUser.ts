@@ -1,9 +1,8 @@
 import { DbService } from '../services/DbService';
 
-export const getProjectForUser = async (
+export const getAllProjectForUser = async (
   source: any,
-  { email }: { email: string }
+  { userId }: { userId: string }
 ) => {
-  const userId = await DbService.getUserByEmail(email).then((res) => res?._id);
-  return DbService.getProjectsForUser(userId as string).then((res) => res);
+  return DbService.getAllProjectsForUser(userId as string).then((res) => res);
 };

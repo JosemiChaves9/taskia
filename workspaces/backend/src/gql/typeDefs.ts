@@ -26,8 +26,8 @@ export const typeDefs = gql`
 
   type Query {
     getUser(email: String!): User
-    getProjectsByEmail(email: String!): [Project]
-    getProject(projectId: String!): Project!
+    getProjectsById(userId: String!): [Project]
+    getAllUserProjects(projectId: String!): Project!
     test: [Project]
   }
 

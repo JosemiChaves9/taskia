@@ -4,14 +4,17 @@ import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { Project, User } from '../../types';
-import { GET_PROJECTS_BY_EMAIL } from '../../gql/getProjectsByEmail';
+import { GET_ALL_USER_PROJECTS } from '../../gql/getAllUserProjects';
+import { useContext } from 'react';
+import { userContext } from '../context';
 
 export const SidenavAndHeader = (props: { data: string }) => {
+  const { user } = useContext(userContext);
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
   const [projects, setProjects] = useState<Project[] | undefined>(undefined);
   const { loading, data } = useQuery<{ getProjectsByEmail: Project[] }>(
-    GET_PROJECTS_BY_EMAIL,
+    GET_ALL_USER_PROJECTS,
     {
       variables: {
         email: localStorage.getItem('userLogged'),
@@ -52,7 +55,7 @@ export const SidenavAndHeader = (props: { data: string }) => {
             alt='iconAvatar'
             className='sidebar-avatar'
           />
-          <p>Josemi Chaves</p>
+          {user && <p>{user.name}</p>}
         </div>
         <div>
           <ul className='collection'>

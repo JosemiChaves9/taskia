@@ -1,23 +1,11 @@
 import { useEffect } from 'react';
-import { useRef } from 'react';
+import { useContext } from 'react';
+import { userContext } from '../../components/context';
 
 export const Test = () => {
-  const select = useRef<HTMLSelectElement | null>(null);
-
-  useEffect(() => {
-    M.FormSelect.init(select.current as Element);
-  });
   return (
-    <div className='input-field '>
-      <select ref={select}>
-        <option value='' disabled selected>
-          Choose your option
-        </option>
-        <option value='1'>Option 1</option>
-        <option value='2'>Option 2</option>
-        <option value='3'>Option 3</option>
-      </select>
-      <label>Materialize Select</label>
-    </div>
+    <>
+      <h1>This is a test page</h1>
+    </>
   );
 };
