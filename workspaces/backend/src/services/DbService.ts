@@ -58,9 +58,7 @@ export class DbService {
     await DbService.getDb().collection('projects').insertOne({ name });
   }
 
-  static async getAllProjectsForUser(
-    userId: string
-  ): Promise<Project[] | null> {
+  static async getAllUserProjects(userId: string): Promise<Project[] | null> {
     return DbService.getDb()
       .collection('projects')
       .find({
@@ -69,7 +67,7 @@ export class DbService {
       .toArray();
   }
 
-  static async getProject(projectId: string): Promise<any> {
+  static async getProjectById(projectId: string): Promise<Project> {
     return await DbService.getDb()
       .collection('projects')
       .findOne({

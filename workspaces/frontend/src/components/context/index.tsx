@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { GET_USER } from '../../gql/userQuery';
+import { GET_USER_BY_EMAIL } from '../../gql/getUserByEmailQuery';
 import { User } from '../../types';
 
 export const userContext = React.createContext<any | null>({
@@ -13,7 +13,7 @@ export const userContext = React.createContext<any | null>({
 export const ContextProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [getUser, { data, loading }] =
-    useLazyQuery<{ getUser: User } | undefined>(GET_USER);
+    useLazyQuery<{ getUserByEmail: User } | undefined>(GET_USER_BY_EMAIL);
 
   useEffect(() => {
     getUser({
@@ -22,15 +22,14 @@ export const ContextProvider = ({ children }: any) => {
       },
     });
 
-    if (!loading) {
-      setUser(data?.getUser);
-    }
-  }, [loading]);
+    setUser(data?.getUserByEmail);
+  }, [data]);
 
   return (
     <userContext.Provider
       value={{
         user,
+        setUser,
       }}>
       {children}
     </userContext.Provider>

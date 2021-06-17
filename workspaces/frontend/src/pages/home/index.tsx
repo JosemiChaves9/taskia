@@ -4,19 +4,21 @@ import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_PROJECT } from '../../gql/getProjectQuery';
+import { GET_PROJECT_BY_ID } from '../../gql/getProjectById';
 import { Project } from '../../types';
 
 export const Home = () => {
   let history = useHistory();
   const [project, setProject] = useState<Project | undefined>(undefined);
   // eslint-disable-next-line
-  const { loading, data } = useQuery<{ getProject: Project }>(GET_PROJECT, {
-    variables: {
-      projectId: '60cb17dff6258141872ac6ae',
-    },
-  });
-  const [checked, setChecked] = useState<boolean>(false);
+  const { loading, data } = useQuery<{ getProjectById: Project }>(
+    GET_PROJECT_BY_ID,
+    {
+      variables: {
+        projectId: '60cb17dff6258141872ac6ae',
+      },
+    }
+  );
   // eslint-disable-next-line
   // eslint-disable-next-line
   const [logged, _setLogged] = useState<boolean>(true);
@@ -28,7 +30,7 @@ export const Home = () => {
 
   useEffect(() => {
     if (!loading) {
-      setProject(data?.getProject);
+      setProject(data?.getProjectById);
     }
   }, [loading]);
 
@@ -38,14 +40,8 @@ export const Home = () => {
         <SidenavAndHeader data={project?.name as string} />
         {project?.tasks.map((task) => {
           return (
-            <li
-              className={
-                checked ? 'collection-item finished' : 'collection-item'
-              }
-              onClick={() => setChecked(!checked)}>
-              <i className='material-icons'>
-                {checked ? 'check_box' : 'check_box_outline_blank'}
-              </i>
+            <li className={'collection-item'}>
+              <i className='material-icons'>check_box_outline_blank</i>
               {task.name}
             </li>
           );

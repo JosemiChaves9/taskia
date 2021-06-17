@@ -2,8 +2,8 @@ import './index.scss';
 import M from 'materialize-css';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
-import { useQuery } from '@apollo/client';
-import { Project, User } from '../../types';
+import { useLazyQuery } from '@apollo/client';
+import { Project } from '../../types';
 import { GET_ALL_USER_PROJECTS } from '../../gql/getAllUserProjects';
 import { useContext } from 'react';
 import { userContext } from '../context';
@@ -13,24 +13,25 @@ export const SidenavAndHeader = (props: { data: string }) => {
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
   const [projects, setProjects] = useState<Project[] | undefined>(undefined);
-  const { loading, data } = useQuery<{ getProjectsByEmail: Project[] }>(
-    GET_ALL_USER_PROJECTS,
-    {
-      variables: {
-        email: localStorage.getItem('userLogged'),
-      },
-    }
-  );
+  const [getAllUserProjects, { loading, data }] = useLazyQuery<{
+    getAllUserProjects: Project[];
+  }>(GET_ALL_USER_PROJECTS);
 
-  useEffect(() => {
-    if (!loading) {
-      setProjects(data?.getProjectsByEmail);
-    }
-  }, [data]);
   useEffect(() => {
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      getAllUserProjects({
+        variables: {
+          userId: user._id,
+        },
+      });
+    }
+    setProjects(data?.getAllUserProjects);
+  }, [user, loading]);
 
   return (
     <>

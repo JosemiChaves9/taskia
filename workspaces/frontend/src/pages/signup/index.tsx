@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { SIGNUP } from '../../gql/userMutations';
+import { SIGNUP } from '../../gql/signupMutation';
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import { useState } from 'react';
@@ -32,7 +32,7 @@ export const SignupScreen = () => {
           setError(res.data.signup.err);
         }
       },
-      (rej) => {
+      () => {
         setError('There was an error');
       }
     );

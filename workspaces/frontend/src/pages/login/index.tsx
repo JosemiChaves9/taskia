@@ -1,14 +1,14 @@
 import { useLazyQuery } from '@apollo/client';
-import { GET_USER } from '../../gql/userQuery';
+import { GET_USER_BY_EMAIL } from '../../gql/getUserByEmailQuery';
 import { useForm } from 'react-hook-form';
 import './index.scss';
-import { Redirect, useHistory } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useContext } from 'react';
+import { userContext } from '../../components/context';
 
 export const LoginScreen = () => {
-  const [login, { data, loading }] = useLazyQuery(GET_USER);
-  const [user, setUser] = useState(null);
+  const { setUser } = useContext(userContext);
+  const [login, { data }] = useLazyQuery(GET_USER_BY_EMAIL);
   const history = useHistory();
 
   const { register, handleSubmit } = useForm();
@@ -18,8 +18,7 @@ export const LoginScreen = () => {
         email: input.email,
       },
     });
-    const userName = await data;
-    console.log(userName);
+    setUser(data.getUserByEmail);
   };
   return (
     <>

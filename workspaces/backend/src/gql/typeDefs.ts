@@ -25,10 +25,9 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getUser(email: String!): User
-    getProjectsById(userId: String!): [Project]
-    getAllUserProjects(projectId: String!): Project!
-    test: [Project]
+    getUserByEmail(email: String!): User
+    getProjectById(projectId: String!): Project
+    getAllUserProjects(userId: String!): [Project!]
   }
 
   type Mutation {
