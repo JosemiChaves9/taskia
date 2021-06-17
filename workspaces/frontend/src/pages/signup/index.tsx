@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client';
-import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { SIGNUP } from '../../gql/userMutations';
 import { useForm } from 'react-hook-form';
 import './index.scss';
@@ -25,6 +24,7 @@ export const SignupScreen = () => {
       },
     }).then(
       (res) => {
+        console.log(res);
         if (res.data.signup.ok) {
           setSuccess('User created');
           localStorage.setItem('userLogged', data.email);

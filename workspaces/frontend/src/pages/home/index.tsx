@@ -1,26 +1,42 @@
 import './index.scss';
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
+import { useEffect } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_PROJECT } from '../../gql/getProjectQuery';
+import { Project } from '../../types';
 
 export const Home = () => {
+  let history = useHistory();
+  const [project, setProject] = useState<Project | undefined>(undefined);
   // eslint-disable-next-line
-  const [tasks, _setTasks] = useState<string[]>([
-    'Task #1',
-    'Task #2',
-    'Task #3',
-  ]);
+  const { loading, data } = useQuery<{ getProject: Project }>(GET_PROJECT, {
+    variables: {
+      projectId: '60cb17dff6258141872ac6ae',
+    },
+  });
   const [checked, setChecked] = useState<boolean>(false);
   // eslint-disable-next-line
   // eslint-disable-next-line
   const [logged, _setLogged] = useState<boolean>(true);
+  useEffect(() => {
+    if (!localStorage.getItem('userLogged')) {
+      history.push('login');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      setProject(data?.getProject);
+    }
+  }, [loading]);
 
   return (
     <>
-      {!localStorage.getItem('userLogged') && <Redirect to='/login' />}
       <ul className='collection tasklist'>
-        <SidenavAndHeader />
-        {tasks.map((task) => {
+        <SidenavAndHeader data={project?.name as string} />
+        {project?.tasks.map((task) => {
           return (
             <li
               className={
@@ -30,7 +46,7 @@ export const Home = () => {
               <i className='material-icons'>
                 {checked ? 'check_box' : 'check_box_outline_blank'}
               </i>
-              {task}
+              {task.name}
             </li>
           );
         })}

@@ -11,7 +11,7 @@ export const NewTask = () => {
   });
   return (
     <>
-      <SidenavAndHeader />
+      {/* <SidenavAndHeader /> */}
       <div className='row'>
         <div className='input-field col s12'>
           <select ref={project}>

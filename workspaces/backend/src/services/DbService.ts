@@ -1,5 +1,5 @@
 import { Db, MongoClient, ObjectID } from 'mongodb';
-import { User } from '../types';
+import { Project, User } from '../types';
 
 let db: Db | undefined;
 export class DbService {
@@ -37,20 +37,43 @@ export class DbService {
       .findOne({ email }, { timeout: true });
   }
 
-  static async newTask(name: string) {
-    await DbService.getDb().collection('tasks').insertOne({ name });
+  static async newTask(name: string, project: string) {
+    await DbService.getDb()
+      .collection('projects')
+      .findOneAndUpdate(
+        {
+          name: project,
+          participants: { $in: [new ObjectID('60cb12f36beab172c216a1d0')] },
+        },
+        {
+          $push: {
+            tasks: { name: name, completed: false },
+          },
+        },
+        { upsert: true }
+      );
   }
 
   static async newProject(name: string) {
     await DbService.getDb().collection('projects').insertOne({ name });
   }
 
-  // static async getProjectsForUser(email: string) {
-  //   return await DbService.getDb()
-  //     .collection('projects')
-  //     .findOne( })
-  //     .then((res) => console.log(res));
-  // }
+  static async getProjectsForUser(userId: string): Promise<Project[] | null> {
+    return DbService.getDb()
+      .collection('projects')
+      .find({
+        participants: { $in: [new ObjectID(userId)] },
+      })
+      .toArray();
+  }
+
+  static async getProject(userId: string, projectId: string): Promise<any> {
+    return await DbService.getDb()
+      .collection('projects')
+      .findOne({
+        _id: new ObjectID(projectId),
+      });
+  }
 
   private static getDb(): Db {
     if (!db) {

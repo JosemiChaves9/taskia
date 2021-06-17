@@ -6,11 +6,15 @@ export const signup = async (
 ) => {
   //If error, connection with DB (throw new error), if there's no user return the result.
 
+  //Change nodemon,and change method to debug
+  debugger;
   const userExists = await DbService.getUserByEmail(email).then(
     (res) => {
+      debugger;
       return res;
     },
     (rej) => {
+      debugger;
       throw new Error(rej);
     }
   );

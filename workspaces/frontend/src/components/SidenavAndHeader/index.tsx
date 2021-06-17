@@ -1,27 +1,29 @@
 import './index.scss';
 import M from 'materialize-css';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_USER } from '../../gql/userQuery';
-import { User } from '../../types';
+import { Project, User } from '../../types';
+import { GET_PROJECTS_BY_EMAIL } from '../../gql/getProjectsByEmail';
 
-export const SidenavAndHeader = () => {
+export const SidenavAndHeader = (props: { data: string }) => {
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
-  const { data } = useQuery<{ getUser: User }>(GET_USER, {
-    variables: {
-      email: localStorage.getItem('userLogged'),
-    },
-  });
+  const [projects, setProjects] = useState<Project[] | undefined>(undefined);
+  const { loading, data } = useQuery<{ getProjectsByEmail: Project[] }>(
+    GET_PROJECTS_BY_EMAIL,
+    {
+      variables: {
+        email: localStorage.getItem('userLogged'),
+      },
+    }
+  );
 
-  const [projects, _setProjects] = useState<string[]>([
-    'Project #1',
-    'Project #2',
-    'Project #3',
-  ]);
-
+  useEffect(() => {
+    if (!loading) {
+      setProjects(data?.getProjectsByEmail);
+    }
+  }, [data]);
   useEffect(() => {
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
@@ -32,7 +34,7 @@ export const SidenavAndHeader = () => {
       <nav>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo'>
-            Project #1
+            {props.data}
           </a>
           <a href='#'>
             <i
@@ -50,22 +52,28 @@ export const SidenavAndHeader = () => {
             alt='iconAvatar'
             className='sidebar-avatar'
           />
-          <p>{data?.getUser.name}</p>
+          <p>Josemi Chaves</p>
         </div>
         <div>
           <ul className='collection'>
             <h5 className='sidebar-options-header '>
               <i className='material-icons'>folder_open</i>Projects
             </h5>
-            {projects.map((project: string, idx: number) => {
-              return (
-                <li
-                  className='collection-item'
-                  onClick={() => console.log(projects[idx])}>
-                  {project}
-                </li>
-              );
-            })}
+            {projects ? (
+              projects.map((project: Project, idx: number) => {
+                return (
+                  <li
+                    className='collection-item'
+                    key={projects[0]._id}
+                    onClick={() => console.log(projects[idx]._id)}>
+                    {project.name}
+                  </li>
+                );
+              })
+            ) : (
+              <li>Loading</li>
+            )}
+
             <button
               className='btn modal-trigger btn-flat sidebar-share'
               data-target='modal1'>

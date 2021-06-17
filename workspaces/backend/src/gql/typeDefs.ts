@@ -8,15 +8,14 @@ export const typeDefs = gql`
   }
 
   type Task {
-    _id: ID!
     name: String!
-    completed: Boolean!
+    completed: Boolean
   }
 
   type Project {
     _id: ID!
     name: String!
-    participants: [String!]
+    participants: [ID!]
     tasks: [Task]
   }
 
@@ -27,13 +26,14 @@ export const typeDefs = gql`
 
   type Query {
     getUser(email: String!): User
-    project: Project
-    projects: [Project]
+    getProjectsByEmail(email: String!): [Project]
+    getProject(projectId: String!): Project!
+    test: [Project]
   }
 
   type Mutation {
     signup(email: String!, name: String!): GenericResponse!
-    newTask(name: String!): GenericResponse!
+    newTask(name: String!, project: String!): GenericResponse!
     newProject(name: String!): GenericResponse!
   }
 `;

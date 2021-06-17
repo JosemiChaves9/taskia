@@ -1,11 +1,16 @@
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '../../gql/userQuery';
 import { useForm } from 'react-hook-form';
-
 import './index.scss';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export const LoginScreen = () => {
   const [login, { data, loading }] = useLazyQuery(GET_USER);
+  const [user, setUser] = useState(null);
+  const history = useHistory();
+
   const { register, handleSubmit } = useForm();
   const onSubmit = async (input: { email: string }) => {
     login({
@@ -13,9 +18,9 @@ export const LoginScreen = () => {
         email: input.email,
       },
     });
-    localStorage.setItem('userLogged', data.getUser.email);
+    const userName = await data;
+    console.log(userName);
   };
-
   return (
     <>
       <nav>
