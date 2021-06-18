@@ -6,6 +6,7 @@ import { newProject } from './newProject';
 import { newTask } from './newTask';
 import { signup } from './signup';
 import { markTaskAsCompleted } from './markTaskAsCompleted';
+import { joinToExistingProject } from './joinToExistingProject';
 
 export const resolvers: IResolvers = {
   Query: {
@@ -18,5 +19,6 @@ export const resolvers: IResolvers = {
     newTask: newTask,
     newProject: newProject,
     markTaskAsCompleted: markTaskAsCompleted,
+    joinToExistingProject: joinToExistingProject,
   },
 };

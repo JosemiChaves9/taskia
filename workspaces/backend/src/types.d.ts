@@ -10,6 +10,7 @@ export interface Project {
   name: string;
   participants: [string];
   tasks: [task];
+  shareCode: number;
 }
 
 export interface Task {

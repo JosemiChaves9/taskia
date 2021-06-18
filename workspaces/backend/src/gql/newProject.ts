@@ -4,8 +4,10 @@ export const newProject = (
   source: any,
   { projectName, userId }: { projectName: string; userId: string }
 ) => {
+  const shareCode = Math.floor(Math.random() * 99999);
+
   try {
-    return DbService.newProject(projectName, userId).then(() => {
+    return DbService.newProject(projectName, userId, shareCode).then(() => {
       return {
         ok: true,
         err: '',

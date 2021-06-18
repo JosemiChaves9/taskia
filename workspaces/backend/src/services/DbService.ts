@@ -53,10 +53,19 @@ export class DbService {
       );
   }
 
-  static async newProject(projectName: string, userId: string) {
+  static async newProject(
+    projectName: string,
+    userId: string,
+    shareCode: number
+  ) {
     await DbService.getDb()
       .collection('projects')
-      .insertOne({ name: projectName, participants: [new ObjectID(userId)] });
+      .insertOne({
+        name: projectName,
+        participants: [new ObjectID(userId)],
+        tasks: [],
+        shareCode: shareCode,
+      });
   }
 
   static async getAllUserProjects(userId: string): Promise<Project[] | null> {
@@ -85,6 +94,25 @@ export class DbService {
         },
         {
           $set: { 'tasks.$.completed': true },
+        }
+      );
+  }
+
+  static async getProjectByShareCode(shareCode: number) {
+    return await DbService.getDb().collection('projects').findOne({
+      shareCode: shareCode,
+    });
+  }
+
+  static async joinToAnExistingProject(shareCode: number, userId: string) {
+    await DbService.getDb()
+      .collection('projects')
+      .findOneAndUpdate(
+        { shareCode: shareCode },
+        {
+          $push: {
+            participants: new ObjectID(userId),
+          },
         }
       );
   }

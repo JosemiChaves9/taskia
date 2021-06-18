@@ -18,6 +18,7 @@ export const typeDefs = gql`
     name: String!
     participants: [ID]
     tasks: [Task]
+    shareCode: Int!
   }
 
   type GenericResponse {
@@ -36,5 +37,6 @@ export const typeDefs = gql`
     newTask(taskName: String!, projectId: String!): GenericResponse!
     newProject(projectName: String!, userId: String!): GenericResponse!
     markTaskAsCompleted(projectId: String!, taskId: String!): GenericResponse!
+    joinToExistingProject(shareCode: Int!, userId: String!): GenericResponse!
   }
 `;

@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { NEW_PROJECT } from '../../gql/newProjectMutation';
+import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/joinToAnExistingProjectMutation';
 
 export const NewProject = () => {
   const project = useRef<HTMLSelectElement | null>(null);
@@ -15,12 +16,12 @@ export const NewProject = () => {
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
   const [newProject] = useMutation(NEW_PROJECT);
-
+  const [joinProject] = useMutation(JOIN_TO_AN_EXISTING_PROJECT);
   useEffect(() => {
     M.FormSelect.init(project.current as Element);
   });
 
-  const onSubmit = (input: { projectName: string }) => {
+  const handleNewProject = (input: { projectName: string }) => {
     setError(null);
     newProject({
       variables: {
@@ -40,6 +41,23 @@ export const NewProject = () => {
       }
     );
   };
+
+  const handleJoinProject = (input: { shareCode: string }) => {
+    const shareCode = parseInt(input.shareCode);
+    joinProject({
+      variables: {
+        shareCode: shareCode,
+        userId: user._id,
+      },
+    }).then((res) => {
+      if (res.data.joinToExistingProject.ok) {
+        history.push('/');
+      } else {
+        setError('Something went wrong');
+      }
+    });
+  };
+
   return (
     <>
       <nav>
@@ -48,7 +66,7 @@ export const NewProject = () => {
         </div>
       </nav>
       <div className='row'>
-        <form className='col s12' onSubmit={handleSubmit(onSubmit)}>
+        <form className='col s12' onSubmit={handleSubmit(handleNewProject)}>
           <div className='input-field col s12'>
             {error && (
               <h5 className='card-panel red lighten-2'>There was an error!</h5>
@@ -60,13 +78,34 @@ export const NewProject = () => {
                 type='text'
                 className='validate'
                 placeholder='New project...'
-                {...register('projectName', { required: true })}
+                {...register('projectName')}
               />
             </div>
             <div className='col s12'></div>
           </div>
           <div className='new-task-container'>
             <button className='add-task'>Add project!</button>
+          </div>
+        </form>
+      </div>
+      <div className='row'>
+        <form className='col s12' onSubmit={handleSubmit(handleJoinProject)}>
+          <h5>Or join to an existing project</h5>
+          <div className='row'>
+            <div className='input-field col s12'>
+              <input
+                type='number'
+                className='validate'
+                placeholder='New project...'
+                {...register('shareCode')}
+              />
+            </div>
+            <div className='col s12'></div>
+          </div>
+          <div className='new-task-container'>
+            <button className='add-task' type='submit'>
+              Join project!
+            </button>
           </div>
         </form>
       </div>

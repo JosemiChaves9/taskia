@@ -83,7 +83,7 @@ export const SidenavAndHeader = () => {
           <div id='modal1' className='modal' ref={popup}>
             <div className='modal-content '>
               <h5>Share this code</h5>
-              <p>251514</p>
+              {activeProject && <p>{activeProject.shareCode}</p>}
             </div>
             <div className='modal-footer'>
               <a

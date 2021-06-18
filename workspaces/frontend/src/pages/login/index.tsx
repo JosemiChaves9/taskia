@@ -46,7 +46,7 @@ export const LoginScreen = () => {
             placeholder='example@mail.com'
             {...register('email', { required: true })}
           />
-          <button className='waves-effect waves-green btn-large'>Signup</button>
+          <button className='waves-effect waves-green btn-large'>Login</button>
         </form>
       </div>
     </>

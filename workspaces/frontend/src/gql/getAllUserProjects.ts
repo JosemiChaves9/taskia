@@ -7,9 +7,11 @@ export const GET_ALL_USER_PROJECTS = gql`
       name
       participants
       tasks {
+        _id
         name
         completed
       }
+      shareCode
     }
   }
 `;
