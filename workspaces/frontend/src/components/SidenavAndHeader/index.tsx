@@ -1,46 +1,21 @@
 import './index.scss';
 import M from 'materialize-css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRef } from 'react';
-import { useLazyQuery } from '@apollo/client';
 import { Project } from '../../types';
-import { GET_ALL_USER_PROJECTS } from '../../gql/getAllUserProjects';
 import { useContext } from 'react';
 import { userContext } from '../context';
 
 export const SidenavAndHeader = () => {
-  const {
-    user,
-    activeProject,
-    setActiveProject,
-    setUserProjects,
-    userProjects,
-  } = useContext(userContext);
+  const { user, activeProject, setActiveProject, userProjects } =
+    useContext(userContext);
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
-
-  const [getAllUserProjects, { loading, data }] = useLazyQuery<{
-    getAllUserProjects: Project[];
-  }>(GET_ALL_USER_PROJECTS);
 
   useEffect(() => {
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      getAllUserProjects({
-        variables: {
-          userId: user._id,
-        },
-      });
-    }
-    setUserProjects(data?.getAllUserProjects);
-    setActiveProject(data?.getAllUserProjects[0]);
-  }, [user, loading]);
-
-  console.log(data);
 
   return (
     <>
@@ -73,7 +48,7 @@ export const SidenavAndHeader = () => {
               <i className='material-icons'>folder_open</i>Projects
             </h5>
             {userProjects ? (
-              userProjects.map((project: Project, idx: number) => {
+              userProjects.map((project: Project) => {
                 return (
                   <li
                     className='collection-item'

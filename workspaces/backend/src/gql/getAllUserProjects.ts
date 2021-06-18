@@ -4,7 +4,6 @@ export const getAllUserProjects = async (
   source: any,
   { userId }: { userId: string }
 ) => {
-  return DbService.getAllUserProjects(userId as string).then((res) => {
-    return res;
-  });
+  console.log(userId);
+  return DbService.getAllUserProjects(userId as string).then((res) => res);
 };

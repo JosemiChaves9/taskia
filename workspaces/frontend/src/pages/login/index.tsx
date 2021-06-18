@@ -3,12 +3,13 @@ import { GET_USER_BY_EMAIL } from '../../gql/getUserByEmailQuery';
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import { useHistory } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { userContext } from '../../components/context';
 
 export const LoginScreen = () => {
   const { setUser } = useContext(userContext);
-  const [login, { data }] = useLazyQuery(GET_USER_BY_EMAIL);
+  const [login, loginResult] = useLazyQuery(GET_USER_BY_EMAIL);
+
   const history = useHistory();
   const { register, handleSubmit } = useForm();
 
@@ -18,12 +19,15 @@ export const LoginScreen = () => {
         email: input.email,
       },
     });
-    if (data) {
-      localStorage.setItem('userLogged', data.getUserByEmail.email);
-      setUser(data.getUserByEmail);
-      history.push('/');
-    }
   };
+
+  useEffect(() => {
+    if (!loginResult.data) return;
+    localStorage.setItem('userLogged', loginResult.data.getUserByEmail.email);
+    setUser(loginResult.data.getUserByEmail);
+    history.push('/');
+  }, [loginResult.data]);
+
   return (
     <>
       <nav>

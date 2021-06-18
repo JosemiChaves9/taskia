@@ -1,7 +1,6 @@
 import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
-import { useEffect } from 'react';
 import { Task } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../components/context';
@@ -9,12 +8,6 @@ import { userContext } from '../../components/context';
 export const Home = () => {
   let history = useHistory();
   const { activeProject } = useContext(userContext);
-  useEffect(() => {
-    if (!localStorage.getItem('userLogged')) {
-      history.push('login');
-    }
-  }, []);
-
   return (
     <>
       <ul className='collection tasklist'>
@@ -29,7 +22,7 @@ export const Home = () => {
             );
           })
         ) : (
-          <p>Loading tasks...</p>
+          <h4>No tasks yet!</h4>
         )}
       </ul>
       <div className='container-button'>

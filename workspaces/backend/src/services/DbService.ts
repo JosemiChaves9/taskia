@@ -53,8 +53,10 @@ export class DbService {
       );
   }
 
-  static async newProject(name: string) {
-    await DbService.getDb().collection('projects').insertOne({ name });
+  static async newProject(projectName: string, userId: string) {
+    await DbService.getDb()
+      .collection('projects')
+      .insertOne({ name: projectName, participants: [new ObjectID(userId)] });
   }
 
   static async getAllUserProjects(userId: string): Promise<Project[] | null> {

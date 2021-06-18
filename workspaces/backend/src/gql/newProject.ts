@@ -1,8 +1,11 @@
 import { DbService } from '../services/DbService';
 
-export const newProject = (source: any, { name }: { name: string }) => {
+export const newProject = (
+  source: any,
+  { projectName, userId }: { projectName: string; userId: string }
+) => {
   try {
-    DbService.newProject(name).then(() => {
+    return DbService.newProject(projectName, userId).then(() => {
       return {
         ok: true,
         err: '',

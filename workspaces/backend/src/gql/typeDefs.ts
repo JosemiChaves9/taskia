@@ -15,7 +15,7 @@ export const typeDefs = gql`
   type Project {
     _id: ID!
     name: String!
-    participants: [ID!]
+    participants: [ID]
     tasks: [Task]
   }
 
@@ -33,6 +33,6 @@ export const typeDefs = gql`
   type Mutation {
     signup(email: String!, name: String!): GenericResponse!
     newTask(taskName: String!, projectId: String!): GenericResponse!
-    newProject(name: String!): GenericResponse!
+    newProject(projectName: String!, userId: String!): GenericResponse!
   }
 `;
