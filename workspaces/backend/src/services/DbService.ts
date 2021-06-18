@@ -46,7 +46,7 @@ export class DbService {
         },
         {
           $push: {
-            tasks: { name: taskName, completed: false },
+            tasks: { _id: new ObjectID(), name: taskName, completed: false },
           },
         },
         { upsert: true }
@@ -74,6 +74,19 @@ export class DbService {
       .findOne({
         _id: new ObjectID(projectId),
       });
+  }
+  static async markTaskAsCompleted(projectId: string, taskId: string) {
+    await DbService.getDb()
+      .collection('projects')
+      .updateOne(
+        {
+          _id: new ObjectID(projectId),
+          'tasks._id': new ObjectID(taskId),
+        },
+        {
+          $set: { 'tasks.$.completed': true },
+        }
+      );
   }
 
   private static getDb(): Db {

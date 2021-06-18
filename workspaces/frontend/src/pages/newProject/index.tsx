@@ -4,33 +4,32 @@ import './index.scss';
 import M from 'materialize-css';
 import { userContext } from '../../components/context';
 import { useMutation } from '@apollo/client';
-import { NEW_TASK } from '../../gql/newTaskMutation';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
+import { NEW_PROJECT } from '../../gql/newProjectMutation';
 
 export const NewProject = () => {
   const project = useRef<HTMLSelectElement | null>(null);
+  const { user } = useContext(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
-  const { userProjects } = useContext(userContext);
-  const [newTask] = useMutation(NEW_TASK);
+  const [newProject] = useMutation(NEW_PROJECT);
 
   useEffect(() => {
     M.FormSelect.init(project.current as Element);
   });
 
-  const onSubmit = (input: { projectId: string; taskName: string }) => {
+  const onSubmit = (input: { projectName: string }) => {
     setError(null);
-    console.log(input.projectId);
-    newTask({
+    newProject({
       variables: {
-        projectId: input.projectId,
-        taskName: input.taskName,
+        projectName: input.projectName,
+        userId: user._id,
       },
     }).then(
       (res) => {
-        if (res.data.newTask.ok) {
+        if (res.data.newProject.ok) {
           history.push('/');
         } else {
           setError('There was an error');
@@ -61,7 +60,7 @@ export const NewProject = () => {
                 type='text'
                 className='validate'
                 placeholder='New project...'
-                {...register('Project Name', { required: true })}
+                {...register('projectName', { required: true })}
               />
             </div>
             <div className='col s12'></div>

@@ -23,7 +23,6 @@ export const NewTask = () => {
 
   const onSubmit = (input: { projectId: string; taskName: string }) => {
     setError(null);
-    console.log(input.projectId);
     newTask({
       variables: {
         projectId: input.projectId,

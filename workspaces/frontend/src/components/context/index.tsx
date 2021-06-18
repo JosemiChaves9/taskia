@@ -10,7 +10,7 @@ export const userContext = React.createContext<any | null>({
   user: null,
   setUser: () => {},
   userProjects: null,
-  activeProject: null,
+  activeProject: '',
   setActiveProject: () => {},
 });
 
@@ -29,7 +29,6 @@ export const ContextProvider = ({ children }: any) => {
     getAllUserProjects: Project[] | undefined;
   }>(GET_ALL_USER_PROJECTS, {
     onCompleted: () => {
-      console.log();
       setUserProjects(getUserProjectsResult.data?.getAllUserProjects);
     },
   });

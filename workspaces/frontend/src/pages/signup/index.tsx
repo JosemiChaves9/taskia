@@ -24,7 +24,6 @@ export const SignupScreen = () => {
       },
     }).then(
       (res) => {
-        console.log(res);
         if (res.data.signup.ok) {
           setSuccess('User created');
           localStorage.setItem('userLogged', data.email);

@@ -5,6 +5,7 @@ import { getUserByEmail } from './getUserByEmail';
 import { newProject } from './newProject';
 import { newTask } from './newTask';
 import { signup } from './signup';
+import { markTaskAsCompleted } from './markTaskAsCompleted';
 
 export const resolvers: IResolvers = {
   Query: {
@@ -16,5 +17,6 @@ export const resolvers: IResolvers = {
     signup: signup,
     newTask: newTask,
     newProject: newProject,
+    markTaskAsCompleted: markTaskAsCompleted,
   },
 };

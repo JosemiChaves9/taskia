@@ -8,6 +8,7 @@ export const typeDefs = gql`
   }
 
   type Task {
+    _id: ID!
     name: String!
     completed: Boolean
   }
@@ -34,5 +35,6 @@ export const typeDefs = gql`
     signup(email: String!, name: String!): GenericResponse!
     newTask(taskName: String!, projectId: String!): GenericResponse!
     newProject(projectName: String!, userId: String!): GenericResponse!
+    markTaskAsCompleted(projectId: String!, taskId: String!): GenericResponse!
   }
 `;

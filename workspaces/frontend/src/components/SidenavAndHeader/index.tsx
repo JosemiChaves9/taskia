@@ -5,14 +5,19 @@ import { useRef } from 'react';
 import { Project } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../context';
+import { useHistory } from 'react-router-dom';
 
 export const SidenavAndHeader = () => {
   const { user, activeProject, setActiveProject, userProjects } =
     useContext(userContext);
+  const history = useHistory();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!localStorage.getItem('userLogged')) {
+      history.push('/login');
+    }
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
   }, []);
