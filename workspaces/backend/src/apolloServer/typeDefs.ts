@@ -21,7 +21,7 @@ export const typeDefs = gql`
     shareCode: Int!
   }
 
-  type GenericResponse {
+  type GenericMutationResponse {
     ok: Boolean!
     err: String
   }
@@ -33,10 +33,16 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    signup(email: String!, name: String!): GenericResponse!
-    newTask(taskName: String!, projectId: String!): GenericResponse!
-    newProject(projectName: String!, userId: String!): GenericResponse!
-    markTaskAsCompleted(projectId: String!, taskId: String!): GenericResponse!
-    joinToExistingProject(shareCode: Int!, userId: String!): GenericResponse!
+    signup(email: String!, name: String!): GenericMutationResponse!
+    newTask(taskName: String!, projectId: String!): GenericMutationResponse!
+    newProject(projectName: String!, userId: String!): GenericMutationResponse!
+    markTaskAsCompleted(
+      projectId: String!
+      taskId: String!
+    ): GenericMutationResponse!
+    joinToExistingProject(
+      shareCode: Int!
+      userId: String!
+    ): GenericMutationResponse!
   }
 `;

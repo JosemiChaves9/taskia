@@ -1,5 +1,5 @@
 import { Db, MongoClient, ObjectID } from 'mongodb';
-import { Project, User } from '../types';
+import { DbProject, DbUser } from '../DbTypes';
 
 let db: Db | undefined;
 export class DbService {
@@ -21,24 +21,25 @@ export class DbService {
   }
 
   static async newUser(email: string, name: string) {
-    await DbService.getDb()
+    //! This one should be asyncronous
+    return await DbService.getDb()
       .collection('users')
       .insertOne({ name, email })
-      .then((res) =>
+      .then((res) => {
         DbService.getDb()
           .collection('projects')
-          .insertOne({ name: 'Default', participants: [res.insertedId] })
-      );
+          .insertOne({ name: 'Default', participants: [res.insertedId] });
+      });
   }
 
-  static async getUserByEmail(email: string): Promise<User | null> {
-    return await DbService.getDb()
+  static getUserByEmail(email: string): Promise<DbUser | null> {
+    return DbService.getDb()
       .collection('users')
       .findOne({ email }, { timeout: true });
   }
 
-  static async newTask(taskName: string, projectId: string) {
-    await DbService.getDb()
+  static newTask(taskName: string, projectId: string) {
+    return DbService.getDb()
       .collection('projects')
       .findOneAndUpdate(
         {
@@ -53,12 +54,8 @@ export class DbService {
       );
   }
 
-  static async newProject(
-    projectName: string,
-    userId: string,
-    shareCode: number
-  ) {
-    await DbService.getDb()
+  static newProject(projectName: string, userId: string, shareCode: number) {
+    return DbService.getDb()
       .collection('projects')
       .insertOne({
         name: projectName,
@@ -68,8 +65,8 @@ export class DbService {
       });
   }
 
-  static async getAllUserProjects(userId: string): Promise<Project[] | null> {
-    return await DbService.getDb()
+  static getAllUserProjects(userId: string): Promise<DbProject[] | null> {
+    return DbService.getDb()
       .collection('projects')
       .find({
         participants: { $in: [new ObjectID(userId)] },
@@ -77,15 +74,15 @@ export class DbService {
       .toArray();
   }
 
-  static async getProjectById(projectId: string): Promise<Project> {
-    return await DbService.getDb()
+  static getProjectById(projectId: string): Promise<DbProject> {
+    return DbService.getDb()
       .collection('projects')
       .findOne({
         _id: new ObjectID(projectId),
       });
   }
-  static async markTaskAsCompleted(projectId: string, taskId: string) {
-    await DbService.getDb()
+  static markTaskAsCompleted(projectId: string, taskId: string) {
+    return DbService.getDb()
       .collection('projects')
       .updateOne(
         {
@@ -98,14 +95,14 @@ export class DbService {
       );
   }
 
-  static async getProjectByShareCode(shareCode: number): Promise<Project> {
-    return await DbService.getDb().collection('projects').findOne({
+  static getProjectByShareCode(shareCode: number): Promise<DbProject> {
+    return DbService.getDb().collection('projects').findOne({
       shareCode: shareCode,
     });
   }
 
-  static async joinToAnExistingProject(shareCode: number, userId: string) {
-    await DbService.getDb()
+  static joinToAnExistingProject(shareCode: number, userId: string) {
+    return DbService.getDb()
       .collection('projects')
       .findOneAndUpdate(
         { shareCode: shareCode },

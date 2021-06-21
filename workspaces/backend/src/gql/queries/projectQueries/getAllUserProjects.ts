@@ -1,4 +1,4 @@
-import { DbService } from '../services/DbService';
+import { DbService } from '../../../services/DbService';
 
 export const getAllUserProjects = async (
   _source: any,
