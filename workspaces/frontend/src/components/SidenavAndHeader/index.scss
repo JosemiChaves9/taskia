@@ -57,15 +57,16 @@
   width: 100em;
 }
 
-.row,
-.logout {
-  border-radius: 5%;
-  bottom: -17rem;
-  position: relative;
-  background-color: $secondary-color;
-  width: 40%;
-  .btn {
-    padding: 10px;
-    height: fit-content;
+.row {
+  .logout {
+    border-radius: 5%;
+    bottom: -17rem;
+    position: relative;
+    background-color: $secondary-color;
+    width: 40%;
+    .btn {
+      padding: 10px;
+      height: fit-content;
+    }
   }
 }
