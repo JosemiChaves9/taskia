@@ -4,9 +4,12 @@
   .email {
     width: 80% !important;
   }
-  .material-icons {
+  button {
     margin-left: 1rem;
-    font-size: 2.5rem;
-    color: $primary-color;
+    font-size: 2rem;
+    border-radius: 5%;
+    color: whitesmoke;
+    border: none;
+    background-color: $primary-color;
   }
 }

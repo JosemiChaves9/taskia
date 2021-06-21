@@ -7,6 +7,13 @@
   }
 }
 
+.sidenav {
+  button {
+    width: 100%;
+    text-align: left !important;
+  }
+}
+
 .sidebar-container {
   width: 80%;
   height: 100vh;
@@ -48,4 +55,18 @@
 }
 .modal {
   width: 100em;
+}
+
+.row {
+  .logout {
+    border-radius: 5%;
+    bottom: -17rem;
+    position: relative;
+    background-color: $secondary-color;
+    width: 40%;
+    .btn {
+      padding: 10px;
+      height: fit-content;
+    }
+  }
 }

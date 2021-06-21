@@ -1,20 +1,24 @@
 import './index.scss';
 import M from 'materialize-css';
-import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import { Project } from '../../types';
+import { useContext } from 'react';
+import { userContext } from '../context';
+import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const SidenavAndHeader = () => {
+  const { user, activeProject, setActiveProject, userProjects } =
+    useContext(userContext);
+  const history = useHistory();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
 
-  const [projects, _setProjects] = useState<string[]>([
-    'Project #1',
-    'Project #2',
-    'Project #3',
-  ]);
-
   useEffect(() => {
+    if (!localStorage.getItem('userLogged')) {
+      history.push('/login');
+    }
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
   }, []);
@@ -24,7 +28,7 @@ export const SidenavAndHeader = () => {
       <nav>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo'>
-            Project #1
+            {activeProject?.name}
           </a>
           <a href='#'>
             <i
@@ -42,33 +46,55 @@ export const SidenavAndHeader = () => {
             alt='iconAvatar'
             className='sidebar-avatar'
           />
-          <p>John Miles</p>
+          {user && <p>{user.name}</p>}
         </div>
         <div>
           <ul className='collection'>
             <h5 className='sidebar-options-header '>
               <i className='material-icons'>folder_open</i>Projects
             </h5>
-            {projects.map((project: string, idx: number) => {
-              if (idx === 1) {
-                return <li className='collection-item active'>{project}</li>;
-              } else {
-                return <li className='collection-item'>{project}</li>;
-              }
-            })}
+            {userProjects ? (
+              userProjects.map((project: Project) => {
+                return (
+                  <li
+                    className='collection-item'
+                    key={userProjects[0]._id}
+                    onClick={() => setActiveProject(project)}>
+                    {project.name}
+                  </li>
+                );
+              })
+            ) : (
+              <li>Loading</li>
+            )}
+
+            <button
+              className='btn modal-trigger btn-flat sidebar-share'
+              data-target='modal1'>
+              {' '}
+              <i className='material-icons'>share</i> Share this project!
+            </button>
           </ul>
-
-          <button
-            className='btn modal-trigger btn-flat sidebar-share'
-            data-target='modal1'>
-            {' '}
-            <i className='material-icons'>share</i> Share this project!
-          </button>
-
+          <Link to='/newProject'>
+            <button className='btn modal-trigger btn-flat sidebar-share'>
+              {' '}
+              <i className='material-icons'>add</i> New Project
+            </button>
+          </Link>
+          <div className='row logout'>
+            <button
+              className='btn btn-flat'
+              onClick={() => {
+                localStorage.removeItem('userLogged');
+                history.push('/login');
+              }}>
+              <i className='material-icons '>logout</i> Logout
+            </button>
+          </div>
           <div id='modal1' className='modal' ref={popup}>
             <div className='modal-content '>
               <h5>Share this code</h5>
-              <p>251514</p>
+              {activeProject && <p>{activeProject.shareCode}</p>}
             </div>
             <div className='modal-footer'>
               <a

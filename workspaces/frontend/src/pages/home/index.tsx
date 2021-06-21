@@ -1,42 +1,71 @@
 import './index.scss';
-import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
+import { Project, Task } from '../../types';
+import { useContext } from 'react';
+import { userContext } from '../../components/context';
+import { useMutation } from '@apollo/client';
+import { MARK_TASK_AS_COMPLETED } from '../../gql/markTaskAsCompletedMutation';
 
 export const Home = () => {
-  // eslint-disable-next-line
-  const [tasks, _setTasks] = useState<string[]>([
-    'Task #1',
-    'Task #2',
-    'Task #3',
-  ]);
-  const [checked, setChecked] = useState<boolean>(false);
-  // eslint-disable-next-line
-  // eslint-disable-next-line
-  const [logged, _setLogged] = useState<boolean>(true);
+  let history = useHistory();
+  const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
+  const { activeProject } = useContext<{ activeProject: Project }>(userContext);
+
+  const markAsCompleted = (taskId: string) => {
+    markTaskAsCompleted({
+      variables: {
+        projectId: activeProject._id,
+        taskId: taskId,
+      },
+    });
+  };
 
   return (
     <>
-      {!logged && <Redirect to='/login' />}
+      <SidenavAndHeader />
       <ul className='collection tasklist'>
-        <SidenavAndHeader />
-        {tasks.map((task) => {
-          return (
-            <li
-              className={
-                checked ? 'collection-item finished' : 'collection-item'
-              }
-              onClick={() => setChecked(!checked)}>
-              <i className='material-icons'>
-                {checked ? 'check_box' : 'check_box_outline_blank'}
-              </i>
-              {task}
-            </li>
-          );
-        })}
+        {activeProject ? (
+          activeProject.tasks.map((task: Task) => {
+            if (!task.completed) {
+              return (
+                <li
+                  className='collection-item'
+                  key={task.name}
+                  onClick={() => markAsCompleted(task._id)}>
+                  <i className='material-icons'>check_box_outline_blank</i>
+                  {task.name}
+                </li>
+              );
+            }
+          })
+        ) : (
+          <h4>No tasks yet!</h4>
+        )}
+        {activeProject ? (
+          activeProject.tasks.map((task: Task) => {
+            if (task.completed) {
+              return (
+                <li
+                  className='collection-item finished'
+                  key={task.name}
+                  onClick={() => markAsCompleted(task._id)}>
+                  <i className='material-icons'>check_box</i>
+                  {task.name}
+                </li>
+              );
+            }
+          })
+        ) : (
+          <h4>No tasks yet!</h4>
+        )}
       </ul>
       <div className='container-button'>
-        <button className='material-icons add-task'>add_circle</button>
+        <button
+          className='material-icons add-task'
+          onClick={() => history.push('/newTask')}>
+          add_circle
+        </button>
       </div>
     </>
   );

@@ -8,5 +8,9 @@
   "private": true,
   "workspaces": [
     "workspaces/*"
-  ]
+  ],
+  "scripts": {
+    "startBack": "yarn workspace backend start",
+    "startFront": "yarn workspace frontend start"
+  }
 }
