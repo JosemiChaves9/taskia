@@ -1,5 +1,6 @@
 import { Db, MongoClient, ObjectID } from 'mongodb';
 import { DbProject, DbUser } from '../DbTypes';
+import { logger } from '../logger/logger';
 
 let db: Db | undefined;
 export class DbService {
@@ -13,7 +14,7 @@ export class DbService {
           rej(err);
         } else {
           db = client.db('taskia');
-          console.log('💾  Database ready');
+          logger.info('💾  Database ready');
           res();
         }
       });
@@ -116,6 +117,7 @@ export class DbService {
 
   private static getDb(): Db {
     if (!db) {
+      logger.error("Can't get database!");
       throw new Error("Can't get db");
     } else {
       return db;
