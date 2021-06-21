@@ -8,14 +8,16 @@ export const signup = async (
 
   //Change nodemon,and change method to debug
   debugger;
+  // TODO: check naming of userExists
+  // TODO: remove debug code
   const userExists = await DbService.getUserByEmail(email).then(
     (res) => {
       debugger;
-      return res;
+      return res; // TODO: not needed
     },
     (rej) => {
       debugger;
-      throw new Error(rej);
+      throw new Error(rej); // TODO: not needed I think
     }
   );
 

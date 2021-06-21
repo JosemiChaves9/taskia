@@ -18,3 +18,5 @@ export interface Task {
   name: string;
   completed: boolean;
 }
+
+//TODO: check naming (lowercase)
