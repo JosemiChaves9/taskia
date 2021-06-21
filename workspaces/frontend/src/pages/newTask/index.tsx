@@ -9,19 +9,24 @@ import { NEW_TASK } from '../../gql/newTaskMutation';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
+interface FormInput {
+  projectId: String;
+  taskName: String;
+}
+
 export const NewTask = () => {
   const project = useRef<HTMLSelectElement | null>(null);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
-  const { userProjects } = useContext(userContext);
+  const { userProjects } = useContext<{ userProjects: Project[] }>(userContext);
   const [newTask] = useMutation(NEW_TASK);
 
   useEffect(() => {
     M.FormSelect.init(project.current as Element);
   });
 
-  const onSubmit = (input: { projectId: string; taskName: string }) => {
+  const onSubmit = (input: FormInput) => {
     setError(null);
     newTask({
       variables: {
@@ -32,11 +37,12 @@ export const NewTask = () => {
       (res) => {
         if (res.data.newTask.ok) {
           history.push('/');
+          window.location.reload();
         } else {
           setError('There was an error');
         }
       },
-      (rej) => {
+      (_rej) => {
         setError('There was an error');
       }
     );
@@ -61,7 +67,7 @@ export const NewTask = () => {
                 Choose your project
               </option>
               {userProjects ? (
-                userProjects.map((project: Project) => {
+                userProjects.map((project) => {
                   return <option value={project._id}>{project.name}</option>;
                 })
               ) : (

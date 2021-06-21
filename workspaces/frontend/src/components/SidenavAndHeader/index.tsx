@@ -6,6 +6,7 @@ import { Project } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../context';
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const SidenavAndHeader = () => {
   const { user, activeProject, setActiveProject, userProjects } =
@@ -74,12 +75,22 @@ export const SidenavAndHeader = () => {
               <i className='material-icons'>share</i> Share this project!
             </button>
           </ul>
-
-          <button className='btn modal-trigger btn-flat sidebar-share'>
-            {' '}
-            <i className='material-icons'>add</i> New Project
-          </button>
-
+          <Link to='/newProject'>
+            <button className='btn modal-trigger btn-flat sidebar-share'>
+              {' '}
+              <i className='material-icons'>add</i> New Project
+            </button>
+          </Link>
+          <div className='row logout'>
+            <button
+              className='btn btn-flat'
+              onClick={() => {
+                localStorage.removeItem('userLogged');
+                history.push('/login');
+              }}>
+              <i className='material-icons '>logout</i> Logout
+            </button>
+          </div>
           <div id='modal1' className='modal' ref={popup}>
             <div className='modal-content '>
               <h5>Share this code</h5>

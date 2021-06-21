@@ -1,7 +1,7 @@
 import { DbService } from '../services/DbService';
 
 export const newProject = (
-  source: any,
+  _source: any,
   { projectName, userId }: { projectName: string; userId: string }
 ) => {
   const shareCode = Math.floor(Math.random() * 99999);

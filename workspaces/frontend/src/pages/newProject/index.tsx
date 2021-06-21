@@ -8,10 +8,11 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { NEW_PROJECT } from '../../gql/newProjectMutation';
 import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/joinToAnExistingProjectMutation';
+import { User } from '../../types';
 
 export const NewProject = () => {
   const project = useRef<HTMLSelectElement | null>(null);
-  const { user } = useContext(userContext);
+  const { user } = useContext<{ user: User }>(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
@@ -32,11 +33,12 @@ export const NewProject = () => {
       (res) => {
         if (res.data.newProject.ok) {
           history.push('/');
+          window.location.reload();
         } else {
           setError('There was an error');
         }
       },
-      (rej) => {
+      (_rej) => {
         setError('There was an error');
       }
     );

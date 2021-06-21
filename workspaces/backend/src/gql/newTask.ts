@@ -1,7 +1,7 @@
 import { DbService } from '../services/DbService';
 
 export const newTask = (
-  source: any,
+  _source: any,
   { taskName, projectId }: { taskName: string; projectId: string }
 ) => {
   try {

@@ -32,7 +32,7 @@ export class DbService {
   }
 
   static async getUserByEmail(email: string): Promise<User | null> {
-    return DbService.getDb()
+    return await DbService.getDb()
       .collection('users')
       .findOne({ email }, { timeout: true });
   }
@@ -69,7 +69,7 @@ export class DbService {
   }
 
   static async getAllUserProjects(userId: string): Promise<Project[] | null> {
-    return DbService.getDb()
+    return await DbService.getDb()
       .collection('projects')
       .find({
         participants: { $in: [new ObjectID(userId)] },
@@ -98,7 +98,7 @@ export class DbService {
       );
   }
 
-  static async getProjectByShareCode(shareCode: number) {
+  static async getProjectByShareCode(shareCode: number): Promise<Project> {
     return await DbService.getDb().collection('projects').findOne({
       shareCode: shareCode,
     });

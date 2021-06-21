@@ -5,13 +5,15 @@ import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { userContext } from '../../components/context';
+import { Link } from 'react-router-dom';
+import { User } from '../../types';
 
 export const LoginScreen = () => {
   const { setUser } = useContext(userContext);
-  const [login, loginResult] = useLazyQuery(GET_USER_BY_EMAIL);
-
   const history = useHistory();
   const { register, handleSubmit } = useForm();
+  const [login, loginResult] =
+    useLazyQuery<{ getUserByEmail: User }>(GET_USER_BY_EMAIL);
 
   const onSubmit = async (input: { email: string }) => {
     login({
@@ -47,6 +49,12 @@ export const LoginScreen = () => {
             {...register('email', { required: true })}
           />
           <button className='waves-effect waves-green btn-large'>Login</button>
+          <div>
+            <div>
+              Or if you dont have account you can{' '}
+              <Link to='/signup'>signup </Link> to Taskia
+            </div>
+          </div>
         </form>
       </div>
     </>

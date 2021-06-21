@@ -4,17 +4,17 @@ import { useForm } from 'react-hook-form';
 import './index.scss';
 import { useState } from 'react';
 
-interface Inputs {
+interface FormInput {
   name: string;
   email: string;
 }
 
 export const SignupScreen = () => {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<FormInput>();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [signup] = useMutation(SIGNUP);
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = (data: FormInput) => {
     setError(null);
     setSuccess(null);
     signup({
@@ -31,7 +31,7 @@ export const SignupScreen = () => {
           setError(res.data.signup.err);
         }
       },
-      () => {
+      (_rej) => {
         setError('There was an error');
       }
     );

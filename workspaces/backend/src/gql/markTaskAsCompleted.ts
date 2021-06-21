@@ -1,17 +1,17 @@
 import { DbService } from '../services/DbService';
 
 export const markTaskAsCompleted = (
-  source: any,
+  _source: any,
   { projectId, taskId }: { projectId: string; taskId: string }
 ) => {
   return DbService.markTaskAsCompleted(projectId, taskId).then(
-    (res) => {
+    (_res) => {
       return {
         ok: true,
         err: '',
       };
     },
-    (rej) => {
+    (_rej) => {
       return {
         ok: false,
         err: 'Something went wrong',

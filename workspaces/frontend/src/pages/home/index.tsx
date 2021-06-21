@@ -1,17 +1,16 @@
 import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
-import { Task } from '../../types';
+import { Project, Task } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../components/context';
 import { useMutation } from '@apollo/client';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/markTaskAsCompletedMutation';
-import { useEffect } from 'react';
 
 export const Home = () => {
   let history = useHistory();
   const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  const { activeProject } = useContext(userContext);
+  const { activeProject } = useContext<{ activeProject: Project }>(userContext);
 
   const markAsCompleted = (taskId: string) => {
     markTaskAsCompleted({
@@ -22,12 +21,10 @@ export const Home = () => {
     });
   };
 
-  useEffect(() => {}, [activeProject]);
-
   return (
     <>
+      <SidenavAndHeader />
       <ul className='collection tasklist'>
-        <SidenavAndHeader />
         {activeProject ? (
           activeProject.tasks.map((task: Task) => {
             if (!task.completed) {
