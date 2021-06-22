@@ -14,4 +14,5 @@ export const logger = createLogger({
   ),
 
   transports: [new transports.Console()],
+  exceptionHandlers: [new transports.Console()],
 });
