@@ -1,5 +1,5 @@
-import { Db, MongoClient, ObjectID } from 'mongodb';
-import { DbProject, DbUser } from '../DbTypes';
+import { Db, FindAndModifyWriteOpResultObject, MongoClient, ObjectID } from 'mongodb';
+import { DbProject, DbFindAndModifyReponse, DbUser } from '../DbTypes';
 import { logger } from '../logger/logger';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
@@ -22,15 +22,14 @@ export class DbService {
     });
   }
 
-  static newUser(email: string, name: string) {
-    //! This one should be asyncronous
+  static newUser(email: string, name: string, shareCode: number): Promise<void> {
     return DbService.getDb()
       .collection('users')
       .insertOne({ name, email })
       .then((res) => {
         DbService.getDb()
           .collection('projects')
-          .insertOne({ name: 'Default', participants: [res.insertedId] });
+          .insertOne({ name: 'Default', participants: [res.insertedId], shareCode: shareCode });
       });
   }
 
@@ -40,7 +39,7 @@ export class DbService {
       .findOne({ email }, { timeout: true });
   }
 
-  static newTask(taskName: string, projectId: string) {
+  static newTask(taskName: string, projectId: string): Promise<FindAndModifyWriteOpResultObject<DbFindAndModifyReponse>>{
     return DbService.getDb()
       .collection('projects')
       .findOneAndUpdate(
@@ -76,7 +75,7 @@ export class DbService {
       .toArray();
   }
 
-  static getProjectById(projectId: string): Promise<DbProject> {
+  static getProjectById(projectId: string): Promise<DbProject | null> {
     return DbService.getDb()
       .collection('projects')
       .findOne({
@@ -97,13 +96,13 @@ export class DbService {
       );
   }
 
-  static getProjectByShareCode(shareCode: number): Promise<DbProject> {
+  static getProjectByShareCode(shareCode: number): Promise<DbProject | null> {
     return DbService.getDb().collection('projects').findOne({
       shareCode: shareCode,
     });
   }
 
-  static joinToAnExistingProject(shareCode: number, userId: string) {
+  static joinToAnExistingProject(shareCode: number, userId: string): Promise<FindAndModifyWriteOpResultObject<DbFindAndModifyReponse>> {
     return DbService.getDb()
       .collection('projects')
       .findOneAndUpdate(

@@ -14,7 +14,7 @@ export const joinToExistingProject =  (
       };
     },
     (rej) => {
-      logger.warn(rej);
+      logger.error(rej);
       return {
         ok: false,
         err: 'There was an error joining to the project',

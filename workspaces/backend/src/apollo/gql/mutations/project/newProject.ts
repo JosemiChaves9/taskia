@@ -18,7 +18,7 @@ export const newProject = (
       };
     },
     (rej) => {
-      logger.warn(rej);
+      logger.error(rej);
       return {
         ok: false,
         err: 'There was an error creating the project',

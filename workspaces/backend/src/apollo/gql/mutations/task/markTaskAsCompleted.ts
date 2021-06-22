@@ -14,7 +14,7 @@ export const markTaskAsCompleted = (
       };
     },
     (rej) => {
-      logger.warn(rej);
+      logger.error(rej);
       return {
         ok: false,
         err: 'Something went wrong',

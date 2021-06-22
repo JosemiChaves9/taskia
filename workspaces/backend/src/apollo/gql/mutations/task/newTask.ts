@@ -11,7 +11,7 @@ export const newTask = (
       return { ok: true, err: '' };
     },
     (rej) => {
-      logger.warn(rej);
+      logger.error(rej);
       return {
         ok: false,
         err: 'Something went wrong while creating the task',

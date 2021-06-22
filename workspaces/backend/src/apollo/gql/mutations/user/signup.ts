@@ -15,7 +15,9 @@ export const signup = async (
       err: 'User already exists',
     };
   }
-  return DbService.newUser(email, name).then(
+  const shareCode = Math.floor(Math.random() * 99999);
+
+  return DbService.newUser(email, name, shareCode).then(
     () => {
       return {
         ok: true,
@@ -23,10 +25,10 @@ export const signup = async (
       };
     },
     (rej) => {
-      logger.warn(rej);
+      logger.error(rej);
       return {
         ok: false,
-        err: "Could'nt create the new user",
+        err: "Couldn't create the new user",
       };
     }
   );

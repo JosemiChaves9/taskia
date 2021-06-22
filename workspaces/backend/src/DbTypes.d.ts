@@ -8,7 +8,7 @@ export interface DbProject {
   _id: string;
   name: string;
   participants: [string];
-  tasks: [DbTask];
+  tasks?: [DbTask];
   shareCode: number;
 }
 
@@ -16,4 +16,13 @@ export interface DbTask {
   _id: string;
   name: string;
   completed: boolean;
+}
+
+export interface DbFindAndModifyReponse {
+  lastErrorObject: {
+    n: number,
+    updatedExisting: boolean
+  }
+  value:DbProject,
+  ok: number
 }
