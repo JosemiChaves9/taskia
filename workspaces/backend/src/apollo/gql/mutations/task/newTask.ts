@@ -1,5 +1,5 @@
-import { logger } from '../../../logger/logger';
-import { DbService } from '../../../services/DbService';
+import { logger } from '../../../../logger/logger';
+import { DbService } from '../../../../services/DbService';
 
 export const newTask = (
   _source: any,

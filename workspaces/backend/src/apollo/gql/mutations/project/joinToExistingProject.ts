@@ -1,7 +1,7 @@
-import { logger } from '../../../logger/logger';
-import { DbService } from '../../../services/DbService';
+import { logger } from '../../../../logger/logger';
+import { DbService } from '../../../../services/DbService';
 
-export const joinToExistingProject = async (
+export const joinToExistingProject =  (
   _source: any,
   { shareCode, userId }: { shareCode: number; userId: string }
 ) => {

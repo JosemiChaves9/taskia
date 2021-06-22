@@ -1,19 +1,20 @@
 import { Db, MongoClient, ObjectID } from 'mongodb';
 import { DbProject, DbUser } from '../DbTypes';
 import { logger } from '../logger/logger';
+import { EnviromentVariables } from './EnviromentVariablesService';
 
 let db: Db | undefined;
 export class DbService {
   static async connect() {
     return new Promise<void>((res, rej) => {
       const client = new MongoClient(
-        'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false'
+        EnviromentVariables.getMongoDbUri() as string
       );
       client.connect((err) => {
         if (err) {
           rej(err);
         } else {
-          db = client.db('taskia');
+          db = client.db(EnviromentVariables.getDbName());
           logger.info('💾  Database ready');
           res();
         }
@@ -21,9 +22,9 @@ export class DbService {
     });
   }
 
-  static async newUser(email: string, name: string) {
+  static newUser(email: string, name: string) {
     //! This one should be asyncronous
-    return await DbService.getDb()
+    return DbService.getDb()
       .collection('users')
       .insertOne({ name, email })
       .then((res) => {

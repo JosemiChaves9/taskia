@@ -1,7 +1,7 @@
-import { logger } from '../../../logger/logger';
-import { DbService } from '../../../services/DbService';
+import { logger } from '../../../../logger/logger';
+import { DbService } from '../../../../services/DbService';
 
-export const getProjectById = async (
+export const getProjectById =  (
   _source: any,
   { projectId }: { projectId: string }
 ) => {
