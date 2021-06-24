@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import M from 'materialize-css';
-import { userContext } from '../../components/context';
+import { userContext } from '../../services/context';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';

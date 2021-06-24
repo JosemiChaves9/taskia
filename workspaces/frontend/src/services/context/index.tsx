@@ -2,9 +2,11 @@ import { useLazyQuery } from '@apollo/client';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GET_ALL_USER_PROJECTS } from '../../gql/getAllUserProjects';
 import { GET_USER_BY_EMAIL } from '../../gql/getUserByEmailQuery';
 import { Project, User } from '../../types';
+import { AuthUser } from '../AuthUser';
 
 export const userContext = React.createContext<any | null>({
   user: null,
@@ -14,10 +16,8 @@ export const userContext = React.createContext<any | null>({
   setActiveProject: () => {},
 });
 
-// TODO: ensure all request have an error handler and shows an error to the user.
-// TODO: move context component out
-
 export const ContextProvider = ({ children }: any) => {
+  const history = useHistory();
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userProjects, setUserProjects] = useState<Project[] | undefined>();
   const [activeProject, setActiveProject] = useState<Project | undefined>();
@@ -25,7 +25,12 @@ export const ContextProvider = ({ children }: any) => {
   const [getUser, getUserResult] = useLazyQuery<
     { getUserByEmail: User } | undefined
   >(GET_USER_BY_EMAIL, {
-    onCompleted: () => setUser(getUserResult.data?.getUserByEmail),
+    onCompleted: () => {
+      setUser(getUserResult.data?.getUserByEmail);
+    },
+    onError: () => {
+      history.push('/error');
+    },
   });
 
   const [getUserProjects, getUserProjectsResult] = useLazyQuery<{
@@ -34,14 +39,20 @@ export const ContextProvider = ({ children }: any) => {
     onCompleted: () => {
       setUserProjects(getUserProjectsResult.data?.getAllUserProjects);
     },
+    onError: () => {
+      history.push('/error');
+    },
   });
-  const userLogged = localStorage.getItem('userLogged');
+
+  if (!AuthUser.checkIfUserIsInLocalStorage()) {
+    history.push('/login');
+  }
 
   useEffect(() => {
-    if (!user && userLogged) {
+    if (!user && AuthUser.checkIfUserIsInLocalStorage()) {
       getUser({
         variables: {
-          email: userLogged,
+          email: localStorage.getItem('userLogged'),
         },
       });
     }

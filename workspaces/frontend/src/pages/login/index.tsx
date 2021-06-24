@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
-import { userContext } from '../../components/context';
+import { userContext } from '../../services/context';
 import { Link } from 'react-router-dom';
 import { User } from '../../types';
 

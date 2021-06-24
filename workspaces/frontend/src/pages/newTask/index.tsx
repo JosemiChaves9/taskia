@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import M from 'materialize-css';
-import { userContext } from '../../components/context';
+import { userContext } from '../../services/context';
 import { Project } from '../../types';
 import { useMutation } from '@apollo/client';
 import { NEW_TASK } from '../../gql/newTaskMutation';

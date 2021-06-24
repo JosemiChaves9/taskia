@@ -9,24 +9,26 @@ import { NewTask } from './pages/newTask';
 import { ApolloProvider } from '@apollo/client';
 import { SignupScreen } from './pages/signup';
 import { apolloClient } from './services/ApolloClient';
-import { ContextProvider } from './components/context';
+import { ContextProvider } from './services/context';
 import { NewProject } from './pages/newProject';
+import { Error } from './pages/error';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
-    <ContextProvider>
-      <React.StrictMode>
-        <Router>
+    <Router>
+      <ContextProvider>
+        <React.StrictMode>
           <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/login' component={LoginScreen} />
             <Route path='/signup' component={SignupScreen} />
             <Route path='/newTask' component={NewTask} />
             <Route path='/newProject' component={NewProject} />
+            <Route path='/error' component={Error} />
           </Switch>
-        </Router>
-      </React.StrictMode>
-    </ContextProvider>
+        </React.StrictMode>
+      </ContextProvider>
+    </Router>
   </ApolloProvider>,
   document.getElementById('root')
 );
