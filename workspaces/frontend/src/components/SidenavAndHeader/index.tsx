@@ -16,12 +16,15 @@ export const SidenavAndHeader = () => {
   const popup = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!localStorage.getItem('userLogged')) {
+    //TODO: if context has been set, and no user, then redirect.
+    if (!localStorage.getItem('userLogged')) { // TODO: create a service called Auth User with methods for checking if user is logged in
       history.push('/login');
     }
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
-  }, []);
+  }, [user]);
+
+  //TODO: if no user, return <></>
 
   return (
     <>

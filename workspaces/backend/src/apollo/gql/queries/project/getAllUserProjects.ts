@@ -1,10 +1,10 @@
 import { logger } from '../../../../logger/logger';
-import { DbService } from '../../../../services/DbService';
+import { dbService } from '../../../../services/DbService';
 
-export const getAllUserProjects =  (
+export const getAllUserProjects = (
   _source: any,
   { userId }: { userId: string }
 ) => {
   logger.debug(`userId: ${userId}`);
-  return DbService.getAllUserProjects(userId as string);
+  return dbService.getAllUserProjects(userId);
 };

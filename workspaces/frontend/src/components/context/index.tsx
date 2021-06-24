@@ -14,6 +14,9 @@ export const userContext = React.createContext<any | null>({
   setActiveProject: () => {},
 });
 
+// TODO: ensure all request have an error handler and shows an error to the user.
+// TODO: move context component out
+
 export const ContextProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userProjects, setUserProjects] = useState<Project[] | undefined>();

@@ -1,19 +1,19 @@
 import { logger } from '../../../../logger/logger';
-import { DbService } from '../../../../services/DbService';
+import { dbService } from '../../../../services/DbService';
 
-export const joinToExistingProject =  (
+export const joinToExistingProject = (
   _source: any,
   { shareCode, userId }: { shareCode: number; userId: string }
 ) => {
   logger.debug(`shareCode: ${shareCode}, userId: ${userId}`);
-  return DbService.joinToAnExistingProject(shareCode, userId).then(
+  return dbService.joinToAnExistingProject(shareCode, userId).then(
     () => {
       return {
         ok: true,
         err: '',
       };
     },
-    (rej) => {
+    (rej: PromiseRejectedResult) => {
       logger.error(rej);
       return {
         ok: false,

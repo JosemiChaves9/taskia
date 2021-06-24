@@ -1,5 +1,5 @@
 import { logger } from '../../../../logger/logger';
-import { DbService } from '../../../../services/DbService';
+import { dbService } from '../../../../services/DbService';
 
 export const signup = async (
   _source: any,
@@ -7,7 +7,7 @@ export const signup = async (
 ) => {
   logger.debug(`email: ${email}, name:${name}`);
 
-  const user = await DbService.getUserByEmail(email);
+  const user = await dbService.getUserByEmail(email);
 
   if (user) {
     return {
@@ -17,14 +17,14 @@ export const signup = async (
   }
   const shareCode = Math.floor(Math.random() * 99999);
 
-  return DbService.newUser(email, name, shareCode).then(
+  return dbService.newUser(email, name, shareCode).then(
     () => {
       return {
         ok: true,
         err: '',
       };
     },
-    (rej) => {
+    (rej: PromiseRejectedResult) => {
       logger.error(rej);
       return {
         ok: false,

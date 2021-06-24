@@ -26,3 +26,9 @@ export interface DbFindAndModifyReponse {
   value:DbProject,
   ok: number
 }
+
+export interface GenericDbResponse {
+  ok: boolean
+  err: ''
+  updated?: DbProject
+}

@@ -30,6 +30,7 @@ export const typeDefs = gql`
     getUserByEmail(email: String!): User
     getProjectById(projectId: String!): Project
     getAllUserProjects(userId: String!): [Project!]
+    test(email: String!): String
   }
 
   type Mutation {

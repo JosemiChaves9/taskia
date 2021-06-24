@@ -1,5 +1,5 @@
 import { logger } from '../../../../logger/logger';
-import { DbService } from '../../../../services/DbService';
+import { dbService } from '../../../../services/DbService';
 
 export const newProject = (
   _source: any,
@@ -10,14 +10,14 @@ export const newProject = (
   logger.debug(
     `projectName: ${projectName}, userId: ${userId}, shareCode: ${shareCode}`
   );
-  return DbService.newProject(projectName, userId, shareCode).then(
+  return dbService.newProject(projectName, userId, shareCode).then(
     () => {
       return {
         ok: true,
         err: '',
       };
     },
-    (rej) => {
+    (rej: PromiseRejectedResult) => {
       logger.error(rej);
       return {
         ok: false,

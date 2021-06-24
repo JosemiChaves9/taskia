@@ -1,11 +1,11 @@
-import { Db, FindAndModifyWriteOpResultObject, MongoClient, ObjectID } from 'mongodb';
-import { DbProject, DbFindAndModifyReponse, DbUser } from '../DbTypes';
+import { Db, MongoClient, ObjectID } from 'mongodb';
+import { DbProject, DbUser, GenericDbResponse } from '../DbTypes';
 import { logger } from '../logger/logger';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
-let db: Db | undefined;
-export class DbService {
-  static async connect() {
+class DbService {
+  private db: Db | null = null;
+  connect() {
     return new Promise<void>((res, rej) => {
       const client = new MongoClient(
         EnviromentVariables.getMongoDbUri() as string
@@ -14,33 +14,46 @@ export class DbService {
         if (err) {
           rej(err);
         } else {
-          db = client.db(EnviromentVariables.getDbName());
-          logger.info('💾  Database ready');
+          this.db = client.db(EnviromentVariables.getDbName());
           res();
         }
       });
     });
   }
 
-  static newUser(email: string, name: string, shareCode: number): Promise<void> {
-    return DbService.getDb()
+  newUser(
+    email: string,
+    name: string,
+    shareCode: number
+  ): Promise<GenericDbResponse> {
+    return this.getDb()
       .collection('users')
       .insertOne({ name, email })
       .then((res) => {
-        DbService.getDb()
+        return this.getDb()
           .collection('projects')
-          .insertOne({ name: 'Default', participants: [res.insertedId], shareCode: shareCode });
+          .insertOne({
+            name: 'Default',
+            participants: [res.insertedId],
+            shareCode: shareCode,
+          });
+      })
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
       });
   }
 
-  static getUserByEmail(email: string): Promise<DbUser | null> {
-    return DbService.getDb()
+  getUserByEmail(email: string): Promise<DbUser | null> {
+    return this.getDb()
       .collection('users')
       .findOne({ email }, { timeout: true });
   }
 
-  static newTask(taskName: string, projectId: string): Promise<FindAndModifyWriteOpResultObject<DbFindAndModifyReponse>>{
-    return DbService.getDb()
+  newTask(taskName: string, projectId: string): Promise<GenericDbResponse> {
+    return this.getDb()
       .collection('projects')
       .findOneAndUpdate(
         {
@@ -52,22 +65,34 @@ export class DbService {
           },
         },
         { upsert: true }
-      );
+      )
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
+      });
   }
 
-  static newProject(projectName: string, userId: string, shareCode: number) {
-    return DbService.getDb()
+  newProject(projectName: string, userId: string, shareCode: number) {
+    return this.getDb()
       .collection('projects')
       .insertOne({
         name: projectName,
         participants: [new ObjectID(userId)],
         tasks: [],
         shareCode: shareCode,
+      })
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
       });
   }
 
-  static getAllUserProjects(userId: string): Promise<DbProject[] | null> {
-    return DbService.getDb()
+  getAllUserProjects(userId: string): Promise<DbProject[] | null> {
+    return this.getDb()
       .collection('projects')
       .find({
         participants: { $in: [new ObjectID(userId)] },
@@ -75,15 +100,18 @@ export class DbService {
       .toArray();
   }
 
-  static getProjectById(projectId: string): Promise<DbProject | null> {
-    return DbService.getDb()
+  getProjectById(projectId: string): Promise<DbProject | null> {
+    return this.getDb()
       .collection('projects')
       .findOne({
         _id: new ObjectID(projectId),
       });
   }
-  static markTaskAsCompleted(projectId: string, taskId: string) {
-    return DbService.getDb()
+  markTaskAsCompleted(
+    projectId: string,
+    taskId: string
+  ): Promise<GenericDbResponse> {
+    return this.getDb()
       .collection('projects')
       .updateOne(
         {
@@ -93,17 +121,26 @@ export class DbService {
         {
           $set: { 'tasks.$.completed': true },
         }
-      );
+      )
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
+      });
   }
 
-  static getProjectByShareCode(shareCode: number): Promise<DbProject | null> {
-    return DbService.getDb().collection('projects').findOne({
+  getProjectByShareCode(shareCode: number): Promise<DbProject | null> {
+    return this.getDb().collection('projects').findOne({
       shareCode: shareCode,
     });
   }
 
-  static joinToAnExistingProject(shareCode: number, userId: string): Promise<FindAndModifyWriteOpResultObject<DbFindAndModifyReponse>> {
-    return DbService.getDb()
+  joinToAnExistingProject(
+    shareCode: number,
+    userId: string
+  ): Promise<GenericDbResponse> {
+    return this.getDb()
       .collection('projects')
       .findOneAndUpdate(
         { shareCode: shareCode },
@@ -112,15 +149,24 @@ export class DbService {
             participants: new ObjectID(userId),
           },
         }
-      );
+      )
+      .then((res) => {
+        return {
+          ok: true,
+          err: '',
+          updated: res.value,
+        };
+      });
   }
 
-  private static getDb(): Db {
-    if (!db) {
+  private getDb(): Db {
+    if (!this.db) {
       logger.error("Can't get database!");
       throw new Error("Can't get db");
     } else {
-      return db;
+      return this.db;
     }
   }
 }
+
+export const dbService = new DbService();
