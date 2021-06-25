@@ -1,8 +1,6 @@
-import { useHistory } from 'react-router';
 import styles from './index.module.scss';
 
 export const Error = () => {
-  const history = useHistory();
   return (
     <>
       <img
@@ -11,19 +9,8 @@ export const Error = () => {
         className={styles.taskiaImage}
       />
       <h4 className='center-align'>
-        There was an error, click the button below to refresh the page
+        There was an unrecoverable error, try again later.
       </h4>
-      <div className={styles.buttonContainer}>
-        <button
-          className='waves-effect waves-light btn-large'
-          onClick={() => {
-            //! That's a trick and should be reviewed
-            window.location.reload();
-            history.replace('/');
-          }}>
-          Refresh
-        </button>
-      </div>
     </>
   );
 };

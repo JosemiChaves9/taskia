@@ -3,10 +3,10 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { GET_ALL_USER_PROJECTS } from '../../gql/getAllUserProjects';
-import { GET_USER_BY_EMAIL } from '../../gql/getUserByEmailQuery';
-import { Project, User } from '../../types';
-import { AuthUser } from '../AuthUser';
+import { GET_ALL_USER_PROJECTS } from '../gql/getAllUserProjects';
+import { GET_USER_BY_EMAIL } from '../gql/getUserByEmailQuery';
+import { Project, User } from '../types';
+import { AuthUser } from '../services/AuthUser';
 
 export const userContext = React.createContext<any | null>({
   user: null,

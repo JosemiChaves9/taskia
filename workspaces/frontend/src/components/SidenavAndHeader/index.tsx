@@ -4,10 +4,9 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { Project } from '../../types';
 import { useContext } from 'react';
-import { userContext } from '../../services/context';
+import { userContext } from '../../context';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { AuthUser } from '../../services/AuthUser';
 
 export const SidenavAndHeader = () => {
   const { user, activeProject, setActiveProject, userProjects } =

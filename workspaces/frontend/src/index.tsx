@@ -9,7 +9,7 @@ import { NewTask } from './pages/newTask';
 import { ApolloProvider } from '@apollo/client';
 import { SignupScreen } from './pages/signup';
 import { apolloClient } from './services/ApolloClient';
-import { ContextProvider } from './services/context';
+import { ContextProvider } from './context';
 import { NewProject } from './pages/newProject';
 import { Error } from './pages/error';
 
