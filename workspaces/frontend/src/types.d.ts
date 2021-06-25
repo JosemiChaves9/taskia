@@ -1,19 +1,25 @@
-export interface User {
+export interface DbUser {
   _id: string;
   name: string;
   email: string;
-  projects?: [Project];
 }
 
-export interface Project {
+export interface DbProject {
   _id: string;
   name: string;
-  participants: [User];
-  tasks: [Task];
+  participants: [string];
+  tasks?: [DbTask];
+  shareCode: number;
 }
 
-export interface Task {
+export interface DbTask {
   _id: string;
   name: string;
   completed: boolean;
+}
+
+export interface GenericDbResponse {
+  ok: boolean;
+  err: '';
+  updated?: DbProject;
 }

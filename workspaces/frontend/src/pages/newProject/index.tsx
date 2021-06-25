@@ -8,11 +8,10 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { NEW_PROJECT } from '../../gql/newProjectMutation';
 import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/joinToAnExistingProjectMutation';
-import { User } from '../../types';
 
 export const NewProject = () => {
   const project = useRef<HTMLSelectElement | null>(null);
-  const { user } = useContext<{ user: User }>(userContext);
+  const { user } = useContext(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +26,7 @@ export const NewProject = () => {
     newProject({
       variables: {
         projectName: input.projectName,
-        userId: user._id,
+        userId: user?._id,
       },
     }).then(
       (res) => {
@@ -49,7 +48,7 @@ export const NewProject = () => {
     joinProject({
       variables: {
         shareCode: shareCode,
-        userId: user._id,
+        userId: user?._id,
       },
     }).then((res) => {
       if (res.data.joinToExistingProject.ok) {

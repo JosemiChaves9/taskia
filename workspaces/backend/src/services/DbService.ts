@@ -168,3 +168,5 @@ export class DbService {
     }
   }
 }
+
+export const dbService = new DbService();

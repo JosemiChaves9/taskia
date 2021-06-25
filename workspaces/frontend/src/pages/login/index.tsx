@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { userContext } from '../../context';
 import { Link } from 'react-router-dom';
-import { User } from '../../types';
+import { DbUser } from '../../types';
 import { AuthUser } from '../../services/AuthUser';
 
 export const LoginScreen = () => {
@@ -14,7 +14,7 @@ export const LoginScreen = () => {
   const [error, setError] = useState<string | null>(null);
   const history = useHistory();
   const { register, handleSubmit } = useForm();
-  const [login] = useLazyQuery<{ getUserByEmail: User }>(GET_USER_BY_EMAIL, {
+  const [login] = useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL, {
     onCompleted: (res) => {
       if (!res.getUserByEmail) {
         setError("User doesn't exist");

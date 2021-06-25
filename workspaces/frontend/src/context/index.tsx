@@ -1,44 +1,64 @@
 import { useLazyQuery } from '@apollo/client';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GET_ALL_USER_PROJECTS } from '../gql/getAllUserProjects';
 import { GET_USER_BY_EMAIL } from '../gql/getUserByEmailQuery';
-import { Project, User } from '../types';
+import { DbProject, DbUser } from '../types';
 import { AuthUser } from '../services/AuthUser';
 
-export const userContext = React.createContext<any | null>({
-  user: null,
+interface Context {
+  user: DbUser | undefined;
+  setUser: Dispatch<SetStateAction<DbUser | undefined>>;
+  userProjects: DbProject[] | undefined;
+  setUserProjects: Dispatch<SetStateAction<DbProject[] | undefined>>;
+  activeProject: DbProject | undefined;
+  setActiveProject: Dispatch<SetStateAction<DbProject | undefined>>;
+}
+
+export const userContext = React.createContext<Context>({
+  user: undefined,
   setUser: () => {},
-  userProjects: null,
-  activeProject: '',
+  userProjects: undefined,
+  setUserProjects: () => {},
+  activeProject: undefined,
   setActiveProject: () => {},
 });
 
-
 export const ContextProvider: React.FC<{}> = ({ children }) => {
   const history = useHistory();
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [userProjects, setUserProjects] = useState<Project[] | undefined>();
-  const [activeProject, setActiveProject] = useState<Project | undefined>();
+  const [user, setUser] = useState<DbUser>();
+  const [userProjects, setUserProjects] = useState<DbProject[]>();
+  const [activeProject, setActiveProject] = useState<DbProject>();
 
-  const [getUser, getUserResult] = useLazyQuery<
-    { getUserByEmail: User } | undefined
-  >(GET_USER_BY_EMAIL, {
-    onCompleted: () => {
-      setUser(getUserResult.data?.getUserByEmail);
-    },
-    onError: () => {
-      history.push('/error');
-    },
-  });
+  const [getUser] = useLazyQuery<{ getUserByEmail: DbUser } | null>(
+    GET_USER_BY_EMAIL,
+    {
+      onCompleted: (res) => {
+        if (!res?.getUserByEmail) {
+          localStorage.removeItem('userLogged');
+          history.push('/login');
+          return;
+        }
+        setUser(res.getUserByEmail);
+      },
+      onError: () => {
+        history.push('/error');
+      },
+    }
+  );
 
-  const [getUserProjects, getUserProjectsResult] = useLazyQuery<{
-    getAllUserProjects: Project[] | undefined;
+  const [getUserProjects] = useLazyQuery<{
+    getAllUserProjects: DbProject[] | undefined;
   }>(GET_ALL_USER_PROJECTS, {
-    onCompleted: () => {
-      setUserProjects(getUserProjectsResult.data?.getAllUserProjects);
+    onCompleted: (res) => {
+      if (!res.getAllUserProjects) {
+        localStorage.removeItem('userLogged');
+        history.push('/login');
+        return;
+      }
+      setUserProjects(res.getAllUserProjects);
     },
     onError: () => {
       history.push('/error');

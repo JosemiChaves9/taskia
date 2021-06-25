@@ -2,7 +2,7 @@ import './index.scss';
 import M from 'materialize-css';
 import { useEffect } from 'react';
 import { useRef } from 'react';
-import { Project } from '../../types';
+import { DbProject } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../context';
 import { useHistory } from 'react-router-dom';
@@ -51,7 +51,7 @@ export const SidenavAndHeader = () => {
               <i className='material-icons'>folder_open</i>Projects
             </h5>
             {userProjects ? (
-              userProjects.map((project: Project) => {
+              userProjects.map((project: DbProject) => {
                 return (
                   <li
                     className='collection-item'

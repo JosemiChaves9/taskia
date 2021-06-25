@@ -2,7 +2,6 @@ import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import M from 'materialize-css';
 import { userContext } from '../../context';
-import { Project } from '../../types';
 import { useMutation } from '@apollo/client';
 import { NEW_TASK } from '../../gql/newTaskMutation';
 import { useHistory } from 'react-router-dom';
@@ -18,7 +17,7 @@ export const NewTask = () => {
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
-  const { userProjects } = useContext<{ userProjects: Project[] }>(userContext);
+  const { userProjects } = useContext(userContext);
   const [newTask] = useMutation(NEW_TASK);
 
   useEffect(() => {

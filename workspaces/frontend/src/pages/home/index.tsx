@@ -1,7 +1,7 @@
 import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
-import { Project, Task } from '../../types';
+import { DbProject, DbTask } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
@@ -10,12 +10,12 @@ import { MARK_TASK_AS_COMPLETED } from '../../gql/markTaskAsCompletedMutation';
 export const Home = () => {
   let history = useHistory();
   const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  const { activeProject } = useContext<{ activeProject: Project }>(userContext);
+  const { activeProject } = useContext(userContext);
 
   const markAsCompleted = (taskId: string) => {
     markTaskAsCompleted({
       variables: {
-        projectId: activeProject._id,
+        projectId: activeProject?._id,
         taskId: taskId,
       },
     });
@@ -26,7 +26,7 @@ export const Home = () => {
       <SidenavAndHeader />
       <ul className='collection tasklist'>
         {activeProject ? (
-          activeProject.tasks.map((task: Task) => {
+          activeProject.tasks?.map((task: DbTask) => {
             if (!task.completed) {
               return (
                 <li
@@ -43,7 +43,7 @@ export const Home = () => {
           <h4>No tasks yet!</h4>
         )}
         {activeProject ? (
-          activeProject.tasks.map((task: Task) => {
+          activeProject.tasks?.map((task: DbTask) => {
             if (task.completed) {
               return (
                 <li
