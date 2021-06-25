@@ -5,6 +5,5 @@ export const getProjectById = (
   _source: any,
   { projectId }: { projectId: string }
 ) => {
-  logger.debug(`projectId: ${projectId}`);
   return dbService.getProjectById(projectId);
 };

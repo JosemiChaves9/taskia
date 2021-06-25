@@ -20,15 +20,15 @@ export interface DbTask {
 
 export interface DbFindAndModifyReponse {
   lastErrorObject: {
-    n: number,
-    updatedExisting: boolean
-  }
-  value:DbProject,
-  ok: number
+    n: number;
+    updatedExisting: boolean;
+  };
+  value: DbProject;
+  ok: number;
 }
 
 export interface GenericDbResponse {
-  ok: boolean
-  err: ''
-  updated?: DbProject
+  ok: boolean;
+  err: string;
+  updated?: DbProject;
 }

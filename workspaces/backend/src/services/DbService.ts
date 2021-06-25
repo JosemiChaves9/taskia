@@ -46,7 +46,7 @@ export class DbService {
       });
   }
 
-  getUserByEmail(email: string): Promise<DbUser | null> {
+  getUserByEmail(email: string) {
     return this.getDb()
       .collection('users')
       .findOne({ email }, { timeout: true });
