@@ -16,7 +16,8 @@ export const userContext = React.createContext<any | null>({
   setActiveProject: () => {},
 });
 
-export const ContextProvider = ({ children }: any) => {
+
+export const ContextProvider: React.FC<{}> = ({ children }) => {
   const history = useHistory();
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userProjects, setUserProjects] = useState<Project[] | undefined>();

@@ -3,7 +3,7 @@ import { DbProject, DbUser, GenericDbResponse } from '../DbTypes';
 import { logger } from '../logger/logger';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
-class DbService {
+export class DbService {
   private db: Db | null = null;
   connect() {
     return new Promise<void>((res, rej) => {
@@ -168,5 +168,3 @@ class DbService {
     }
   }
 }
-
-export const dbService = new DbService();
