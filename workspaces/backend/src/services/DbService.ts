@@ -1,6 +1,5 @@
 import { Db, MongoClient, ObjectID } from 'mongodb';
 import { DbProject, DbUser, GenericDbResponse } from '../DbTypes';
-import { logger } from '../logger/logger';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
 export class DbService {
@@ -46,7 +45,7 @@ export class DbService {
       });
   }
 
-  getUserByEmail(email: string) {
+  getUserByEmail(email: string): Promise<DbUser> {
     return this.getDb()
       .collection('users')
       .findOne({ email }, { timeout: true });
@@ -136,10 +135,7 @@ export class DbService {
     });
   }
 
-  joinToAnExistingProject(
-    shareCode: number,
-    userId: string
-  ): Promise<GenericDbResponse> {
+  joinToAnExistingProject(shareCode: number, userId: string) {
     return this.getDb()
       .collection('projects')
       .findOneAndUpdate(
@@ -149,19 +145,11 @@ export class DbService {
             participants: new ObjectID(userId),
           },
         }
-      )
-      .then((res) => {
-        return {
-          ok: true,
-          err: '',
-          updated: res.value,
-        };
-      });
+      );
   }
 
   private getDb(): Db {
     if (!this.db) {
-      logger.error("Can't get database!");
       throw new Error("Can't get db");
     } else {
       return this.db;

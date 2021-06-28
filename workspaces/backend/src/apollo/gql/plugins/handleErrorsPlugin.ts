@@ -3,7 +3,7 @@ import {
   ApolloServerPlugin,
   GraphQLRequestListener,
 } from 'apollo-server-plugin-base';
-import { logger } from '../../logger/logger';
+import { logger } from '../../../logger/logger';
 
 export const handleErrorsPlugin: ApolloServerPlugin = {
   requestDidStart(): GraphQLRequestListener {

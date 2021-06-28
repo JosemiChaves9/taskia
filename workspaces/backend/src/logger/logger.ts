@@ -7,7 +7,7 @@ const myFormat = printf(({ level, message, stack }) => {
 });
 
 export const logger = createLogger({
-  level: EnviromentVariables.getLogLevel(),
+  level: 'silly',
   format: format.combine(
     prettyPrint(),
     format.colorize(),

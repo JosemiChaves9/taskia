@@ -35,7 +35,7 @@ export const LoginScreen = () => {
     }
   }, []);
 
-  const onSubmit = async (input: { email: string }) => {
+  const onSubmit = (input: { email: string }) => {
     setError(null);
     login({
       variables: {

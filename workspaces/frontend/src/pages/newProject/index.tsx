@@ -54,7 +54,7 @@ export const NewProject = () => {
       if (res.data.joinToExistingProject.ok) {
         history.push('/');
       } else {
-        setError('Something went wrong');
+        setError(res.data.joinToExistingProject.err || 'Something went wrong');
       }
     });
   };
@@ -69,9 +69,7 @@ export const NewProject = () => {
       <div className='row'>
         <form className='col s12' onSubmit={handleSubmit(handleNewProject)}>
           <div className='input-field col s12'>
-            {error && (
-              <h5 className='card-panel red lighten-2'>There was an error!</h5>
-            )}
+            {error && <h5 className='card-panel red lighten-2'>{error}</h5>}
           </div>
           <div className='row'>
             <div className='input-field col s12'>
