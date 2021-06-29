@@ -19,6 +19,8 @@ export const useUser = () => {
       }
       localStorage.setItem('userLogged', res.getUserByEmail.email);
       setUser(res.getUserByEmail);
+      M.toast({ html: 'I am a toast', classes: 'green' });
+
       history.push('/');
     },
     onError: () => {
