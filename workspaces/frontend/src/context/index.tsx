@@ -32,11 +32,11 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
   const [userProjects, setUserProjects] = useState<DbProject[]>();
   const [activeProject, setActiveProject] = useState<DbProject>();
 
-  // if (!AuthUser.checkIfUserIsInLocalStorage()) {
-  //   history.push('/login');
-  // } else {
-  //   history.push('/');
-  // }
+  if (!AuthUser.checkIfUserIsInLocalStorage()) {
+    history.push('/login');
+  } else {
+    history.push('/');
+  }
   const [getUser] = useLazyQuery<{ getUserByEmail: DbUser }>(
     GET_USER_BY_EMAIL,
     {

@@ -37,7 +37,7 @@ export const NewProject = () => {
           setError('There was an error');
         }
       },
-      (_rej) => {
+      () => {
         setError('There was an error');
       }
     );

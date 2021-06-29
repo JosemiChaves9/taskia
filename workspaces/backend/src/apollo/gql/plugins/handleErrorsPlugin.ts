@@ -6,7 +6,7 @@ import {
 import { logger } from '../../../logger/logger';
 
 export const handleErrorsPlugin: ApolloServerPlugin = {
-  requestDidStart(error): GraphQLRequestListener {
+  requestDidStart(): GraphQLRequestListener {
     return {
       didEncounterErrors(error) {
         logger.error(error.errors);

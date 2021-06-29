@@ -55,7 +55,7 @@ export const useUser = () => {
           setError(res.data.signup.err);
         }
       },
-      (_rej) => {
+      () => {
         setError('There was an error');
       }
     );

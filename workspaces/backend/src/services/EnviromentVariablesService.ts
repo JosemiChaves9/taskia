@@ -12,7 +12,7 @@ export class EnviromentVariables {
   }
 
   static getLogLevel() {
-    // logger.debug(`ENV LOG_LEVEL: ${process.env.LOG_LEVEL}`);
+    logger.debug(`ENV LOG_LEVEL: ${process.env.LOG_LEVEL}`);
     return process.env.LOG_LEVEL || 'warn';
   }
 }

@@ -40,7 +40,7 @@ export const NewTask = () => {
           setError('There was an error');
         }
       },
-      (_rej) => {
+      () => {
         setError('There was an error');
       }
     );

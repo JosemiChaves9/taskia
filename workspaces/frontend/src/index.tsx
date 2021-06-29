@@ -12,7 +12,6 @@ import { apolloClient } from './services/ApolloClient';
 import { ContextProvider } from './context';
 import { NewProject } from './pages/newProject';
 import { Error } from './pages/error';
-import { Test } from './pages/test';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
@@ -26,7 +25,6 @@ ReactDOM.render(
             <Route path='/newTask' component={NewTask} />
             <Route path='/newProject' component={NewProject} />
             <Route path='/error' component={Error} />
-            <Route path='/test' component={Test} />
           </Switch>
         </React.StrictMode>
       </ContextProvider>

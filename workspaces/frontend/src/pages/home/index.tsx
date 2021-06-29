@@ -1,7 +1,7 @@
 import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
-import { DbProject, DbTask } from '../../types';
+import { DbTask } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
