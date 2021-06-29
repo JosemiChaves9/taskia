@@ -90,7 +90,7 @@ export class DbService {
       });
   }
 
-  getAllUserProjects(userId: string): Promise<DbProject[] | null> {
+  getAllUserProjects(userId: string): Promise<DbProject[]> {
     return this.getDb()
       .collection('projects')
       .find({
@@ -99,7 +99,7 @@ export class DbService {
       .toArray();
   }
 
-  getProjectById(projectId: string): Promise<DbProject | null> {
+  getProjectById(projectId: string): Promise<DbProject> {
     return this.getDb()
       .collection('projects')
       .findOne({
@@ -129,7 +129,7 @@ export class DbService {
       });
   }
 
-  getProjectByShareCode(shareCode: number): Promise<DbProject | null> {
+  getProjectByShareCode(shareCode: number): Promise<DbProject> {
     return this.getDb().collection('projects').findOne({
       shareCode: shareCode,
     });

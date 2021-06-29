@@ -1,4 +1,6 @@
+import { GenericDbResponse } from '../../../../DbTypes';
 import { dbService } from '../../../../services/DbService';
+import { requestWithTimeout } from '../../../../utils/timeout';
 
 export const signup = async (
   _source: any,
@@ -14,10 +16,13 @@ export const signup = async (
   }
   const shareCode = Math.floor(Math.random() * 99999);
 
-  return dbService.newUser(email, name, shareCode).then(() => {
-    return {
-      ok: true,
-      err: '',
-    };
-  });
+  return requestWithTimeout<GenericDbResponse>(
+    5000,
+    dbService.newUser(email, name, shareCode).then(() => {
+      return {
+        ok: true,
+        err: '',
+      };
+    })
+  );
 };

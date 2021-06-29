@@ -13,15 +13,19 @@ export const useUser = () => {
 
   const [login] = useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL, {
     onCompleted: (res) => {
-      if (!res.getUserByEmail) {
-        setError("User doesn't exists");
+      if (!res?.getUserByEmail) {
+        localStorage.removeItem('userLogged');
+        history.push('/login');
         return;
+      } else {
+        if (!res.getUserByEmail) {
+          setError("User doesn't exists");
+          return;
+        }
+        localStorage.setItem('userLogged', res.getUserByEmail.email);
+        setUser(res.getUserByEmail);
+        history.push('/');
       }
-      localStorage.setItem('userLogged', res.getUserByEmail.email);
-      setUser(res.getUserByEmail);
-      M.toast({ html: 'I am a toast', classes: 'green' });
-
-      history.push('/');
     },
     onError: () => {
       history.push('/error');
