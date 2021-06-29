@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GET_ALL_USER_PROJECTS } from '../gql/getAllUserProjects';
 import { GET_USER_BY_EMAIL } from '../gql/getUserByEmailQuery';
-import { DbProject, DbUser } from '../types';
 import { AuthUser } from '../services/AuthUser';
+import { DbProject, DbUser } from '../types';
 
 interface Context {
   user: DbUser | undefined;
@@ -32,7 +32,7 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
   const [userProjects, setUserProjects] = useState<DbProject[]>();
   const [activeProject, setActiveProject] = useState<DbProject>();
 
-  const [getUser] = useLazyQuery<{ getUserByEmail: DbUser } | null>(
+  const [getUser] = useLazyQuery<{ getUserByEmail: DbUser }>(
     GET_USER_BY_EMAIL,
     {
       onCompleted: (res) => {
@@ -67,6 +67,8 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
 
   if (!AuthUser.checkIfUserIsInLocalStorage()) {
     history.push('/login');
+  } else {
+    history.push('/');
   }
 
   useEffect(() => {

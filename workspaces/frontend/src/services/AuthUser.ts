@@ -1,5 +1,6 @@
 export class AuthUser {
   static checkIfUserIsInLocalStorage() {
-    return localStorage.getItem('userLogged') ? true : false;
+    const localStorageUser = localStorage.getItem('userLogged');
+    return localStorageUser ? true : false;
   }
 }

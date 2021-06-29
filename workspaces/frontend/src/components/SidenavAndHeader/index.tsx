@@ -7,11 +7,12 @@ import { useContext } from 'react';
 import { userContext } from '../../context';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser';
 
 export const SidenavAndHeader = () => {
   const { user, activeProject, setActiveProject, userProjects } =
     useContext(userContext);
-  const history = useHistory();
+  const { userLogout } = useUser();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
 
@@ -79,12 +80,7 @@ export const SidenavAndHeader = () => {
             </button>
           </Link>
           <div className='row logout'>
-            <button
-              className='btn btn-flat'
-              onClick={() => {
-                localStorage.removeItem('userLogged');
-                history.push('/login');
-              }}>
+            <button className='btn btn-flat' onClick={() => userLogout()}>
               <i className='material-icons '>logout</i> Logout
             </button>
           </div>

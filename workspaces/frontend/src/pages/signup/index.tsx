@@ -1,8 +1,8 @@
-import { useMutation } from '@apollo/client';
-import { SIGNUP } from '../../gql/signupMutation';
+import { ErrorCard } from '../../components/Error';
 import { useForm } from 'react-hook-form';
 import './index.scss';
-import { useState } from 'react';
+
+import { useUser } from '../../hooks/useUser';
 
 interface FormInput {
   name: string;
@@ -11,30 +11,9 @@ interface FormInput {
 
 export const SignupScreen = () => {
   const { register, handleSubmit } = useForm<FormInput>();
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [signup] = useMutation(SIGNUP);
+  const { userSignup, error } = useUser();
   const onSubmit = (data: FormInput) => {
-    setError(null);
-    setSuccess(null);
-    signup({
-      variables: {
-        email: data.email,
-        name: data.name,
-      },
-    }).then(
-      (res) => {
-        if (res.data.signup.ok) {
-          setSuccess('User created');
-          localStorage.setItem('userLogged', data.email);
-        } else {
-          setError(res.data.signup.err);
-        }
-      },
-      (_rej) => {
-        setError('There was an error');
-      }
-    );
+    userSignup(data.email, data.name);
   };
 
   return (
@@ -47,12 +26,8 @@ export const SignupScreen = () => {
       <div className='center-align login-container'>
         <h3>Signup now!</h3>
         <h4>It's that easy, no password needed</h4>
-        {success && (
-          <h5 className='card-panel green lighten-2'>Signup successful!</h5>
-        )}
-        {error && (
-          <h5 className='card-panel red lighten-2'>User already exists!</h5>
-        )}
+
+        {error && <ErrorCard props={error} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type='text'
