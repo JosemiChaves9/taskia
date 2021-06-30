@@ -1,6 +1,6 @@
 import { DbService } from './DbService';
 
-let db: any;
+let db: DbService | undefined;
 export class DbServiceSingleton {
   static getInstance() {
     if (db) {
