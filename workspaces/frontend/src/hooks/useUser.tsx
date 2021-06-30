@@ -5,26 +5,29 @@ import { GET_USER_BY_EMAIL } from '../gql/query/getUserByEmail';
 import { userContext } from '../context';
 import { useHistory } from 'react-router-dom';
 import { SIGNUP } from '../gql/mutation/signup';
+import { LocalStorageService } from '../services/LocalStorageService';
 
 export const useUser = () => {
   const history = useHistory();
-  const [error, setError] = useState<string | null>(null);
   const { setUser } = useContext(userContext);
+  const [error, setError] = useState<string | null>(null);
 
   const [login] = useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL, {
     onCompleted: (res) => {
+      console.log(res);
       if (!res?.getUserByEmail) {
-        localStorage.removeItem('userLogged');
+        LocalStorageService.removeUserFromLocalStorage();
         history.push('/login');
         return;
       } else {
         if (!res.getUserByEmail) {
           setError("User doesn't exists");
           return;
+        } else {
+          setUser(res.getUserByEmail);
+          LocalStorageService.setUserInLocalStorage(res.getUserByEmail.email);
+          history.push('/');
         }
-        localStorage.setItem('userLogged', res.getUserByEmail.email);
-        setUser(res.getUserByEmail);
-        history.push('/');
       }
     },
     onError: () => {

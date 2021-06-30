@@ -5,16 +5,32 @@ import { useRef } from 'react';
 import { DbProject } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../context';
-import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
+import { useQuery } from '@apollo/client';
+import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
+import { useState } from 'react';
 
 export const SidenavAndHeader = () => {
-  const { user, activeProject, setActiveProject, userProjects } =
-    useContext(userContext);
+  const { user, activeProject, setActiveProject } = useContext(userContext);
+  const [userProjects, setUserProjects] = useState<DbProject[]>();
   const { userLogout } = useUser();
+  const history = useHistory();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
+
+  useQuery(GET_ALL_USER_PROJECTS, {
+    variables: {
+      userId: '60d20319b5e3b22f3fe8fb8f', //!!Remove this, change it for the userid of the context
+    },
+    onCompleted: (res: { getAllUserProjects: DbProject[] }) => {
+      setUserProjects(res.getAllUserProjects);
+      setActiveProject(res.getAllUserProjects[0]);
+    },
+    onError: () => {
+      history.push('/error');
+    },
+  });
 
   useEffect(() => {
     M.Sidenav.init(sidenav.current as Element);

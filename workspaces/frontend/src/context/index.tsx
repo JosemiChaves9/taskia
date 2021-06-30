@@ -1,18 +1,14 @@
-import { useLazyQuery } from '@apollo/client';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { GET_ALL_USER_PROJECTS } from '../gql/query/getAllUserProjects';
 import { useUser } from '../hooks/useUser';
-import { AuthUser } from '../services/AuthUser';
+import { LocalStorageService } from '../services/LocalStorageService';
 import { DbProject, DbUser } from '../types';
 
 interface Context {
   user: DbUser | undefined;
   setUser: Dispatch<SetStateAction<DbUser | undefined>>;
-  userProjects: DbProject[] | undefined;
-  setUserProjects: Dispatch<SetStateAction<DbProject[] | undefined>>;
   activeProject: DbProject | undefined;
   setActiveProject: Dispatch<SetStateAction<DbProject | undefined>>;
 }
@@ -20,8 +16,6 @@ interface Context {
 export const userContext = React.createContext<Context>({
   user: undefined,
   setUser: () => {},
-  userProjects: undefined,
-  setUserProjects: () => {},
   activeProject: undefined,
   setActiveProject: () => {},
 });
@@ -29,63 +23,27 @@ export const userContext = React.createContext<Context>({
 export const ContextProvider: React.FC<{}> = ({ children }) => {
   const history = useHistory();
   const [user, setUser] = useState<DbUser>();
-  const [userProjects, setUserProjects] = useState<DbProject[]>();
   const [activeProject, setActiveProject] = useState<DbProject>();
   const { userLogin } = useUser();
 
   // TODO: this we can leave it here. But this should be the only place where we redirect to login
-  if (!AuthUser.checkIfUserIsInLocalStorage()) {
+  if (!LocalStorageService.checkIfUserIsInLocalStorage()) {
     history.push('/login');
   } else {
     history.push('/');
   }
 
-  //TODO: User projects shouldn't be here. It's not global, it's for the navigation or the home, for example.
-  const [getUserProjects] = useLazyQuery<{
-    getAllUserProjects: DbProject[] | undefined;
-  }>(GET_ALL_USER_PROJECTS, {
-    onCompleted: (res) => {
-      if (!res.getAllUserProjects) {
-        localStorage.removeItem('userLogged'); // TODO: move to AuthUser service (no calls to localstorage outside AuthUser)
-        history.push('/login');
-        return;
-      }
-      setUserProjects(res.getAllUserProjects);
-    },
-    onError: () => {
-      history.push('/error');
-    },
-  });
-
   useEffect(() => {
-    if (!user && AuthUser.checkIfUserIsInLocalStorage()) {
-      userLogin(localStorage.getItem('userLogged') as string);
+    if (!user && LocalStorageService.checkIfUserIsInLocalStorage()) {
+      userLogin(LocalStorageService.getUserFromLocalStorage() as string);
     }
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      getUserProjects({
-        variables: {
-          userId: user._id,
-        },
-      });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (userProjects) {
-      setActiveProject(userProjects[0]);
-    }
-  }, [userProjects]);
 
   return (
     <userContext.Provider
       value={{
         user,
         setUser,
-        userProjects,
-        setUserProjects,
         activeProject,
         setActiveProject,
       }}>

@@ -6,12 +6,10 @@ import { useContext, useEffect } from 'react';
 import { userContext } from '../../context';
 import { useMutation, useSubscription } from '@apollo/client';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
-import { INCREMENT_NUMBER } from '../../gql/susbcription/incrementNumber';
 
 export const Home = () => {
   let history = useHistory();
   const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  const { data } = useSubscription(INCREMENT_NUMBER);
   const { activeProject } = useContext(userContext);
 
   const markAsCompleted = (taskId: string) => {
@@ -22,10 +20,6 @@ export const Home = () => {
       },
     });
   };
-
-  useEffect(() => {
-    console.log(data);
-  }, []);
 
   return (
     <>

@@ -9,7 +9,7 @@ export const joinToExistingProject = (
     5000,
     DbServiceSingleton.getInstance()
       .joinToAnExistingProject(shareCode, userId)
-      .then((res: DbFindAndModifyReponse) => {
+      .then((res) => {
         if (res.value === null) {
           return {
             ok: false,

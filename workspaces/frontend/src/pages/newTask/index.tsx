@@ -1,34 +1,31 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import M from 'materialize-css';
-import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
 import { NEW_TASK } from '../../gql/mutation/newTask';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
-
-interface FormInput {
-  projectId: String;
-  taskName: String;
-}
+import { useContext } from 'react';
+import { userContext } from '../../context';
 
 export const NewTask = () => {
-  const project = useRef<HTMLSelectElement | null>(null);
+  const { activeProject } = useContext(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
-  const { userProjects } = useContext(userContext);
   const [newTask] = useMutation(NEW_TASK);
 
   useEffect(() => {
-    M.FormSelect.init(project.current as Element);
+    if (!activeProject) {
+      history.push('/error');
+    }
   });
 
-  const onSubmit = (input: FormInput) => {
+  const onSubmit = (input: { taskName: string }) => {
     setError(null);
     newTask({
       variables: {
-        projectId: input.projectId,
+        projectId: activeProject?._id,
         taskName: input.taskName,
       },
     }).then(
@@ -58,20 +55,9 @@ export const NewTask = () => {
             {error && (
               <h5 className='card-panel red lighten-2'>There was an error!</h5>
             )}
-            <select
-              {...register('projectId', { required: true })}
-              ref={project}>
-              <option value='' disabled selected>
-                Choose your project
-              </option>
-              {userProjects ? (
-                userProjects.map((project) => {
-                  return <option value={project._id}>{project.name}</option>;
-                })
-              ) : (
-                <p>Loading...</p>
-              )}
-            </select>
+          </div>
+          <div className='row center'>
+            <h5>Add task to {activeProject?.name} project</h5>
           </div>
           <div className='row'>
             <div className='input-field col s12'>
@@ -82,7 +68,6 @@ export const NewTask = () => {
                 {...register('taskName', { required: true })}
               />
             </div>
-            <div className='col s12'></div>
           </div>
           <div className='new-task-container'>
             <button className='add-task'>Add task!</button>
