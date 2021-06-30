@@ -1,12 +1,12 @@
 import { GenericDbResponse } from '../../../../DbTypes';
-import { dbService } from '../../../../services/DbService';
+import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 
 export const signup = async (
   _source: any,
   { email, name }: { email: string; name: string }
 ) => {
-  const user = await dbService.getUserByEmail(email);
+  const user = await DbServiceSingleton.getInstance().getUserByEmail(email);
 
   if (user) {
     return {
@@ -18,11 +18,13 @@ export const signup = async (
 
   return requestWithTimeout<GenericDbResponse>(
     5000,
-    dbService.newUser(email, name, shareCode).then(() => {
-      return {
-        ok: true,
-        err: '',
-      };
-    })
+    DbServiceSingleton.getInstance()
+      .newUser(email, name, shareCode)
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
+      })
   );
 };

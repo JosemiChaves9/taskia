@@ -1,5 +1,5 @@
 import { DbProject } from '../../../../DbTypes';
-import { dbService } from '../../../../services/DbService';
+import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 
 export const getAllUserProjects = (
@@ -8,6 +8,6 @@ export const getAllUserProjects = (
 ) => {
   return requestWithTimeout<DbProject[]>(
     5000,
-    dbService.getAllUserProjects(userId)
+    DbServiceSingleton.getInstance().getAllUserProjects(userId)
   );
 };

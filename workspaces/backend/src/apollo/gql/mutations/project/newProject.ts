@@ -1,5 +1,5 @@
 import { GenericDbResponse } from '../../../../DbTypes';
-import { dbService } from '../../../../services/DbService';
+import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 
 export const newProject = (
@@ -10,11 +10,13 @@ export const newProject = (
 
   return requestWithTimeout<GenericDbResponse>(
     5000,
-    dbService.newProject(projectName, userId, shareCode).then(() => {
-      return {
-        ok: true,
-        err: '',
-      };
-    })
+    DbServiceSingleton.getInstance()
+      .newProject(projectName, userId, shareCode)
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
+      })
   );
 };

@@ -1,5 +1,5 @@
-import { GenericDbResponse } from '../../../../DbTypes';
-import { dbService } from '../../../../services/DbService';
+import { DbFindAndModifyReponse, GenericDbResponse } from '../../../../DbTypes';
+import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 export const joinToExistingProject = (
   _source: any,
@@ -7,18 +7,20 @@ export const joinToExistingProject = (
 ) => {
   requestWithTimeout<GenericDbResponse>(
     5000,
-    dbService.joinToAnExistingProject(shareCode, userId).then((res) => {
-      if (res.value === null) {
-        return {
-          ok: false,
-          err: "This project doesn't exist!",
-        };
-      } else {
-        return {
-          ok: true,
-          err: '',
-        };
-      }
-    })
+    DbServiceSingleton.getInstance()
+      .joinToAnExistingProject(shareCode, userId)
+      .then((res: DbFindAndModifyReponse) => {
+        if (res.value === null) {
+          return {
+            ok: false,
+            err: "This project doesn't exist!",
+          };
+        } else {
+          return {
+            ok: true,
+            err: '',
+          };
+        }
+      })
   );
 };

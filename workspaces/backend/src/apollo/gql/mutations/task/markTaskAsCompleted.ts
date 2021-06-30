@@ -1,5 +1,5 @@
 import { GenericDbResponse } from '../../../../DbTypes';
-import { dbService } from '../../../../services/DbService';
+import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 
 export const markTaskAsCompleted = (
@@ -8,11 +8,13 @@ export const markTaskAsCompleted = (
 ) => {
   return requestWithTimeout<GenericDbResponse>(
     5000,
-    dbService.markTaskAsCompleted(projectId, taskId).then(() => {
-      return {
-        ok: true,
-        err: '',
-      };
-    })
+    DbServiceSingleton.getInstance()
+      .markTaskAsCompleted(projectId, taskId)
+      .then(() => {
+        return {
+          ok: true,
+          err: '',
+        };
+      })
   );
 };

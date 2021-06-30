@@ -1,5 +1,5 @@
 import { GenericDbResponse } from '../../../../DbTypes';
-import { dbService } from '../../../../services/DbService';
+import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 
 export const newTask = (
@@ -8,8 +8,10 @@ export const newTask = (
 ) => {
   return requestWithTimeout<GenericDbResponse>(
     5000,
-    dbService.newTask(taskName, projectId).then(() => {
-      return { ok: true, err: '' };
-    })
+    DbServiceSingleton.getInstance()
+      .newTask(taskName, projectId)
+      .then(() => {
+        return { ok: true, err: '' };
+      })
   );
 };
