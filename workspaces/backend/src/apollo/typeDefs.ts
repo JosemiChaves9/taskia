@@ -46,4 +46,8 @@ export const typeDefs = gql`
       userId: String!
     ): GenericMutationResponse!
   }
+
+  type Subscription {
+    incrementedNumber: Int
+  }
 `;

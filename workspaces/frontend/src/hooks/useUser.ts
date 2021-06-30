@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { DbUser } from '../types';
-import { GET_USER_BY_EMAIL } from '../gql/getUserByEmailQuery';
+import { GET_USER_BY_EMAIL } from '../gql/query/getUserByEmail';
 import { userContext } from '../context';
 import { useHistory } from 'react-router-dom';
-import { SIGNUP } from '../gql/signupMutation';
+import { SIGNUP } from '../gql/mutation/signup';
 
 export const useUser = () => {
   const history = useHistory();

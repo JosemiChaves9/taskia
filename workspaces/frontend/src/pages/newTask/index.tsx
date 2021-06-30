@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import M from 'materialize-css';
 import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
-import { NEW_TASK } from '../../gql/newTaskMutation';
+import { NEW_TASK } from '../../gql/mutation/newTask';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 

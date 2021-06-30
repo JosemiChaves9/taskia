@@ -6,8 +6,8 @@ import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
-import { NEW_PROJECT } from '../../gql/newProjectMutation';
-import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/joinToAnExistingProjectMutation';
+import { NEW_PROJECT } from '../../gql/mutation/newProject';
+import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/mutation/joinToAnExistingProject';
 
 export const NewProject = () => {
   const project = useRef<HTMLSelectElement | null>(null);

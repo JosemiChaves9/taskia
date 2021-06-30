@@ -1,4 +1,4 @@
-import { IResolvers } from 'apollo-server';
+import { IResolvers, PubSub } from 'apollo-server';
 import { joinToExistingProject } from './gql/mutations/project/joinToExistingProject';
 import { newProject } from './gql/mutations/project/newProject';
 import { markTaskAsCompleted } from './gql/mutations/task/markTaskAsCompleted';
@@ -7,6 +7,7 @@ import { signup } from './gql/mutations/user/signup';
 import { getAllUserProjects } from './gql/queries/project/getAllUserProjects';
 import { getProjectById } from './gql/queries/project/getProjectById';
 import { getUserByEmail } from './gql/queries/user/getUserByEmail';
+import { publishSubscription } from './gql/subscriptions/incrementNumber';
 
 export const resolvers: IResolvers = {
   Query: {
@@ -20,5 +21,10 @@ export const resolvers: IResolvers = {
     newProject: newProject,
     markTaskAsCompleted: markTaskAsCompleted,
     joinToExistingProject: joinToExistingProject,
+  },
+  Subscription: {
+    incrementedNumber: {
+      subscribe: publishSubscription,
+    },
   },
 };
