@@ -21,7 +21,7 @@ export const SidenavAndHeader = () => {
 
   useQuery(GET_ALL_USER_PROJECTS, {
     variables: {
-      userId: '60d20319b5e3b22f3fe8fb8f', //!!Remove this, change it for the userid of the context
+      userId: '60dcab73576df23a27f21efb', //!!Remove this, change it for the userid of the context
     },
     onCompleted: (res: { getAllUserProjects: DbProject[] }) => {
       setUserProjects(res.getAllUserProjects);

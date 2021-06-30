@@ -9,8 +9,9 @@ export class EnviromentVariables {
   }
   static getUriForWsServer() {
     return (
-      `ws://${process.env.REACT_APP_WS_SERVER_HOST}:${this.getPort()}` ||
-      'ws://localhost:4000'
+      `ws://${process.env.REACT_APP_WS_SERVER_HOST}:${this.getPort()}/${
+        process.env.REACT_APP_WS_SERVER_PATH
+      }` || 'ws://localhost:4000/projects'
     );
   }
   static getPort() {

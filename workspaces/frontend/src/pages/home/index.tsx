@@ -2,9 +2,9 @@ import './index.scss';
 import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { DbTask } from '../../types';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { userContext } from '../../context';
-import { useMutation, useSubscription } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
 
 export const Home = () => {
