@@ -7,7 +7,8 @@ import { signup } from './gql/mutations/user/signup';
 import { getAllUserProjects } from './gql/queries/project/getAllUserProjects';
 import { getProjectById } from './gql/queries/project/getProjectById';
 import { getUserByEmail } from './gql/queries/user/getUserByEmail';
-import { publishSubscription } from './gql/subscriptions/incrementNumber';
+
+export const pubsub = new PubSub();
 
 export const resolvers: IResolvers = {
   Query: {
@@ -24,7 +25,7 @@ export const resolvers: IResolvers = {
   },
   Subscription: {
     incrementedNumber: {
-      subscribe: publishSubscription,
+      changesInBBDD: () => pubsub.asyncIterator('INCREMENTED'),
     },
   },
 };

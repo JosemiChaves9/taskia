@@ -6,7 +6,7 @@ export class DbServiceSingleton {
     if (db) {
       return db;
     } else {
-      db = createDbService();
+      return (db = createDbService());
     }
   }
 }

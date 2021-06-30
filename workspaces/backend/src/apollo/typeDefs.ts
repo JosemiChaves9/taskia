@@ -49,5 +49,6 @@ export const typeDefs = gql`
 
   type Subscription {
     incrementedNumber: Int
+    changesinBBDD: Boolean
   }
 `;

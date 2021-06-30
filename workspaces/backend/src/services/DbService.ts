@@ -1,6 +1,6 @@
 import { Db, MongoClient, ObjectID } from 'mongodb';
 import { DbProject, DbUser, GenericDbResponse } from '../DbTypes';
-import { createDbService } from './DbServiceSingleton';
+import { createDbService, DbServiceSingleton } from './DbServiceSingleton';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
 export class DbService {
@@ -157,5 +157,3 @@ export class DbService {
     }
   }
 }
-
-export const dbService = createDbService();

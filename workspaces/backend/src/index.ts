@@ -2,9 +2,9 @@ require('dotenv').config();
 
 import { server } from './apollo/apolloServer';
 import { logger } from './logger/logger';
-import { dbService } from './services/DbService';
+import { DbServiceSingleton } from './services/DbServiceSingleton';
 
-Promise.all([dbService.connect(), server.listen()]).then(
+Promise.all([DbServiceSingleton.getInstance().connect(), server.listen()]).then(
   () => {
     logger.info('🚀 Database and Server started');
   },
