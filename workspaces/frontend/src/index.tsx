@@ -13,6 +13,11 @@ import { ContextProvider } from './context';
 import { NewProject } from './pages/newProject';
 import { Error } from './pages/error';
 
+// myapp.com/project/2838238?search=hola
+
+// rest.api/${param}?search={}
+// gql product (variable: params.search){}
+
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <Router>
