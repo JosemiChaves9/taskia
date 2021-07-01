@@ -6,7 +6,6 @@ import { userContext } from '../context';
 import { useHistory } from 'react-router-dom';
 import { SIGNUP } from '../gql/mutation/signup';
 import { LocalStorageService } from '../services/LocalStorageService';
-import { debug } from 'console';
 
 export const useUser = () => {
   const history = useHistory();

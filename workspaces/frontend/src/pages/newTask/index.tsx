@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import M from 'materialize-css';
 import { useMutation } from '@apollo/client';
 import { NEW_TASK } from '../../gql/mutation/newTask';
 import { useHistory } from 'react-router-dom';

@@ -4,16 +4,12 @@ import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { DbTask } from '../../types';
 import { useContext } from 'react';
 import { userContext } from '../../context';
-import { useMutation, useSubscription } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
-import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 export const Home = () => {
   let history = useHistory();
   const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  const { data } = useSubscription<{ changesInTask: boolean }>(CHANGES_IN_TASK);
   const { activeProject } = useContext(userContext);
 
   const markAsCompleted = (taskId: string) => {
