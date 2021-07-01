@@ -5,30 +5,18 @@ import { GET_USER_BY_EMAIL } from '../gql/query/getUserByEmail';
 import { userContext } from '../context';
 import { useHistory } from 'react-router-dom';
 import { SIGNUP } from '../gql/mutation/signup';
+import { useEffect } from 'react';
 import { LocalStorageService } from '../services/LocalStorageService';
+import { debug } from 'console';
 
 export const useUser = () => {
   const history = useHistory();
   const { setUser } = useContext(userContext);
-  const [error, setError] = useState<string | null>(null);
+  const [customError, setCustomError] = useState<string | null>(null);
 
-  const [login] = useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL, {
-    onCompleted: (res) => {
-      if (!res?.getUserByEmail) {
-        LocalStorageService.removeUserFromLocalStorage();
-        history.push('/login');
-        return;
-      } else {
-        if (!res.getUserByEmail) {
-          setError("User doesn't exists");
-          return;
-        } else {
-          setUser(res.getUserByEmail);
-          LocalStorageService.setUserInLocalStorage(res.getUserByEmail.email);
-          history.push('/');
-        }
-      }
-    },
+  const [login, { data, loading, error }] = useLazyQuery<{
+    getUserByEmail: DbUser;
+  }>(GET_USER_BY_EMAIL, {
     onError: () => {
       history.push('/error');
     },
@@ -37,7 +25,7 @@ export const useUser = () => {
   const [signup] = useMutation(SIGNUP);
 
   const userLogin = (email: string) => {
-    setError(null);
+    setCustomError(null);
     login({
       variables: {
         email: email,
@@ -45,8 +33,16 @@ export const useUser = () => {
     });
   };
 
+  useEffect(() => {
+    if (data && !loading && !error) {
+      debugger;
+      LocalStorageService.setUserInLocalStorage(data.getUserByEmail.email);
+      setUser(data.getUserByEmail);
+    }
+  }, [data]);
+
   const userSignup = (email: string, name: string) => {
-    setError(null);
+    setCustomError(null);
     signup({
       variables: {
         email: email,
@@ -58,11 +54,11 @@ export const useUser = () => {
         if (res.data.signup.ok) {
           localStorage.setItem('userLogged', email);
         } else {
-          setError(res.data.signup.err);
+          setCustomError(res.data.signup.err);
         }
       },
       () => {
-        setError('There was an error');
+        setCustomError('There was an error');
       }
     );
   };
@@ -72,5 +68,5 @@ export const useUser = () => {
     history.push('/login');
   };
 
-  return { userLogin, error, userSignup, userLogout };
+  return { userLogin, customError, userSignup, userLogout };
 };

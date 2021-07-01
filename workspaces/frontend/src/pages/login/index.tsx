@@ -5,10 +5,11 @@ import { useUser } from '../../hooks/useUser';
 import { ErrorCard } from '../../components/Error';
 
 export const LoginScreen = () => {
-  const { userLogin, error } = useUser();
+  const { userLogin, customError } = useUser();
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (input: { email: string }) => {
+    debugger;
     userLogin(input.email);
   };
 
@@ -20,7 +21,7 @@ export const LoginScreen = () => {
         </div>
       </nav>
       <div className='center-align login-container'>
-        {error && <ErrorCard props={error} />}
+        {customError && <ErrorCard props={customError} />}
         <h3>You're not logged!</h3>
         <h4>Just type your email</h4>
         <form onSubmit={handleSubmit(onSubmit)}>

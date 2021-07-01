@@ -42,8 +42,6 @@ export const SidenavAndHeader = () => {
     }
   }, [allUserProjects.data]);
 
-  useEffect(() => {}, [userProjects]);
-
   useEffect(() => {
     allUserProjects.refetch();
   }, [subscription.data]);
