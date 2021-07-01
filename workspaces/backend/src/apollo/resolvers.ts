@@ -27,5 +27,9 @@ export const resolvers: IResolvers = {
       subscribe: () =>
         PubSubSingleton.getInstance().asyncIterator('CHANGES_IN_PROJECT'),
     },
+    changesInTask: {
+      subscribe: () =>
+        PubSubSingleton.getInstance().asyncIterator('CHANGES_IN_TASK'),
+    },
   },
 };

@@ -6,6 +6,7 @@ import { userContext } from '../context';
 import { useHistory } from 'react-router-dom';
 import { SIGNUP } from '../gql/mutation/signup';
 import { LocalStorageService } from '../services/LocalStorageService';
+import { debug } from 'console';
 
 export const useUser = () => {
   const history = useHistory();
@@ -14,7 +15,6 @@ export const useUser = () => {
 
   const [login] = useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL, {
     onCompleted: (res) => {
-      console.log(res);
       if (!res?.getUserByEmail) {
         LocalStorageService.removeUserFromLocalStorage();
         history.push('/login');

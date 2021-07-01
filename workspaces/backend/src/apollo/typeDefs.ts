@@ -48,7 +48,7 @@ export const typeDefs = gql`
   }
 
   type Subscription {
-    changesInProject: String
+    changesInProject: Boolean
     changesInTask: Boolean
   }
 `;

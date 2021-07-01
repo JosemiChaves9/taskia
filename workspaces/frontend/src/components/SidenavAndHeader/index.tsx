@@ -7,9 +7,10 @@ import { useContext } from 'react';
 import { userContext } from '../../context';
 import { Link, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
 import { useState } from 'react';
+import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
 
 export const SidenavAndHeader = () => {
   const { user, activeProject, setActiveProject } = useContext(userContext);
@@ -18,14 +19,11 @@ export const SidenavAndHeader = () => {
   const history = useHistory();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
+  const subscription = useSubscription(CHANGES_IN_TASK);
 
-  useQuery(GET_ALL_USER_PROJECTS, {
+  const allUserProjects = useQuery(GET_ALL_USER_PROJECTS, {
     variables: {
       userId: '60dcab73576df23a27f21efb', //!!Remove this, change it for the userid of the context
-    },
-    onCompleted: (res: { getAllUserProjects: DbProject[] }) => {
-      setUserProjects(res.getAllUserProjects);
-      setActiveProject(res.getAllUserProjects[0]);
     },
     onError: () => {
       history.push('/error');
@@ -36,6 +34,19 @@ export const SidenavAndHeader = () => {
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
   }, []);
+
+  useEffect(() => {
+    if (allUserProjects.data && !allUserProjects.loading) {
+      setUserProjects(allUserProjects.data.getAllUserProjects);
+      setActiveProject(allUserProjects.data.getAllUserProjects[1]);
+    }
+  }, [allUserProjects.data]);
+
+  useEffect(() => {}, [userProjects]);
+
+  useEffect(() => {
+    allUserProjects.refetch();
+  }, [subscription.data]);
 
   return (
     <>
@@ -68,11 +79,11 @@ export const SidenavAndHeader = () => {
               <i className='material-icons'>folder_open</i>Projects
             </h5>
             {userProjects ? (
-              userProjects.map((project: DbProject) => {
+              userProjects.map((project: DbProject, idx: number) => {
                 return (
                   <li
                     className='collection-item'
-                    key={userProjects[0]._id}
+                    key={userProjects[idx]._id}
                     onClick={() => setActiveProject(project)}>
                     {project.name}
                   </li>
