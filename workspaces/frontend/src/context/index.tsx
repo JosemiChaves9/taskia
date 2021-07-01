@@ -24,7 +24,6 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
   const history = useHistory();
   const [user, setUser] = useState<DbUser>();
   const [activeProject, setActiveProject] = useState<DbProject>();
-  const { userLogin } = useUser();
 
   // TODO: this we can leave it here. But this should be the only place where we redirect to login
   if (!LocalStorageService.checkIfUserIsInLocalStorage()) {
@@ -34,9 +33,11 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
   }
 
   useEffect(() => {
-    if (!user && LocalStorageService.checkIfUserIsInLocalStorage()) {
-      userLogin(LocalStorageService.getUserFromLocalStorage() as string);
-    }
+    setUser({
+      _id: '60dcab73576df23a27f21efb',
+      name: 'Josemi Chaves',
+      email: 'josemichaves@gmail.com',
+    });
   }, []);
 
   return (

@@ -1,16 +1,12 @@
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import { Link } from 'react-router-dom';
-import { useUser } from '../../hooks/useUser';
-import { ErrorCard } from '../../components/Error';
 
 export const LoginScreen = () => {
-  const { userLogin, customError } = useUser();
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (input: { email: string }) => {
-    debugger;
-    userLogin(input.email);
+    //userLogin(input.email);
   };
 
   return (
@@ -21,7 +17,7 @@ export const LoginScreen = () => {
         </div>
       </nav>
       <div className='center-align login-container'>
-        {customError && <ErrorCard props={customError} />}
+        {/* {customError && <ErrorCard props={customError} />} */}
         <h3>You're not logged!</h3>
         <h4>Just type your email</h4>
         <form onSubmit={handleSubmit(onSubmit)}>

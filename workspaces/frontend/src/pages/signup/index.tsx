@@ -11,10 +11,7 @@ interface FormInput {
 
 export const SignupScreen = () => {
   const { register, handleSubmit } = useForm<FormInput>();
-  const { userSignup, customError } = useUser();
-  const onSubmit = (data: FormInput) => {
-    userSignup(data.email, data.name);
-  };
+  const onSubmit = (data: FormInput) => {};
 
   return (
     <>
@@ -27,7 +24,7 @@ export const SignupScreen = () => {
         <h3>Signup now!</h3>
         <h4>It's that easy, no password needed</h4>
 
-        {customError && <ErrorCard props={customError} />}
+        {/* {customError && <ErrorCard props={customError} />} */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type='text'

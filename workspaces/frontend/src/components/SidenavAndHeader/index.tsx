@@ -15,7 +15,7 @@ import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
 export const SidenavAndHeader = () => {
   const { user, activeProject, setActiveProject } = useContext(userContext);
   const [userProjects, setUserProjects] = useState<DbProject[]>();
-  const { userLogout } = useUser();
+  //const { userLogout } = useUser();
   const history = useHistory();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
@@ -105,9 +105,9 @@ export const SidenavAndHeader = () => {
             </button>
           </Link>
           <div className='row logout'>
-            <button className='btn btn-flat' onClick={() => userLogout()}>
+            {/* <button className='btn btn-flat' onClick={() => userLogout()}>
               <i className='material-icons '>logout</i> Logout
-            </button>
+            </button> */}
           </div>
           <div id='modal1' className='modal' ref={popup}>
             <div className='modal-content '>
