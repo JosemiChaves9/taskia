@@ -10,7 +10,8 @@ projects with others, and view the changes in this shared project in real time.
 `yarn`
 
 ## Run the app
-This app is developed with React and NodeJS with a MongoDB Database and a GraphQL schema, in order to run this app you need to have a Database MongoDB connected and run the two scripts that are already integrated `yarm startFront` and `yarn startBack`.
+This app is developed with React and NodeJS with a MongoDB Database and a GraphQL schema, in order to run this app you need to have a Database MongoDB connected and run the two scripts that are already integrated `yarn startFront` and `yarn startBack`.
+
 This app also has a logging app integrated ([Winston](https://www.npmjs.com/package/winston)) you can specify which level of logs you want by passing an ENV Variable, `LOG_LEVEL=whatever_you_want`
 
 #Links
