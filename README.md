@@ -14,7 +14,7 @@ This app is developed with React and NodeJS with a MongoDB Database and a GraphQ
 
 This app also has a logging app integrated ([Winston](https://www.npmjs.com/package/winston)) you can specify which level of logs you want by passing an ENV Variable, `LOG_LEVEL=whatever_you_want`
 
-#Links
+## Links
 You can see a deployed version of this app [here](#).
 
 Created with ❤️  by [Jose Miguel Chaves](https://github.com/JosemiChaves9) as a [Mallorca Bootcamp](https://mallorcaboot.camp/) Challenge.
