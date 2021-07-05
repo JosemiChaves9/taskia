@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import M from 'materialize-css';
-import { userContext } from '../../context';
+//import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
@@ -11,7 +11,6 @@ import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/mutation/joinToAnExisting
 
 export const NewProject = () => {
   const project = useRef<HTMLSelectElement | null>(null);
-  const { user } = useContext(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
@@ -22,41 +21,41 @@ export const NewProject = () => {
   });
 
   const handleNewProject = (input: { projectName: string }) => {
-    setError(null);
-    newProject({
-      variables: {
-        projectName: input.projectName,
-        userId: user?._id,
-      },
-    }).then(
-      (res) => {
-        if (res.data.newProject.ok) {
-          history.push('/');
-          window.location.reload();
-        } else {
-          setError('There was an error');
-        }
-      },
-      () => {
-        setError('There was an error');
-      }
-    );
+    // setError(null);
+    // newProject({
+    //   variables: {
+    //     projectName: input.projectName,
+    //     userId: user?._id,
+    //   },
+    // }).then(
+    //   (res) => {
+    //     if (res.data.newProject.ok) {
+    //       history.push('/');
+    //       window.location.reload();
+    //     } else {
+    //       setError('There was an error');
+    //     }
+    //   },
+    //   () => {
+    //     setError('There was an error');
+    //   }
+    // );
   };
 
   const handleJoinProject = (input: { shareCode: string }) => {
-    const shareCode = parseInt(input.shareCode);
-    joinProject({
-      variables: {
-        shareCode: shareCode,
-        userId: user?._id,
-      },
-    }).then((res) => {
-      if (res.data.joinToExistingProject.ok) {
-        history.push('/');
-      } else {
-        setError(res.data.joinToExistingProject.err || 'Something went wrong');
-      }
-    });
+    // const shareCode = parseInt(input.shareCode);
+    // joinProject({
+    //   variables: {
+    //     shareCode: shareCode,
+    //     userId: user?._id,
+    //   },
+    // }).then((res) => {
+    //   if (res.data.joinToExistingProject.ok) {
+    //     history.push('/');
+    //   } else {
+    //     setError(res.data.joinToExistingProject.err || 'Something went wrong');
+    //   }
+    // });
   };
 
   return (

@@ -1,56 +1,52 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { useQuery } from '@apollo/client';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useUser } from '../hooks/useUser';
+import { createContext } from 'react';
+import { GET_USER_BY_EMAIL } from '../gql/query/getUserByEmail';
 import { LocalStorageService } from '../services/LocalStorageService';
-import { DbProject, DbUser } from '../types';
+import { DbUser } from '../types';
 
 interface Context {
   user: DbUser | undefined;
-  setUser: Dispatch<SetStateAction<DbUser | undefined>>;
-  activeProject: DbProject | undefined;
-  setActiveProject: Dispatch<SetStateAction<DbProject | undefined>>;
+  loginUser: (email: string) => void;
+  logoutUser: () => void;
 }
 
-export const userContext = React.createContext<Context>({
+export const UserContext = createContext<Context>({
   user: undefined,
-  setUser: () => {},
-  activeProject: undefined,
-  setActiveProject: () => {},
+  loginUser: () => {},
+  logoutUser: () => {},
 });
 
 export const ContextProvider: React.FC<{}> = ({ children }) => {
-  const history = useHistory();
   const [user, setUser] = useState<DbUser>();
-  const [activeProject, setActiveProject] = useState<DbProject>();
 
-  // TODO: this we can leave it here. But this should be the only place where we redirect to login
-  if (!LocalStorageService.checkIfUserIsInLocalStorage()) {
-    history.push('/login');
-  } else {
-    history.push('/');
-  }
+  const { data, loading, refetch, error } = useQuery<{
+    getUserByEmail: DbUser;
+  }>(GET_USER_BY_EMAIL, {
+    variables: { email: LocalStorageService.getUserFromLocalStorage() },
+  });
 
   useEffect(() => {
-    setUser({
-      _id: '60dcab73576df23a27f21efb',
-      name: 'Josemi Chaves',
-      email: 'josemichaves@gmail.com',
-    });
-  }, []);
+    if (data && !loading && !error) {
+      setUser(data.getUserByEmail);
+    }
+  }, [data]);
+
+  const loginUser = (email: string) => {
+    LocalStorageService.setUserInLocalStorage(email);
+    refetch();
+  };
+
+  const logoutUser = () => {
+    LocalStorageService.removeUserFromLocalStorage();
+  };
 
   return (
-    <userContext.Provider
-      value={{
-        user,
-        setUser,
-        activeProject,
-        setActiveProject,
-      }}>
+    <UserContext.Provider value={{ user, loginUser, logoutUser }}>
       {children}
-    </userContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export const UserProvider = () => React.useContext(userContext);
+export const UserProvider = () => React.useContext(UserContext);

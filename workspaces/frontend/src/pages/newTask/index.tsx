@@ -5,41 +5,41 @@ import { NEW_TASK } from '../../gql/mutation/newTask';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useContext } from 'react';
-import { userContext } from '../../context';
+// import { userContext } from '../../context';
 
 export const NewTask = () => {
-  const { activeProject } = useContext(userContext);
+  // const { activeProject } = useContext(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
   const [newTask] = useMutation(NEW_TASK);
 
   useEffect(() => {
-    if (!activeProject) {
-      history.push('/error');
-    }
-  });
+    // if (!activeProject) {
+    //   history.push('/error');
+    // }
+  }, []);
 
   const onSubmit = (input: { taskName: string }) => {
-    setError(null);
-    newTask({
-      variables: {
-        projectId: activeProject?._id,
-        taskName: input.taskName,
-      },
-    }).then(
-      (res) => {
-        if (res.data.newTask.ok) {
-          history.push('/');
-          window.location.reload();
-        } else {
-          setError('There was an error');
-        }
-      },
-      () => {
-        setError('There was an error');
-      }
-    );
+    // setError(null);
+    // newTask({
+    //   variables: {
+    //     projectId: activeProject?._id,
+    //     taskName: input.taskName,
+    //   },
+    // }).then(
+    //   (res) => {
+    //     if (res.data.newTask.ok) {
+    //       history.push('/');
+    //       window.location.reload();
+    //     } else {
+    //       setError('There was an error');
+    //     }
+    //   },
+    //   () => {
+    //     setError('There was an error');
+    //   }
+    // );
   };
   return (
     <>
@@ -56,7 +56,7 @@ export const NewTask = () => {
             )}
           </div>
           <div className='row center'>
-            <h5>Add task to {activeProject?.name} project</h5>
+            {/* <h5>Add task to {activeProject?.name} project</h5> */}
           </div>
           <div className='row'>
             <div className='input-field col s12'>

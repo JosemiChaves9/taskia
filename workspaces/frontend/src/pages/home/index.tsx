@@ -3,28 +3,28 @@ import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { DbTask } from '../../types';
 import { useContext } from 'react';
-import { userContext } from '../../context';
+// import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
 
 export const Home = () => {
   let history = useHistory();
   const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  const { activeProject } = useContext(userContext);
+  // const { activeProject } = useContext(userContext);
 
-  const markAsCompleted = (taskId: string) => {
-    markTaskAsCompleted({
-      variables: {
-        projectId: activeProject?._id,
-        taskId: taskId,
-      },
-    });
-  };
+  // const markAsCompleted = (taskId: string) => {
+  //   markTaskAsCompleted({
+  //     variables: {
+  //       projectId: activeProject?._id,
+  //       taskId: taskId,
+  //     },
+  //   });
+  // };
 
   return (
     <>
       <SidenavAndHeader />
-      <ul className='collection tasklist'>
+      {/* <ul className='collection tasklist'>
         {activeProject ? (
           activeProject.tasks?.map((task: DbTask) => {
             if (!task.completed) {
@@ -59,7 +59,7 @@ export const Home = () => {
         ) : (
           <h4>No tasks yet!</h4>
         )}
-      </ul>
+      </ul> */}
       <div className='container-button'>
         <button
           className='material-icons add-task'

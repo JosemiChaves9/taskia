@@ -2,8 +2,6 @@ import { ErrorCard } from '../../components/Error';
 import { useForm } from 'react-hook-form';
 import './index.scss';
 
-import { useUser } from '../../hooks/useUser';
-
 interface FormInput {
   name: string;
   email: string;

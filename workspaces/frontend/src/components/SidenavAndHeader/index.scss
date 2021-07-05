@@ -49,6 +49,10 @@
 }
 
 .collection {
+  cursor: pointer;
+  .collection-item:hover {
+    background-color: $secondary-color;
+  }
   .collection-item {
     padding-left: 4rem !important;
   }

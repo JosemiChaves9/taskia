@@ -1,12 +1,17 @@
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import { Link } from 'react-router-dom';
+import { LocalStorageService } from '../../services/LocalStorageService';
+import { ErrorCard } from '../../components/Error';
+import { useContext } from 'react';
+import { UserContext } from '../../context';
 
 export const LoginScreen = () => {
   const { register, handleSubmit } = useForm();
+  const { loginUser } = useContext(UserContext);
 
   const onSubmit = (input: { email: string }) => {
-    //userLogin(input.email);
+    loginUser(input.email);
   };
 
   return (
