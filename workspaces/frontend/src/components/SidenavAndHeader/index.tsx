@@ -10,40 +10,44 @@ import { useQuery, useSubscription } from '@apollo/client';
 import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
 import { useState } from 'react';
 import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
+import { UserContext } from '../../context';
+import { LocalStorageService } from '../../services/LocalStorageService';
 
 export const SidenavAndHeader = () => {
-  //user, setUser,
-  // const { activeProject, setActiveProject } = useContext(userContext);
+  const { user, logoutUser } = useContext(UserContext);
   const [userProjects, setUserProjects] = useState<DbProject[]>();
+  const [activeProject, setActiveProject] = useState<DbProject>();
+
   const history = useHistory();
   const sidenav = useRef<HTMLDivElement | null>(null);
   const popup = useRef<HTMLDivElement | null>(null);
   const subscription = useSubscription(CHANGES_IN_TASK);
-  // const allUserProjects = useQuery(GET_ALL_USER_PROJECTS, {
-  //   skip: !user,
-  //   variables: {
-  //     userId: user?._id, //!!Remove this, change it for the userid of the context
-  //   },
-  //   onError: () => {
-  //     history.push('/error');
-  //   },
-  // });
+  const allUserProjects = useQuery(GET_ALL_USER_PROJECTS, {
+    skip: !user,
+    variables: {
+      userId: LocalStorageService.getUserFromLocalStorage(), //!!Remove this, change it for the userid of the context
+    },
+    onError: () => {
+      allUserProjects.refetch();
+      history.push('/error');
+    },
+  });
 
   useEffect(() => {
     M.Sidenav.init(sidenav.current as Element);
     M.Modal.init(popup.current as Element);
   }, []);
 
-  // useEffect(() => {
-  //   if (allUserProjects.data && !allUserProjects.loading) {
-  //     //setUserProjects();
-  //     setActiveProject(allUserProjects.data.getAllUserProjects[1]);
-  //   }
-  // }, [allUserProjects.data]);
+  useEffect(() => {
+    if (allUserProjects.data && !allUserProjects.loading) {
+      setUserProjects(allUserProjects.data);
+      setActiveProject(allUserProjects.data.getAllUserProjects[1]);
+    }
+  }, [allUserProjects.data]);
 
   useEffect(() => {
-    //TODO revert allUserProjects.refetch();
-  }, [subscription.data]);
+    allUserProjects.refetch();
+  }, [subscription.data || user]);
 
   return (
     <>
@@ -68,14 +72,14 @@ export const SidenavAndHeader = () => {
             alt='iconAvatar'
             className='sidebar-avatar'
           />
-          {/* {user && <p>{user.name}</p>} */}
+          {user && <p>{user.name}</p>}
         </div>
         <div>
           <ul className='collection'>
             <h5 className='sidebar-options-header '>
               <i className='material-icons'>folder_open</i>Projects
             </h5>
-            {/* {allUserProjects.data?.getAllUserProjects ? (
+            {allUserProjects.data?.getAllUserProjects ? (
               allUserProjects.data.getAllUserProjects.map(
                 (project: DbProject) => {
                   return (
@@ -90,7 +94,7 @@ export const SidenavAndHeader = () => {
               )
             ) : (
               <li>Loading</li>
-            )} */}
+            )}
 
             <button
               className='btn modal-trigger btn-flat sidebar-share'
@@ -106,14 +110,14 @@ export const SidenavAndHeader = () => {
             </button>
           </Link>
           <div className='row logout'>
-            {/* <button className='btn btn-flat' onClick={() => userLogout()}>
+            <button className='btn btn-flat' onClick={() => logoutUser()}>
               <i className='material-icons '>logout</i> Logout
-            </button> */}
+            </button>
           </div>
           <div id='modal1' className='modal' ref={popup}>
             <div className='modal-content '>
               <h5>Share this code</h5>
-              {/* {activeProject && <p>{activeProject.shareCode}</p>} */}
+              {activeProject && <p>{activeProject.shareCode}</p>}
             </div>
             <div className='modal-footer'>
               <a

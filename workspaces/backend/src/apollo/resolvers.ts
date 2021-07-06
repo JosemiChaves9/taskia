@@ -8,10 +8,12 @@ import { signup } from './gql/mutations/user/signup';
 import { getAllUserProjects } from './gql/queries/project/getAllUserProjects';
 import { getProjectById } from './gql/queries/project/getProjectById';
 import { getUserByEmail } from './gql/queries/user/getUserByEmail';
+import { getUserById } from './gql/queries/user/getUserById';
 
 export const resolvers: IResolvers = {
   Query: {
     getUserByEmail: getUserByEmail,
+    getUserById: getUserById,
     getProjectById: getProjectById,
     getAllUserProjects: getAllUserProjects,
   },

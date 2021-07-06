@@ -47,9 +47,11 @@ export class DbService {
   }
 
   getUserByEmail(email: string): Promise<DbUser> {
-    return this.getDb()
-      .collection('users')
-      .findOne({ email }, { timeout: true });
+    return this.getDb().collection('users').findOne({ email });
+  }
+
+  getUserById(userId: string): Promise<DbUser> {
+    return this.getDb().collection('users').findOne(new ObjectID(userId));
   }
 
   newTask(taskName: string, projectId: string): Promise<GenericDbResponse> {

@@ -1,23 +1,23 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
-  type User {
+  type DbUser {
     _id: ID!
     name: String!
     email: String!
   }
 
-  type Task {
+  type DbTask {
     _id: ID!
     name: String!
     completed: Boolean
   }
 
-  type Project {
+  type DbProject {
     _id: ID!
     name: String!
     participants: [ID]
-    tasks: [Task]
+    tasks: [DbTask]
     shareCode: Int!
   }
 
@@ -27,10 +27,10 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getUserByEmail(email: String!): User
-    getProjectById(projectId: String!): Project
-    getAllUserProjects(userId: String!): [Project!]
-    test(email: String!): String
+    getUserByEmail(email: String!): DbUser
+    getUserById(userId: String!): DbUser
+    getProjectById(projectId: String!): DbProject
+    getAllUserProjects(userId: String!): [DbProject!]
   }
 
   type Mutation {

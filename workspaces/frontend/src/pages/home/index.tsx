@@ -3,14 +3,14 @@ import { useHistory } from 'react-router-dom';
 import { SidenavAndHeader } from '../../components/SidenavAndHeader';
 import { DbTask } from '../../types';
 import { useContext } from 'react';
-// import { userContext } from '../../context';
+import { UserContext } from '../../context';
 import { useMutation } from '@apollo/client';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
 
 export const Home = () => {
   let history = useHistory();
   const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  // const { activeProject } = useContext(userContext);
+  const { user } = useContext(UserContext);
 
   // const markAsCompleted = (taskId: string) => {
   //   markTaskAsCompleted({
