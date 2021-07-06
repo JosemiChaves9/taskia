@@ -3,22 +3,22 @@ import { Subject } from 'rxjs';
 const subject = new Subject<number>();
 
 export class LocalStorageService {
-  static checkIfUserIsInLocalStorage() {
-    const localStorageUser = localStorage.getItem('userLogged');
+  static checkIfUserIdIsInLocalStorage() {
+    const localStorageUser = localStorage.getItem('userId');
     return localStorageUser ? true : false;
   }
 
-  static setUserInLocalStorage(email: string) {
-    localStorage.setItem('userLogged', email);
+  static setUserIdInLocalStorage(userId: string) {
+    localStorage.setItem('userId', userId);
     subject.next(1);
   }
 
-  static removeUserFromLocalStorage() {
-    localStorage.removeItem('userLogged');
+  static removeUserIdFromLocalStorage() {
+    localStorage.removeItem('userId');
   }
 
-  static getUserFromLocalStorage() {
-    return localStorage.getItem('userLogged');
+  static getUserIdFromLocalStorage() {
+    return localStorage.getItem('userId');
   }
 
   static subscribeToChanges() {

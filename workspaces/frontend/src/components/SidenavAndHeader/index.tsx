@@ -25,7 +25,7 @@ export const SidenavAndHeader = () => {
   const allUserProjects = useQuery(GET_ALL_USER_PROJECTS, {
     skip: !user,
     variables: {
-      userId: LocalStorageService.getUserFromLocalStorage(), //!!Remove this, change it for the userid of the context
+      userId: LocalStorageService.getUserIdFromLocalStorage(), //!!Remove this, change it for the userid of the context
     },
     onError: () => {
       allUserProjects.refetch();
@@ -54,7 +54,7 @@ export const SidenavAndHeader = () => {
       <nav>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo'>
-            {/* {activeProject?.name} */}
+            {activeProject?.name}
           </a>
           <a href='#'>
             <i

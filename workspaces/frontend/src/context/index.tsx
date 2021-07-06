@@ -1,8 +1,9 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
 import { GET_USER_BY_EMAIL } from '../gql/query/getUserByEmail';
+import { GET_USER_BY_ID } from '../gql/query/getUserById';
 import { LocalStorageService } from '../services/LocalStorageService';
 import { DbUser } from '../types';
 
@@ -20,26 +21,25 @@ export const UserContext = createContext<Context>({
 
 export const ContextProvider: React.FC<{}> = ({ children }) => {
   const [user, setUser] = useState<DbUser>();
-
   const { data, loading, refetch, error } = useQuery<{
-    getUserByEmail: DbUser;
-  }>(GET_USER_BY_EMAIL, {
-    variables: { email: LocalStorageService.getUserFromLocalStorage() },
+    getUserById: DbUser;
+  }>(GET_USER_BY_ID, {
+    variables: { userId: LocalStorageService.getUserIdFromLocalStorage() },
   });
 
   useEffect(() => {
     if (data && !loading && !error) {
-      setUser(data.getUserByEmail);
+      setUser(data.getUserById);
     }
   }, [data]);
 
-  const loginUser = (email: string) => {
-    LocalStorageService.setUserInLocalStorage(email);
+  const loginUser = (userId: string) => {
+    LocalStorageService.setUserIdInLocalStorage(userId);
     refetch();
   };
 
   const logoutUser = () => {
-    LocalStorageService.removeUserFromLocalStorage();
+    LocalStorageService.removeUserIdFromLocalStorage();
   };
 
   return (

@@ -1,18 +1,36 @@
 import { useForm } from 'react-hook-form';
 import './index.scss';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { LocalStorageService } from '../../services/LocalStorageService';
 import { ErrorCard } from '../../components/Error';
 import { useContext } from 'react';
 import { UserContext } from '../../context';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER_BY_EMAIL } from '../../gql/query/getUserByEmail';
+import { DbUser } from '../../types';
+import { useEffect } from 'react';
 
 export const LoginScreen = () => {
   const { register, handleSubmit } = useForm();
-  const { loginUser } = useContext(UserContext);
+  const history = useHistory();
+  const [userLogin, { data, loading, error }] =
+    useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL);
 
   const onSubmit = (input: { email: string }) => {
-    loginUser(input.email);
+    userLogin({
+      variables: {
+        email: input.email,
+      },
+    });
   };
+
+  useEffect(() => {
+    if (data && !error && !loading) {
+      LocalStorageService.setUserIdInLocalStorage(data.getUserByEmail._id);
+      history.push('/');
+      window.location.reload();
+    }
+  }, [data]);
 
   return (
     <>
