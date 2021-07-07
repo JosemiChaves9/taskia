@@ -97,7 +97,7 @@ export const Home = () => {
       <div className='container-button'>
         <button
           className='material-icons add-task'
-          onClick={() => history.push('/newTask')}>
+          onClick={() => history.push(`/newTask/${activeProject?._id}`)}>
           add_circle
         </button>
       </div>

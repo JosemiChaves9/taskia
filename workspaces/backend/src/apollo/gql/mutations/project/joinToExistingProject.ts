@@ -6,7 +6,7 @@ export const joinToExistingProject = (
   _source: any,
   { shareCode, userId }: { shareCode: number; userId: string }
 ) => {
-  requestWithTimeout<GenericDbResponse>(
+  return requestWithTimeout<GenericDbResponse>(
     5000,
     DbServiceSingleton.getInstance()
       .joinToAnExistingProject(shareCode, userId)

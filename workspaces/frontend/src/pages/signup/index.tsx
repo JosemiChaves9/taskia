@@ -1,6 +1,8 @@
 import { ErrorCard } from '../../components/Error';
 import { useForm } from 'react-hook-form';
 import './index.scss';
+import { useContext } from 'react';
+import { UserContext } from '../../context';
 
 interface FormInput {
   name: string;
@@ -9,7 +11,12 @@ interface FormInput {
 
 export const SignupScreen = () => {
   const { register, handleSubmit } = useForm<FormInput>();
-  const onSubmit = (data: FormInput) => {};
+  const { signupUser } = useContext(UserContext);
+  const onSubmit = (data: FormInput) => {
+    signupUser(data.email, data.name).then((res: any) => {
+      console.log(res);
+    });
+  };
 
   return (
     <>

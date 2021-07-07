@@ -1,61 +1,64 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import './index.scss';
 import M from 'materialize-css';
-//import { userContext } from '../../context';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { NEW_PROJECT } from '../../gql/mutation/newProject';
 import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/mutation/joinToAnExistingProject';
+import { useContext } from 'react';
+import { UserContext } from '../../context';
 
 export const NewProject = () => {
+  const { user } = useContext(UserContext);
   const project = useRef<HTMLSelectElement | null>(null);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
   const [newProject] = useMutation(NEW_PROJECT);
   const [joinProject] = useMutation(JOIN_TO_AN_EXISTING_PROJECT);
+
   useEffect(() => {
     M.FormSelect.init(project.current as Element);
   });
 
   const handleNewProject = (input: { projectName: string }) => {
-    // setError(null);
-    // newProject({
-    //   variables: {
-    //     projectName: input.projectName,
-    //     userId: user?._id,
-    //   },
-    // }).then(
-    //   (res) => {
-    //     if (res.data.newProject.ok) {
-    //       history.push('/');
-    //       window.location.reload();
-    //     } else {
-    //       setError('There was an error');
-    //     }
-    //   },
-    //   () => {
-    //     setError('There was an error');
-    //   }
-    // );
+    setError(null);
+    newProject({
+      variables: {
+        projectName: input.projectName,
+        userId: user?._id,
+      },
+    }).then(
+      (res) => {
+        if (res.data.newProject.ok) {
+          history.push('/');
+          window.location.reload();
+        } else {
+          setError('There was an error');
+        }
+      },
+      () => {
+        setError('There was an error');
+      }
+    );
   };
 
   const handleJoinProject = (input: { shareCode: string }) => {
-    // const shareCode = parseInt(input.shareCode);
-    // joinProject({
-    //   variables: {
-    //     shareCode: shareCode,
-    //     userId: user?._id,
-    //   },
-    // }).then((res) => {
-    //   if (res.data.joinToExistingProject.ok) {
-    //     history.push('/');
-    //   } else {
-    //     setError(res.data.joinToExistingProject.err || 'Something went wrong');
-    //   }
-    // });
+    const shareCode = parseInt(input.shareCode);
+    joinProject({
+      variables: {
+        shareCode: shareCode,
+        userId: user?._id,
+      },
+    }).then((res) => {
+      if (res.data.joinToExistingProject.ok) {
+        history.push('/');
+      } else {
+        setError(res.data.joinToExistingProject.err || 'Something went wrong');
+      }
+    });
   };
 
   return (

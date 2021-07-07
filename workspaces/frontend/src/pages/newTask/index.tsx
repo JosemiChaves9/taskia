@@ -2,44 +2,36 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { NEW_TASK } from '../../gql/mutation/newTask';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { useContext } from 'react';
-// import { userContext } from '../../context';
 
 export const NewTask = () => {
-  // const { activeProject } = useContext(userContext);
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
   const [newTask] = useMutation(NEW_TASK);
-
-  useEffect(() => {
-    // if (!activeProject) {
-    //   history.push('/error');
-    // }
-  }, []);
+  const { projectId } = useParams<{ projectId: string }>();
 
   const onSubmit = (input: { taskName: string }) => {
-    // setError(null);
-    // newTask({
-    //   variables: {
-    //     projectId: activeProject?._id,
-    //     taskName: input.taskName,
-    //   },
-    // }).then(
-    //   (res) => {
-    //     if (res.data.newTask.ok) {
-    //       history.push('/');
-    //       window.location.reload();
-    //     } else {
-    //       setError('There was an error');
-    //     }
-    //   },
-    //   () => {
-    //     setError('There was an error');
-    //   }
-    // );
+    setError(null);
+    newTask({
+      variables: {
+        projectId: projectId,
+        taskName: input.taskName,
+      },
+    }).then(
+      (res) => {
+        if (res.data.newTask.ok) {
+          history.push('/');
+          window.location.reload();
+        } else {
+          setError('There was an error');
+        }
+      },
+      () => {
+        setError('There was an error');
+      }
+    );
   };
   return (
     <>
