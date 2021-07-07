@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/taskia/static/css/main.01c4001b.chunk.css",
-    "main.js": "/taskia/static/js/main.badbe720.chunk.js",
-    "main.js.map": "/taskia/static/js/main.badbe720.chunk.js.map",
+    "main.js": "/taskia/static/js/main.e0019a00.chunk.js",
+    "main.js.map": "/taskia/static/js/main.e0019a00.chunk.js.map",
     "runtime-main.js": "/taskia/static/js/runtime-main.c5d05f02.js",
     "runtime-main.js.map": "/taskia/static/js/runtime-main.c5d05f02.js.map",
     "static/js/2.edc71690.chunk.js": "/taskia/static/js/2.edc71690.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.c5d05f02.js",
     "static/js/2.edc71690.chunk.js",
     "static/css/main.01c4001b.chunk.css",
-    "static/js/main.badbe720.chunk.js"
+    "static/js/main.e0019a00.chunk.js"
   ]
 }
