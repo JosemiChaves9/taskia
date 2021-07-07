@@ -46,7 +46,7 @@ export const Home = () => {
       },
     });
   };
-
+  //TODO: use callback here, to the methods in SignupAndHeader
   useEffect(() => {
     allUserProjects.refetch();
   }, [data]);

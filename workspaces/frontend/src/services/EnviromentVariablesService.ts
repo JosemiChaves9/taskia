@@ -2,10 +2,7 @@ require('dotenv').config();
 
 export class EnviromentVariables {
   static getUriForHttpServer() {
-    return (
-      `http://${process.env.REACT_APP_HTTP_SERVER_HOST}:${this.getPort()}` ||
-      'http://localhost:4000'
-    );
+    return `http://${process.env.REACT_APP_HTTP_SERVER_HOST}:${this.getPort()}`;
   }
   static getUriForWsServer() {
     return (
@@ -15,6 +12,6 @@ export class EnviromentVariables {
     );
   }
   static getPort() {
-    return process.env.REACT_APP_PORT || 4000;
+    return process.env.REACT_APP_SERVER_PORT || 4000;
   }
 }

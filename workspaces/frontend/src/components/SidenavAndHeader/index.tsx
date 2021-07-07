@@ -25,6 +25,10 @@ export const SidenavAndHeader = ({
     M.Modal.init(popup.current as Element);
   }, []);
 
+  const onClickOnLogout = () => {
+    logoutUser();
+  };
+
   return (
     <>
       <nav>

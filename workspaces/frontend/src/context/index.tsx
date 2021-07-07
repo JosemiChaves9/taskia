@@ -36,7 +36,7 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
     if (!LocalStorageService.getUserIdFromLocalStorage()) {
       history.push('/login');
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (data && !loading && !error) {

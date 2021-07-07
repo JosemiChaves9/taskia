@@ -19,7 +19,6 @@ export const SignupScreen = () => {
       data.email,
       data.name
     );
-    console.log(result);
     if (!result.data.signup.ok) {
       setCustomError(result.data.signup.err);
     }
