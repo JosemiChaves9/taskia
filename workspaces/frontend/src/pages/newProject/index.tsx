@@ -21,7 +21,7 @@ export const NewProject = () => {
 
   useEffect(() => {
     M.FormSelect.init(project.current as Element);
-  });
+  }, []);
 
   const handleNewProject = (input: { projectName: string }) => {
     setError(null);

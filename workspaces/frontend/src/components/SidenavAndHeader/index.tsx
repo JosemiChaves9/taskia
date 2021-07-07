@@ -25,18 +25,12 @@ export const SidenavAndHeader = ({
     M.Modal.init(popup.current as Element);
   }, []);
 
-  const onClickOnLogout = () => {
-    logoutUser();
-  };
-
   return (
     <>
       <nav>
         <div className='nav-wrapper'>
-          <a href='#' className='brand-logo'>
-            {activeProject?.name}
-          </a>
-          <a href='#'>
+          <a className='brand-logo'>{activeProject?.name}</a>
+          <a>
             <i
               className='material-icons sidenav-trigger'
               data-target='slide-out'>
