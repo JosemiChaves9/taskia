@@ -1,8 +1,9 @@
 import { ErrorCard } from '../../components/Error';
 import { useForm } from 'react-hook-form';
 import './index.scss';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../../context';
+import { GenericDbResponse } from '../../types';
 
 interface FormInput {
   name: string;
@@ -11,11 +12,17 @@ interface FormInput {
 
 export const SignupScreen = () => {
   const { register, handleSubmit } = useForm<FormInput>();
+  const [customError, setCustomError] = useState<string | null>(null);
   const { signupUser } = useContext(UserContext);
-  const onSubmit = (data: FormInput) => {
-    signupUser(data.email, data.name).then((res: any) => {
-      console.log(res);
-    });
+  const onSubmit = async (data: FormInput) => {
+    const result: { data: { signup: GenericDbResponse } } = await signupUser(
+      data.email,
+      data.name
+    );
+    console.log(result);
+    if (!result.data.signup.ok) {
+      setCustomError(result.data.signup.err);
+    }
   };
 
   return (
@@ -29,7 +36,7 @@ export const SignupScreen = () => {
         <h3>Signup now!</h3>
         <h4>It's that easy, no password needed</h4>
 
-        {/* {customError && <ErrorCard props={customError} />} */}
+        {customError && <ErrorCard error={customError} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type='text'

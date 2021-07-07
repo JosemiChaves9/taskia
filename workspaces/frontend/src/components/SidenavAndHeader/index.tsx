@@ -1,13 +1,11 @@
 import './index.scss';
 import M from 'materialize-css';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRef } from 'react';
 import { DbProject } from '../../types';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
 import { UserContext } from '../../context';
-import { useState } from 'react';
 
 export const SidenavAndHeader = ({
   userProjects,

@@ -36,7 +36,7 @@ export const NewProject = () => {
           history.push('/');
           window.location.reload();
         } else {
-          setError('There was an error');
+          setError(res.data.newProject.err);
         }
       },
       () => {

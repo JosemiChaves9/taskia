@@ -60,7 +60,7 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
         email: email,
         name: name,
       },
-    });
+    }).then((res) => res);
   };
 
   return (

@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { NEW_TASK } from '../../gql/mutation/newTask';
 import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { ErrorCard } from '../../components/Error';
 
 export const NewTask = () => {
   const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [error, setError] = useState<string | null>(null);
   const [newTask] = useMutation(NEW_TASK);
-  const { projectId } = useParams<{ projectId: string }>();
+  const { projectName, projectId } =
+    useParams<{ projectName: string; projectId: string }>();
 
   const onSubmit = (input: { taskName: string }) => {
     setError(null);
@@ -25,7 +26,7 @@ export const NewTask = () => {
           history.push('/');
           window.location.reload();
         } else {
-          setError('There was an error');
+          setError(res.data.newTask.err);
         }
       },
       () => {
@@ -43,12 +44,12 @@ export const NewTask = () => {
       <div className='row'>
         <form className='col s12' onSubmit={handleSubmit(onSubmit)}>
           <div className='input-field col s12'>
-            {error && (
-              <h5 className='card-panel red lighten-2'>There was an error!</h5>
-            )}
+            {error && <ErrorCard error={error} />}
           </div>
           <div className='row center'>
-            {/* <h5>Add task to {activeProject?.name} project</h5> */}
+            <h5>
+              Add task to <em>{projectName}</em> project
+            </h5>
           </div>
           <div className='row'>
             <div className='input-field col s12'>

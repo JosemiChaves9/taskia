@@ -22,7 +22,10 @@ ReactDOM.render(
             <Route exact path='/' component={Home} />
             <Route path='/login' component={LoginScreen} />
             <Route path='/signup' component={SignupScreen} />
-            <Route path='/newTask/:projectId' component={NewTask} />
+            <Route
+              path='/newTask/:projectName/:projectId'
+              component={NewTask}
+            />
             <Route path='/newProject' component={NewProject} />
             <Route path='/error' component={Error} />
           </Switch>

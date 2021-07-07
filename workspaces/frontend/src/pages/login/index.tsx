@@ -6,14 +6,18 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_USER_BY_EMAIL } from '../../gql/query/getUserByEmail';
 import { DbUser } from '../../types';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import { ErrorCard } from '../../components/Error';
 
 export const LoginScreen = () => {
   const { register, handleSubmit } = useForm();
+  const [customError, setCustomError] = useState<string | null>(null);
   const history = useHistory();
   const [userLogin, { data, loading, error }] =
     useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL);
 
   const onSubmit = (input: { email: string }) => {
+    setCustomError(null);
     userLogin({
       variables: {
         email: input.email,
@@ -27,6 +31,10 @@ export const LoginScreen = () => {
       history.push('/');
       window.location.reload();
     }
+
+    if (!data && error && !loading) {
+      setCustomError('There was an error');
+    }
   }, [data]);
 
   return (
@@ -37,7 +45,7 @@ export const LoginScreen = () => {
         </div>
       </nav>
       <div className='center-align login-container'>
-        {/* {customError && <ErrorCard props={customError} />} */}
+        {customError && <ErrorCard error={customError} />}
         <h3>You're not logged!</h3>
         <h4>Just type your email</h4>
         <form onSubmit={handleSubmit(onSubmit)}>
