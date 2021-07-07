@@ -1,4 +1,4 @@
-import { IResolvers, PubSub } from 'apollo-server';
+import { IResolvers } from 'apollo-server';
 import { PubSubSingleton } from '../services/pubSubSignleton';
 import { joinToExistingProject } from './gql/mutations/project/joinToExistingProject';
 import { newProject } from './gql/mutations/project/newProject';

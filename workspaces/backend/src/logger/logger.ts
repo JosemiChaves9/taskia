@@ -1,5 +1,4 @@
 import { createLogger, format, transports } from 'winston';
-import { EnviromentVariables } from '../services/EnviromentVariablesService';
 const { printf, prettyPrint } = format;
 
 const myFormat = printf(({ level, message, stack }) => {

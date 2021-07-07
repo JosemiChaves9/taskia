@@ -1,4 +1,4 @@
-import { DbFindAndModifyReponse, GenericDbResponse } from '../../../../DbTypes';
+import { GenericDbResponse } from '../../../../DbTypes';
 import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 import { publishChangesInProject } from '../../subscriptions/changesInProject';
