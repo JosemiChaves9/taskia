@@ -5,7 +5,7 @@ import { createContext } from 'react';
 import { GET_USER_BY_EMAIL } from '../gql/query/getUserByEmail';
 import { GET_USER_BY_ID } from '../gql/query/getUserById';
 import { LocalStorageService } from '../services/LocalStorageService';
-import { DbUser } from '../types';
+import { DbProject, DbUser } from '../types';
 
 interface Context {
   user: DbUser | undefined;
