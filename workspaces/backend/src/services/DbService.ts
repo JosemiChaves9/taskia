@@ -8,7 +8,8 @@ export class DbService {
   connect() {
     return new Promise<void>((res, rej) => {
       const client = new MongoClient(
-        EnviromentVariables.getMongoDbUri() as string
+        EnviromentVariables.getMongoDbUri() as string,
+        { useNewUrlParser: true, useUnifiedTopology: true }
       );
       client.connect((err) => {
         if (err) {
