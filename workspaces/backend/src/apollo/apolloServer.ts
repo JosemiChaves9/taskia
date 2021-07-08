@@ -1,4 +1,4 @@
-import { ApolloServer, PubSub } from 'apollo-server';
+import { ApolloServer } from 'apollo-server';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 import { handleErrorsPlugin } from './gql/plugins/handleErrorsPlugin';
