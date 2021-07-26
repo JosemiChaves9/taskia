@@ -12,6 +12,7 @@ import { apolloClient } from './services/ApolloClient';
 import { ContextProvider } from './context';
 import { NewProject } from './pages/newProject';
 import { Error } from './pages/error';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
@@ -40,3 +41,4 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+serviceWorkerRegistration.register();
