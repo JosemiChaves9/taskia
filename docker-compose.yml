@@ -1,0 +1,12 @@
+version: '3'
+services:
+  backend:
+    image: node:12-alpine
+    ports:
+      - '4000:4000'
+    working_dir: /usr/app/src
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - .:/usr/app/src
+    command: ['yarn', 'workspace', 'backend', 'run', 'start']
