@@ -1,23 +1,17 @@
 require('dotenv').config();
 export class EnviromentVariables {
   static getUriForHttpServer() {
-    if (process.env.REACT_APP_ENVIROMENT === 'dev') {
-      return `http://localhost:${this.getPort()}`;
+    if (process.env.REACT_APP_ENVIROMENT === 'prod') {
+      return `https://${process.env.REACT_APP_SERVER_URI}`;
     } else {
-      return `http://${
-        process.env.REACT_APP_SERVER_URI
-      }:${EnviromentVariables.getPort()}`;
+      return `http://localhost:${EnviromentVariables.getPort()}`;
     }
   }
   static getUriForWsServer() {
-    if (process.env.REACT_APP_ENVIROMENT === 'dev') {
-      return `ws://localhost:${EnviromentVariables.getPort()}/${
-        process.env.REACT_APP_WS_SERVER_PATH
-      }`;
+    if (process.env.REACT_APP_ENVIROMENT === 'prod') {
+      return `wss://${process.env.REACT_APP_SERVER_URI}/${process.env.REACT_APP_WS_SERVER_PATH}`;
     } else {
-      return `ws://${
-        process.env.REACT_APP_SERVER_URI
-      }:${EnviromentVariables.getPort()}/${
+      return `ws://localhost:${EnviromentVariables.getPort()}/${
         process.env.REACT_APP_WS_SERVER_PATH
       }`;
     }
