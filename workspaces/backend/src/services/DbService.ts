@@ -50,6 +50,22 @@ export class DbService {
     return this.getDb().collection('users').findOne({ email });
   }
 
+  async loginUser(email: string, password: string): Promise<DbUser> {
+    return this.getDb()
+      .collection('users')
+      .findOne({ email })
+      .then((user) => {
+        if (password === user.password) {
+          return user;
+        } else {
+          return {
+            ok: false,
+            err: 'The password was incorrect',
+          };
+        }
+      });
+  }
+
   getUserById(userId: string): Promise<DbUser> {
     return this.getDb().collection('users').findOne(new ObjectID(userId));
   }

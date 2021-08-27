@@ -1,25 +1,21 @@
 $primary-color: #0bc772;
 $collection-active-bg-color: #5cffb5;
 $collection-active-color: black;
-@import 'materialize-css/sass/components/color-variables';
-@import 'materialize-css/sass/components/color-classes';
-@import 'materialize-css/sass/components/variables';
-@import 'materialize-css/sass/components/normalize';
-@import 'materialize-css/sass/components/global';
+/* Core CSS required for Ionic components to work properly */
+@import '@ionic/react/css/core.css';
 
-@import 'materialize-css/sass/components/navbar';
-@import 'materialize-css/sass/components/grid';
-@import 'materialize-css/sass/components/sidenav';
-@import 'materialize-css/sass/components/typography';
-@import 'materialize-css/sass/components/badges';
-@import 'materialize-css/sass/components/cards';
-@import 'materialize-css/sass/components/forms/forms';
-@import 'materialize-css/sass/components/forms/file-input';
-@import 'materialize-css/sass/components/modal';
-@import 'materialize-css/sass/components/buttons';
-@import 'materialize-css/sass/components/waves';
-@import 'materialize-css/sass/components/toast';
+/* Basic CSS for apps built with Ionic */
+@import '@ionic/react/css/normalize.css';
+@import '@ionic/react/css/structure.css';
+@import '@ionic/react/css/typography.css';
 
+/* Optional CSS utils that can be commented out */
+@import '@ionic/react/css/padding.css';
+@import '@ionic/react/css/float-elements.css';
+@import '@ionic/react/css/text-alignment.css';
+@import '@ionic/react/css/text-transformation.css';
+@import '@ionic/react/css/flex-utils.css';
+@import '@ionic/react/css/display.css';
 * {
   font-family: 'Roboto', sans-serif;
   margin: 0;

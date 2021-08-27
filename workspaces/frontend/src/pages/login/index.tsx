@@ -1,70 +1,76 @@
+import {
+  IonButton,
+  IonInput,
+  IonItem,
+  IonItemGroup,
+  IonLabel,
+  IonText,
+} from '@ionic/react';
+import React, { useEffect } from 'react';
+import styles from './index.module.scss';
 import { useForm } from 'react-hook-form';
-import './index.scss';
-import { Link, useHistory } from 'react-router-dom';
-import { LocalStorageService } from '../../services/LocalStorageService';
+import { DbUser } from '../../types';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER_BY_EMAIL } from '../../gql/query/getUserByEmail';
-import { DbUser } from '../../types';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { ErrorCard } from '../../components/Error';
 
-export const LoginScreen = () => {
+export const LoginScreen: React.FC = () => {
   const { register, handleSubmit } = useForm();
-  const [customError, setCustomError] = useState<string | null>(null);
-  const history = useHistory();
   const [userLogin, { data, loading, error }] =
     useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL);
 
-  const onSubmit = (input: { email: string }) => {
-    setCustomError(null);
+  const onSubmit = (input: { email: string; password: string }) => {
     userLogin({
       variables: {
         email: input.email,
+        password: input.password,
       },
     });
   };
 
   useEffect(() => {
-    if (data && !error && !loading) {
-      LocalStorageService.setUserIdInLocalStorage(data.getUserByEmail._id);
-      history.push('/');
-      window.location.reload();
-    }
-
-    if (!data && error && !loading) {
-      setCustomError('There was an error');
-    }
+    console.log(data);
   }, [data]);
 
   return (
-    <>
-      <nav>
-        <div className='nav-wrapper'>
-          <p className='brand-logo'>Taskia</p>
-        </div>
-      </nav>
-      <div className='center-align login-container'>
-        {customError && <ErrorCard error={customError} />}
-        <h3>You're not logged!</h3>
-        <h4>Just type your email</h4>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
-            type='email'
-            className='email'
-            id=''
-            placeholder='example@mail.com'
-            {...register('email', { required: true })}
-          />
-          <button className='waves-effect waves-green btn-large'>Login</button>
-          <div>
-            <div>
-              Or if you dont have account you can{' '}
-              <Link to='/signup'>signup </Link> to Taskia
-            </div>
-          </div>
+    <div className={`${styles.bgFix}`}>
+      <IonItemGroup className={`${styles.container}`}>
+        <img
+          src='LogoTaskiaNoFondo.png'
+          alt='The logo of Taskia'
+          className={`${styles.taskiaLogo}`}
+        />
+        <IonText color='light'>
+          <h3 className='ion-text-center'>You're not logged in!</h3>
+        </IonText>
+        <form
+          className={`${styles.loginInputs}`}
+          onSubmit={handleSubmit(onSubmit)}>
+          <IonItem className={`${styles.inputField}`}>
+            <IonLabel position='stacked'>Email</IonLabel>
+            <IonInput
+              placeholder='example@email.com'
+              {...register('email', { required: true })}
+            />
+          </IonItem>
+          <IonItem className={`${styles.inputField}`}>
+            <IonLabel position='stacked'>Password</IonLabel>
+            <IonInput
+              placeholder='*****************'
+              type='password'
+              {...register('password', { required: true })}
+            />
+          </IonItem>
+          <IonButton className='ion-float-right' type='submit'>
+            LOGIN
+          </IonButton>
         </form>
-      </div>
-    </>
+        <IonText color='light'>
+          <h4>
+            {/* //! Fix that this text is appearing inline and not below */}
+            <a href='/signup'>Signup</a> if you don't have an account
+          </h4>
+        </IonText>
+      </IonItemGroup>
+    </div>
   );
 };

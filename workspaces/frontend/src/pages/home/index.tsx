@@ -9,6 +9,7 @@ import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
 import { LocalStorageService } from '../../services/LocalStorageService';
 import { useState } from 'react';
 import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
+import { IonButton } from '@ionic/react';
 
 export const Home = () => {
   let history = useHistory();
@@ -104,6 +105,7 @@ export const Home = () => {
           }>
           add_circle
         </button>
+        <IonButton>I'm a button bitch</IonButton>
       </div>
     </>
   );

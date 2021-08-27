@@ -1,0 +1,24 @@
+.bgFix {
+  background-color: #123654;
+  height: 100vh;
+}
+
+.taskiaLogo {
+  display: block;
+  margin: auto;
+  width: 80%;
+}
+
+.container {
+  position: relative;
+  top: 15%;
+}
+
+.loginInputs {
+  width: 65%;
+  margin: 0 auto;
+  .inputField {
+    border-radius: 10px;
+    margin: 2rem auto;
+  }
+}

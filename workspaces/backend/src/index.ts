@@ -8,8 +8,8 @@ Promise.all([
   DbServiceSingleton.getInstance().connect(),
   server.listen({ port: process.env.PORT }),
 ]).then(
-  () => {
-    logger.info('🚀 Database and Server started');
+  (e) => {
+    logger.info(`🚀 Database and Server started in ${e[1].url}`);
   },
   (err) => {
     throw new Error(err);
