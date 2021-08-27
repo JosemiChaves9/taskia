@@ -18,11 +18,10 @@ export const LoginScreen: React.FC = () => {
   const [userLogin, { data, loading, error }] =
     useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL);
 
-  const onSubmit = (input: { email: string; password: string }) => {
+  const onSubmit = (input: { email: string }) => {
     userLogin({
       variables: {
         email: input.email,
-        password: input.password,
       },
     });
   };
@@ -52,14 +51,7 @@ export const LoginScreen: React.FC = () => {
               {...register('email', { required: true })}
             />
           </IonItem>
-          <IonItem className={`${styles.inputField}`}>
-            <IonLabel position='stacked'>Password</IonLabel>
-            <IonInput
-              placeholder='*****************'
-              type='password'
-              {...register('password', { required: true })}
-            />
-          </IonItem>
+
           <IonButton className='ion-float-right' type='submit'>
             LOGIN
           </IonButton>

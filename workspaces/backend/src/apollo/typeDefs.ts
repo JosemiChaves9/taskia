@@ -28,7 +28,6 @@ export const typeDefs = gql`
 
   type Query {
     getUserByEmail(email: String!): DbUser
-    loginUser(email: String!, password: String!): DbUser
     getUserById(userId: String!): DbUser
     getProjectById(projectId: String!): DbProject
     getAllUserProjects(userId: String!): [DbProject!]
