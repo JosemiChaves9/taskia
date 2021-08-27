@@ -12,9 +12,12 @@ import { useForm } from 'react-hook-form';
 import { DbUser } from '../../types';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER_BY_EMAIL } from '../../gql/query/getUserByEmail';
+import { LocalStorageService } from '../../services/LocalStorageService';
+import { useHistory } from 'react-router-dom';
 
 export const LoginScreen: React.FC = () => {
   const { register, handleSubmit } = useForm();
+  const history = useHistory();
   const [userLogin, { data, loading, error }] =
     useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL);
 
@@ -27,7 +30,15 @@ export const LoginScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(data);
+    if (data && !error && !loading) {
+      LocalStorageService.setUserIdInLocalStorage(data.getUserByEmail._id);
+      history.push('/');
+      window.location.reload();
+    }
+
+    if (!data && error && !loading) {
+      console.error('There was an error');
+    }
   }, [data]);
 
   return (
