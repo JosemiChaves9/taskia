@@ -29,12 +29,14 @@ export const V2: React.FC = () => {
 
           <IonButton className='ion-float-right'>SIGNUP</IonButton>
         </IonItemGroup>
-        <IonText color='light'>
-          <h4>
-            {/* //! Fix that this text is appearing inline and not below */}
-            If you're already part of Taskia you can <a href='/login'>Login</a>
-          </h4>
-        </IonText>
+        <div>
+          <IonText color='light'>
+            <h5>
+              If you're already part of Taskia you can{' '}
+              <a href='/login'>Login</a>
+            </h5>
+          </IonText>
+        </div>
       </IonItemGroup>
     </div>
   );

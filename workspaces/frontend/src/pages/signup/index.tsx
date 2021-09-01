@@ -22,10 +22,10 @@ interface FormInput {
 
 export const SignupScreen: React.FC = () => {
   const [showErrorToast, setShowErrorToast] = useState(false);
-  const [error, setError] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>();
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string>();
   const history = useHistory();
-  const [success, setSuccess] = useState<string>();
   const { register, handleSubmit } = useForm<FormInput>();
   const { signupUser } = useContext(UserContext);
 
@@ -36,10 +36,10 @@ export const SignupScreen: React.FC = () => {
     const signupResult: { data: { signup: SignupDbResponse } } =
       await signupUser(data.email, data.name);
     if (!signupResult.data.signup.ok) {
-      setError(signupResult.data.signup.err);
+      setErrorMessage(signupResult.data.signup.err);
       setShowErrorToast(true);
     } else {
-      setSuccess('User created!');
+      setSuccessMessage('User created!');
       setShowSuccessToast(true);
       LocalStorageService.setUserIdInLocalStorage(
         signupResult.data.signup.newUserId
@@ -84,24 +84,26 @@ export const SignupScreen: React.FC = () => {
             SIGNUP
           </IonButton>
         </form>
-        <IonText color='light'>
-          <h4>
-            {/* //! Fix that this text is appearing inline and not below */}
-            If you're already part of Taskia you can <a href='/login'>Login</a>
-          </h4>
-          <IonToast
-            isOpen={showErrorToast}
-            message={error}
-            duration={1500}
-            color='danger'
-          />
-          <IonToast
-            isOpen={showSuccessToast}
-            message={success}
-            duration={1500}
-            color='success'
-          />
-        </IonText>
+        <div>
+          <IonText color='light'>
+            <h5>
+              If you're already part of Taskia you can{' '}
+              <a href='/login'>Login</a>
+            </h5>
+          </IonText>
+        </div>
+        <IonToast
+          isOpen={showErrorToast}
+          message={errorMessage}
+          duration={1500}
+          color='danger'
+        />
+        <IonToast
+          isOpen={showSuccessToast}
+          message={successMessage}
+          duration={1500}
+          color='success'
+        />
       </IonItemGroup>
     </div>
   );

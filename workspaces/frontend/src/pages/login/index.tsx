@@ -5,8 +5,9 @@ import {
   IonItemGroup,
   IonLabel,
   IonText,
+  IonToast,
 } from '@ionic/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import { useForm } from 'react-hook-form';
 import { DbUser } from '../../types';
@@ -16,6 +17,11 @@ import { LocalStorageService } from '../../services/LocalStorageService';
 import { useHistory } from 'react-router-dom';
 
 export const LoginScreen: React.FC = () => {
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [showSuccessToast, setShowSuccessToast] = useState(true);
+  const [successMessage, setSuccessMessage] = useState<string>();
+
   const { register, handleSubmit } = useForm();
   const history = useHistory();
   const [userLogin, { data, loading, error }] =
@@ -30,14 +36,22 @@ export const LoginScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    setShowErrorToast(false);
+    setShowSuccessToast(false);
+
     if (data && !error && !loading) {
       LocalStorageService.setUserIdInLocalStorage(data.getUserByEmail._id);
-      history.push('/');
-      window.location.reload();
+      setSuccessMessage('Login successful');
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        history.push('/');
+        window.location.reload();
+      }, 1500);
     }
 
     if (!data && error && !loading) {
-      console.error('There was an error');
+      setErrorMessage(error.message);
+      setShowErrorToast(true);
     }
   }, [data]);
 
@@ -67,12 +81,25 @@ export const LoginScreen: React.FC = () => {
             LOGIN
           </IonButton>
         </form>
-        <IonText color='light'>
-          <h4>
-            {/* //! Fix that this text is appearing inline and not below */}
-            <a href='/signup'>Signup</a> if you don't have an account
-          </h4>
-        </IonText>
+        <div>
+          <IonText color='light'>
+            <h5>
+              <a href='/signup'>Signup</a> if you don't have an account
+            </h5>
+          </IonText>
+        </div>
+        <IonToast
+          isOpen={showErrorToast}
+          message={errorMessage}
+          duration={1500}
+          color='danger'
+        />
+        <IonToast
+          isOpen={showSuccessToast}
+          message={successMessage}
+          duration={1500}
+          color='success'
+        />
       </IonItemGroup>
     </div>
   );
