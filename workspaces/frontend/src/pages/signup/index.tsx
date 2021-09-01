@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { UserContext } from '../../context';
 import { LocalStorageService } from '../../services/LocalStorageService';
-import { GenericDbResponse } from '../../types';
+import { SignupDbResponse } from '../../types';
 import styles from './index.module.scss';
 
 interface FormInput {
@@ -33,7 +33,7 @@ export const SignupScreen: React.FC = () => {
     setShowErrorToast(false);
     setShowSuccessToast(false);
 
-    const signupResult: { data: { signup: GenericDbResponse } } =
+    const signupResult: { data: { signup: SignupDbResponse } } =
       await signupUser(data.email, data.name);
     if (!signupResult.data.signup.ok) {
       setError(signupResult.data.signup.err);
@@ -41,7 +41,9 @@ export const SignupScreen: React.FC = () => {
     } else {
       setSuccess('User created!');
       setShowSuccessToast(true);
-      LocalStorageService.setUserIdInLocalStorage('6128c46141bd97276dac8260');
+      LocalStorageService.setUserIdInLocalStorage(
+        signupResult.data.signup.newUserId
+      );
       setTimeout(() => {
         history.push('/');
       }, 1500);

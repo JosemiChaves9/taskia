@@ -5,6 +5,7 @@ export const SIGNUP = gql`
     signup(email: $email, name: $name) {
       ok
       err
+      newUserId
     }
   }
 `;

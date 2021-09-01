@@ -33,3 +33,9 @@ export interface GenericDbResponse {
   err: string;
   updated?: DbProject;
 }
+
+export interface SignupDbResponse {
+  ok: boolean;
+  err: string;
+  newUserId: string;
+}

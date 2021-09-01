@@ -20,6 +20,12 @@ export interface DbTask {
 
 export interface GenericDbResponse {
   ok: boolean;
-  err: '';
+  err: string;
   updated?: DbProject;
+}
+
+export interface SignupDbResponse {
+  ok: boolean;
+  err: string;
+  newUserId: string;
 }

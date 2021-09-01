@@ -25,6 +25,11 @@ export const typeDefs = gql`
     ok: Boolean!
     err: String
   }
+  type SignupMutationResponse {
+    ok: Boolean!
+    err: String
+    newUserId: String
+  }
 
   type Query {
     getUserByEmail(email: String!): DbUser
@@ -34,7 +39,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    signup(email: String!, name: String!): GenericMutationResponse!
+    signup(email: String!, name: String!): SignupMutationResponse!
     newTask(taskName: String!, projectId: String!): GenericMutationResponse!
     newProject(projectName: String!, userId: String!): GenericMutationResponse!
     markTaskAsCompleted(
