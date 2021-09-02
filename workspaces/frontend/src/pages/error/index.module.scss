@@ -1,7 +1,12 @@
-.taskiaImage {
-  width: 100vw;
+.bgFix {
+  background-color: #123654;
+  height: 100vh;
 }
 
-h4 {
-  margin: 2rem;
+.taskiaLogo {
+  display: block;
+  margin: auto;
+  width: 80%;
+  position: relative;
+  top: 15%;
 }

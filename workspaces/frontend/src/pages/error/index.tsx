@@ -1,16 +1,14 @@
+import { IonImg, IonTitle } from '@ionic/react';
 import styles from './index.module.scss';
 
 export const Error = () => {
   return (
-    <>
-      <img
-        src='LogoTaskia.png'
-        alt='Logo of Taskia'
-        className={styles.taskiaImage}
+    <div className={`${styles.bgFix}`}>
+      <IonImg
+        src='./LogoTaskiaNoFondo.png'
+        className={`${styles.taskiaLogo}`}
       />
-      <h4 className='center-align'>
-        There was an unrecoverable error, try again later.
-      </h4>
-    </>
+      <IonTitle color='light'>The're was an error</IonTitle>
+    </div>
   );
 };
