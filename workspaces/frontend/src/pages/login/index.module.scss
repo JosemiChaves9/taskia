@@ -14,7 +14,7 @@
   top: 15%;
 }
 
-form {
+.loginInputs {
   width: 65%;
   margin: 0 auto;
   .inputField {
@@ -23,11 +23,11 @@ form {
   }
 }
 
-div {
+.loginScreenBottomTextContainer {
   display: flex;
   width: 100%;
   justify-content: center;
-  h5 {
+  .loginScreenBottomText {
     margin-top: 2rem;
   }
 }

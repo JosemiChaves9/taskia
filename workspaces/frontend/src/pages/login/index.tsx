@@ -81,9 +81,9 @@ export const LoginScreen: React.FC = () => {
             LOGIN
           </IonButton>
         </form>
-        <div>
+        <div className={`${styles.loginScreenBottomTextContainer}`}>
           <IonText color='light'>
-            <h5>
+            <h5 className={`${styles.loginScreenBottomText}`}>
               <a href='/signup'>Signup</a> if you don't have an account
             </h5>
           </IonText>

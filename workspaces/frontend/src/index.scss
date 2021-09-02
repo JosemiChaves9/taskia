@@ -1,6 +1,5 @@
-$primary-color: #0bc772;
-$collection-active-bg-color: #5cffb5;
-$collection-active-color: black;
+@import './variables.scss';
+
 /* Core CSS required for Ionic components to work properly */
 @import '@ionic/react/css/core.css';
 

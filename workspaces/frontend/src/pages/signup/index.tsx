@@ -61,7 +61,7 @@ export const SignupScreen: React.FC = () => {
           <h3 className='ion-text-center'>Ready to be part of Taskia?</h3>
         </IonText>
         <form
-          className={`${styles.loginInputs}`}
+          className={`${styles.signupInputs}`}
           onSubmit={handleSubmit(onSubmit)}>
           <IonItem className={`${styles.inputField}`}>
             <IonLabel position='stacked'>Name</IonLabel>
@@ -84,9 +84,9 @@ export const SignupScreen: React.FC = () => {
             SIGNUP
           </IonButton>
         </form>
-        <div>
+        <div className={`${styles.signupScreenBottomTextContainer}`}>
           <IonText color='light'>
-            <h5>
+            <h5 className={`${styles.signupScreenBottomText}`}>
               If you're already part of Taskia you can{' '}
               <a href='/login'>Login</a>
             </h5>

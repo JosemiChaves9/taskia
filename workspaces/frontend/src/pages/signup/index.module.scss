@@ -14,7 +14,7 @@
   top: 15%;
 }
 
-.loginInputs {
+.signupInputs {
   width: 65%;
   margin: 0 auto;
   .inputField {
@@ -23,11 +23,11 @@
   }
 }
 
-div {
+.signupScreenBottomTextContainer {
   display: flex;
   width: 100%;
   justify-content: center;
-  h5 {
+  .signupScreenBottomText {
     margin-top: 2rem;
   }
 }

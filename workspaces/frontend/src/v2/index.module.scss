@@ -1,33 +1,73 @@
-.bgFix {
-  background-color: #123654;
-  height: 100vh;
-}
+@import '../variables.scss';
 
-.taskiaLogo {
-  display: block;
-  margin: auto;
-  width: 80%;
-}
-
-.container {
-  position: relative;
-  top: 15%;
-}
-
-.loginInputs {
-  width: 65%;
-  margin: 0 auto;
-  .inputField {
-    border-radius: 10px;
-    margin: 2rem auto;
+.topBar {
+  color: white;
+  width: 100%;
+  height: 3.5rem;
+  background: $primary-color;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  font-size: 1.5rem;
+  p {
+    font-weight: bold;
+    margin: 0 auto;
+  }
+  .iconMenu {
+    font-size: 3rem;
   }
 }
 
-div {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  h5 {
-    margin-top: 2rem;
+.taskListContainer {
+  padding: 1.25rem;
+  .completed {
+    text-decoration: line-through;
+    color: $completed;
+  }
+  p {
+    padding-left: 0.5rem;
+  }
+}
+
+.sideMenu {
+  .pointerFix {
+    pointer-events: all;
+  }
+  .toolbarMenuButtons {
+    padding-left: 1.25rem;
+    font-size: 1.5rem;
+    .toolbarUserName {
+      padding-left: 1.25rem;
+      font-weight: medium;
+    }
+  }
+  .projectsMenu {
+    padding-left: 1.25rem;
+    line-height: 2rem;
+    .projectsChevronDown {
+      padding-right: 1.25rem;
+      font-size: 1.5rem;
+    }
+    .projectsList {
+      line-height: 4rem;
+      padding-left: 2.5rem;
+      .selected {
+        color: $primary-color;
+      }
+    }
+  }
+  .secondMenu {
+    margin-left: 0.25rem;
+    .secondMenuIcon {
+      padding-right: 1.25rem;
+    }
+  }
+}
+
+.popover {
+  .popoverTitle {
+    padding-left: 1rem;
   }
 }
