@@ -1,4 +1,6 @@
 import {
+  IonAlert,
+  IonBadge,
   IonButtons,
   IonCheckbox,
   IonContent,
@@ -32,6 +34,13 @@ export const Home: React.FC = () => {
     showPopover: false,
     event: undefined,
   });
+  const [deleteProjectConfirm, setDeleteProjectConfirm] =
+    useState<boolean>(false);
+  const [newProjectAlert, setNewProjectAlert] = useState<boolean>(false);
+  const [shareProjectAlert, setShareProjectlert] = useState<boolean>(false);
+  const [changeProjectNameAlert, setChangeProjectNameAlert] =
+    useState<boolean>(false);
+  const [newTaskAlert, setNewTaskAlert] = useState<boolean>(false);
 
   return (
     <div>
@@ -42,31 +51,34 @@ export const Home: React.FC = () => {
             className={`${styles.iconMenu}`}></IonIcon>
         </IonMenuToggle>
 
-        <p>Project name</p>
+        <p>*Project name*</p>
       </div>
       <div className={`${styles.taskListContainer} ion-padding`}>
         <IonList lines='none'>
           <IonItem>
             <IonCheckbox />
-            <p>Task 1</p>
+            <p>*Task name*</p>
           </IonItem>
           <IonItem>
             <IonCheckbox />
-            <p>Task 2</p>
+            <p>*Task name*</p>
           </IonItem>
           <IonItem>
             <IonCheckbox />
-            <p>Task 4</p>
+            <p>*Task name*</p>
           </IonItem>
           <IonItem className={`${styles.completed}`}>
             <IonCheckbox color='medium' checked={true} />
-            <p>Task 3</p>
+            <p>*Task name*</p>
           </IonItem>
           <IonItem className={`${styles.completed}`}>
             <IonCheckbox color='medium' checked={true} />
-            <p>Task 5</p>
+            <p>*Task name*</p>
           </IonItem>
-          <IonFab vertical='bottom' horizontal='end'>
+          <IonFab
+            vertical='bottom'
+            horizontal='end'
+            onClick={() => setNewTaskAlert(true)}>
             <IonFabButton color='base'>
               <IonIcon icon={add} color='light' />
             </IonFabButton>
@@ -89,7 +101,7 @@ export const Home: React.FC = () => {
               <IonTitle
                 color='light'
                 className={`${styles.toolbarUserName} ion-padding-start`}>
-                User Name
+                *User Name*
               </IonTitle>
             </IonButtons>
           </IonToolbar>
@@ -108,7 +120,7 @@ export const Home: React.FC = () => {
             </IonTitle>
             <IonList className={`${styles.projectsList}`}>
               <IonItem>
-                Project #1{' '}
+                *Project name*
                 <IonIcon
                   icon={ellipsisVertical}
                   color='dark'
@@ -119,12 +131,15 @@ export const Home: React.FC = () => {
                   }}
                 />
               </IonItem>
-              <IonItem>Project #2</IonItem>
-              <IonItem className={`${styles.selected}`}>Project #3</IonItem>
+              <IonItem>*Project name*</IonItem>
+              <IonItem className={`${styles.selected}`}>*Project name*</IonItem>
             </IonList>
           </IonList>
           <IonList lines='none' className={`${styles.secondMenu}`}>
-            <IonItem>
+            <IonItem
+              onClick={() => {
+                setNewProjectAlert(true);
+              }}>
               <IonIcon
                 icon={add}
                 color='dark'
@@ -152,12 +167,24 @@ export const Home: React.FC = () => {
         }>
         <IonList>
           <IonListHeader className={`${styles.popoverTitle}`}>
-            Project #4 Options
+            *Project name* Options
           </IonListHeader>
-          <IonItem>Change name</IonItem>
-          <IonItem>Share this project</IonItem>
-          <IonItem>Show participants</IonItem>
-          <IonItem>
+          <IonItem
+            onClick={() => {
+              setChangeProjectNameAlert(true);
+            }}>
+            Change name
+          </IonItem>
+          <IonItem
+            onClick={() => {
+              setShareProjectlert(true);
+            }}>
+            Share this project
+          </IonItem>
+          <IonItem
+            onClick={() => {
+              setDeleteProjectConfirm(true);
+            }}>
             <IonText color='danger'>Delete project</IonText>
           </IonItem>
           <IonItem
@@ -171,6 +198,79 @@ export const Home: React.FC = () => {
           </IonItem>
         </IonList>
       </IonPopover>
+      <IonAlert
+        isOpen={deleteProjectConfirm}
+        onDidDismiss={() => setDeleteProjectConfirm(false)}
+        cssClass='my-custom-class'
+        header={'Delete *Project name*'}
+        message={'Are you sure yo want to delete *Project name*?'}
+        buttons={['CLOSE', 'OK']}
+      />
+      <IonAlert
+        isOpen={changeProjectNameAlert}
+        header={'New name'}
+        subHeader='New name for *Project Name*'
+        buttons={[
+          'CLOSE',
+          {
+            text: 'OK',
+            handler: (e) => console.log(e.name1),
+          },
+        ]}
+        inputs={[
+          {
+            name: 'newProjectName',
+            type: 'text',
+            label: 'New project name',
+            placeholder: 'New project name',
+          },
+        ]}
+      />
+      <IonAlert
+        isOpen={newProjectAlert}
+        header={'New project'}
+        buttons={[
+          'CLOSE',
+          {
+            text: 'OK',
+            handler: (e) => console.log(e.name1),
+          },
+        ]}
+        inputs={[
+          {
+            name: 'newProjectName',
+            type: 'text',
+            label: 'New project name',
+            placeholder: 'New project name',
+          },
+        ]}
+      />
+      <IonAlert
+        isOpen={shareProjectAlert}
+        header={'Share *Project Name*'}
+        subHeader='Share this code with your friends'
+        message='*ShareCode*'
+        buttons={['CLOSE']}
+      />
+      <IonAlert
+        isOpen={newTaskAlert}
+        header={'New task'}
+        message='New task for *Project name*'
+        buttons={[
+          'CLOSE',
+          {
+            text: 'ADD',
+            handler: (e) => console.log(e.name1),
+          },
+        ]}
+        inputs={[
+          {
+            name: 'newTask',
+            type: 'text',
+            placeholder: 'New task name',
+          },
+        ]}
+      />
     </div>
   );
 };
