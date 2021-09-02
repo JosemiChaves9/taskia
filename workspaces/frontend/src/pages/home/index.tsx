@@ -1,112 +1,176 @@
-import './index.scss';
-import { useHistory } from 'react-router-dom';
-import { SidenavAndHeader } from '../../components/SidenavAndHeader';
-import { DbProject, DbTask } from '../../types';
-import { useEffect } from 'react';
-import { useMutation, useQuery, useSubscription } from '@apollo/client';
-import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
-import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
-import { LocalStorageService } from '../../services/LocalStorageService';
+import {
+  IonButtons,
+  IonCheckbox,
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  IonPopover,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
+import {
+  add,
+  arrowBack,
+  exitOutline,
+  ellipsisVertical,
+  chevronDown,
+} from 'ionicons/icons';
+import React from 'react';
 import { useState } from 'react';
-import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
-import { IonButton } from '@ionic/react';
+import styles from './index.module.scss';
 
-export const Home = () => {
-  let history = useHistory();
-  const [markTaskAsCompleted] = useMutation(MARK_TASK_AS_COMPLETED);
-  const [activeProject, setActiveProject] = useState<DbProject>();
-  const [userProjects, setUserProjects] = useState<DbProject[]>();
-  const { data } = useSubscription(CHANGES_IN_TASK);
-  const allUserProjects = useQuery<{
-    getAllUserProjects: DbProject[];
-  }>(GET_ALL_USER_PROJECTS, {
-    variables: {
-      userId: LocalStorageService.getUserIdFromLocalStorage(),
-    },
-    onError: () => {
-      history.push('/error');
-    },
+export const Home: React.FC = () => {
+  const [popoverState, setShowPopover] = useState({
+    showPopover: false,
+    event: undefined,
   });
 
-  useEffect(() => {
-    if (
-      allUserProjects.data &&
-      !allUserProjects.error &&
-      !allUserProjects.loading
-    ) {
-      setActiveProject(allUserProjects.data.getAllUserProjects[0]);
-      setUserProjects(allUserProjects.data.getAllUserProjects);
-    }
-  }, [allUserProjects.data]);
-
-  const markAsCompleted = (taskId: string) => {
-    markTaskAsCompleted({
-      variables: {
-        projectId: activeProject?._id,
-        taskId: taskId,
-      },
-    });
-  };
-  //TODO: use callback here, to the methods in SignupAndHeader
-  useEffect(() => {
-    allUserProjects.refetch();
-  }, [data]);
-
   return (
-    <>
-      <SidenavAndHeader
-        userProjects={userProjects}
-        activeProject={activeProject}
-        setActiveProject={setActiveProject}
-      />
-      <ul className='collection tasklist'>
-        {activeProject ? (
-          activeProject.tasks?.map((task: DbTask) => {
-            if (!task.completed) {
-              return (
-                <li
-                  className='collection-item'
-                  key={task.name}
-                  onClick={() => markAsCompleted(task._id)}>
-                  <i className='material-icons'>check_box_outline_blank</i>
-                  {task.name}
-                </li>
-              );
-            }
-          })
-        ) : (
-          <h4>No tasks yet!</h4>
-        )}
-        {activeProject ? (
-          activeProject.tasks?.map((task: DbTask) => {
-            if (task.completed) {
-              return (
-                <li
-                  className='collection-item finished'
-                  key={task.name}
-                  onClick={() => markAsCompleted(task._id)}>
-                  <i className='material-icons'>check_box</i>
-                  {task.name}
-                </li>
-              );
-            }
-          })
-        ) : (
-          <h4>No tasks yet!</h4>
-        )}
-      </ul>
-      <div className='container-button'>
-        <button
-          className='material-icons add-task'
-          onClick={() =>
-            history.push(
-              `/newTask/${activeProject?.name}/${activeProject?._id}`
-            )
-          }>
-          add_circle
-        </button>
-        <IonButton>I'm a button bitch</IonButton>
+    <div>
+      <div className={`${styles.topBar} ion-padding-horizontal`}>
+        <IonMenuToggle className={`${styles.iconMenuContainer}`}>
+          <IonIcon
+            name='menu-outline'
+            className={`${styles.iconMenu}`}></IonIcon>
+        </IonMenuToggle>
+
+        <p>Project name</p>
       </div>
-    </>
+      <div className={`${styles.taskListContainer} ion-padding`}>
+        <IonList lines='none'>
+          <IonItem>
+            <IonCheckbox />
+            <p>Task 1</p>
+          </IonItem>
+          <IonItem>
+            <IonCheckbox />
+            <p>Task 2</p>
+          </IonItem>
+          <IonItem>
+            <IonCheckbox />
+            <p>Task 4</p>
+          </IonItem>
+          <IonItem className={`${styles.completed}`}>
+            <IonCheckbox color='medium' checked={true} />
+            <p>Task 3</p>
+          </IonItem>
+          <IonItem className={`${styles.completed}`}>
+            <IonCheckbox color='medium' checked={true} />
+            <p>Task 5</p>
+          </IonItem>
+          <IonFab vertical='bottom' horizontal='end'>
+            <IonFabButton color='base'>
+              <IonIcon icon={add} color='light' />
+            </IonFabButton>
+          </IonFab>
+        </IonList>
+      </div>
+      <IonMenu
+        side='start'
+        contentId='projects'
+        className={`${styles.sideMenu}`}
+        id='projects'>
+        <IonHeader>
+          <IonToolbar color='base'>
+            <IonButtons
+              slot='start'
+              className={`${styles.toolbarMenuButtons} ion-padding-start`}>
+              <IonMenuToggle menu='projects' autoHide={false}>
+                <IonIcon icon={arrowBack} color='light' />
+              </IonMenuToggle>
+              <IonTitle
+                color='light'
+                className={`${styles.toolbarUserName} ion-padding-start`}>
+                User Name
+              </IonTitle>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent id='projects' className={`${styles.pointerFix}`}>
+          <IonList
+            lines='none'
+            id='projects'
+            className={`${styles.projectsMenu} ion-padding-start`}>
+            <IonTitle>
+              <IonIcon
+                icon={chevronDown}
+                className={`${styles.projectsChevronDown} ion-padding-end`}
+              />{' '}
+              Projects
+            </IonTitle>
+            <IonList className={`${styles.projectsList}`}>
+              <IonItem>
+                Project #1{' '}
+                <IonIcon
+                  icon={ellipsisVertical}
+                  color='dark'
+                  slot='end'
+                  onClick={(e: any) => {
+                    e.persist();
+                    setShowPopover({ showPopover: true, event: e });
+                  }}
+                />
+              </IonItem>
+              <IonItem>Project #2</IonItem>
+              <IonItem className={`${styles.selected}`}>Project #3</IonItem>
+            </IonList>
+          </IonList>
+          <IonList lines='none' className={`${styles.secondMenu}`}>
+            <IonItem>
+              <IonIcon
+                icon={add}
+                color='dark'
+                className={`${styles.secondMenuIcon} ion-padding-end`}
+              />
+              <p>New project</p>
+            </IonItem>
+            <IonItem>
+              <IonIcon
+                icon={exitOutline}
+                color='dark'
+                className={`${styles.secondMenuIcon} ion-padding-end`}
+              />
+              <p>Logout</p>
+            </IonItem>
+          </IonList>
+        </IonContent>
+      </IonMenu>
+      <IonPopover
+        cssClass={`${styles.popover}`}
+        event={popoverState.event}
+        isOpen={popoverState.showPopover}
+        onDidDismiss={() =>
+          setShowPopover({ showPopover: false, event: undefined })
+        }>
+        <IonList>
+          <IonListHeader className={`${styles.popoverTitle}`}>
+            Project #4 Options
+          </IonListHeader>
+          <IonItem>Change name</IonItem>
+          <IonItem>Share this project</IonItem>
+          <IonItem>Show participants</IonItem>
+          <IonItem>
+            <IonText color='danger'>Delete project</IonText>
+          </IonItem>
+          <IonItem
+            onClick={() =>
+              setShowPopover({
+                showPopover: !popoverState.showPopover,
+                event: undefined,
+              })
+            }>
+            Close
+          </IonItem>
+        </IonList>
+      </IonPopover>
+    </div>
   );
 };

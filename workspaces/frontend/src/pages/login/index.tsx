@@ -74,6 +74,7 @@ export const LoginScreen: React.FC = () => {
             <IonInput
               placeholder='example@email.com'
               {...register('email', { required: true })}
+              clearInput={true}
             />
           </IonItem>
 

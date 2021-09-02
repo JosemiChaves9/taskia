@@ -92,19 +92,19 @@ export const SignupScreen: React.FC = () => {
             </h5>
           </IonText>
         </div>
-        <IonToast
-          isOpen={showErrorToast}
-          message={errorMessage}
-          duration={1500}
-          color='danger'
-        />
-        <IonToast
-          isOpen={showSuccessToast}
-          message={successMessage}
-          duration={1500}
-          color='success'
-        />
       </IonItemGroup>
+      <IonToast
+        isOpen={showErrorToast}
+        message={errorMessage}
+        duration={1500}
+        color='danger'
+      />
+      <IonToast
+        isOpen={showSuccessToast}
+        message={successMessage}
+        duration={1500}
+        color='success'
+      />
     </div>
   );
 };
