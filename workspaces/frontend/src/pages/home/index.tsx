@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from '@apollo/client';
 import {
   IonButtons,
   IonCheckbox,
@@ -18,15 +19,22 @@ import {
   arrowBack,
   exitOutline,
   ellipsisVertical,
-  chevronDown,
+  chevronForwardOutline,
+  chevronDownOutline,
 } from 'ionicons/icons';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { NewProjectAlert, NewTaskAlert } from '../../components/Alerts';
 import { MenuPopover } from '../../components/MenuPopover';
+import { UserContext } from '../../context';
+import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
+import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
+import { LocalStorageService } from '../../services/LocalStorageService';
+import { DbProject, GenericDbResponse } from '../../types';
 import styles from './index.module.scss';
 
 export const Home: React.FC = () => {
+  const { user } = useContext(UserContext);
   const [popoverState, setShowPopover] = useState({
     showPopover: false,
     event: undefined,
@@ -35,6 +43,26 @@ export const Home: React.FC = () => {
     useState<boolean>(false);
   const [newTaskAlertVisibility, setNewTaskAlertVisibility] =
     useState<boolean>(false);
+  const [activeProject, setActiveProject] = useState<DbProject>();
+  const [showProjects, setShowProjects] = useState<boolean>(false);
+
+  const { data } = useQuery<{ getAllUserProjects: DbProject[] }>(
+    GET_ALL_USER_PROJECTS,
+    {
+      skip: !!!user,
+      variables: {
+        userId: user?._id,
+      },
+    }
+  );
+
+  const [markTaskAsCompleted] = useMutation<{
+    markTaskAsCompleted: GenericDbResponse;
+  }>(MARK_TASK_AS_COMPLETED);
+
+  useEffect(() => {
+    setActiveProject(data?.getAllUserProjects[1]);
+  }, [data]);
 
   return (
     <div>
@@ -45,30 +73,32 @@ export const Home: React.FC = () => {
             className={`${styles.iconMenu}`}></IonIcon>
         </IonMenuToggle>
 
-        <p>*Project name*</p>
+        <p>{activeProject?.name}</p>
       </div>
       <div className={`${styles.taskListContainer} ion-padding`}>
         <IonList lines='none'>
-          <IonItem>
-            <IonCheckbox />
-            <p>*Task name*</p>
-          </IonItem>
-          <IonItem>
-            <IonCheckbox />
-            <p>*Task name*</p>
-          </IonItem>
-          <IonItem>
-            <IonCheckbox />
-            <p>*Task name*</p>
-          </IonItem>
-          <IonItem className={`${styles.completed}`}>
-            <IonCheckbox color='medium' checked={true} />
-            <p>*Task name*</p>
-          </IonItem>
-          <IonItem className={`${styles.completed}`}>
-            <IonCheckbox color='medium' checked={true} />
-            <p>*Task name*</p>
-          </IonItem>
+          {activeProject?.tasks?.map((task) => {
+            return task.completed ? (
+              <IonItem className={`${styles.completed}`}>
+                <IonCheckbox color='medium' checked={true} />
+                <p>{task.name}</p>
+              </IonItem>
+            ) : (
+              <IonItem
+                onClick={() =>
+                  markTaskAsCompleted({
+                    variables: {
+                      projectId: activeProject._id,
+                      taskId: task._id,
+                    },
+                  })
+                }>
+                <IonCheckbox />
+                <p>{task.name}</p>
+              </IonItem>
+            );
+          })}
+
           <IonFab
             vertical='bottom'
             horizontal='end'
@@ -95,39 +125,52 @@ export const Home: React.FC = () => {
               <IonTitle
                 color='light'
                 className={`${styles.toolbarUserName} ion-padding-start`}>
-                *User Name*
+                {user?.name}
               </IonTitle>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
+
         <IonContent id='projects' className={`${styles.pointerFix}`}>
           <IonList
             lines='none'
             id='projects'
             className={`${styles.projectsMenu} ion-padding-start`}>
-            <IonTitle>
+            <IonTitle onClick={() => setShowProjects(!showProjects)}>
               <IonIcon
-                icon={chevronDown}
+                icon={showProjects ? chevronDownOutline : chevronForwardOutline}
                 className={`${styles.projectsChevronDown} ion-padding-end`}
-              />{' '}
+              />
               Projects
             </IonTitle>
-            <IonList className={`${styles.projectsList}`}>
-              <IonItem>
-                *Project name*
-                <IonIcon
-                  icon={ellipsisVertical}
-                  color='dark'
-                  slot='end'
-                  onClick={(e: any) => {
-                    e.persist();
-                    setShowPopover({ showPopover: true, event: e });
-                  }}
-                />
-              </IonItem>
-              <IonItem>*Project name*</IonItem>
-              <IonItem className={`${styles.selected}`}>*Project name*</IonItem>
-            </IonList>
+            {showProjects && (
+              <IonList className={`${styles.projectsList}`}>
+                {data?.getAllUserProjects.map((project) => {
+                  return (
+                    <IonItem
+                      className={
+                        activeProject?.name === project.name
+                          ? styles.selected
+                          : ''
+                      }>
+                      {/* //! Make this prettier */}
+                      <p>{project.name}</p>
+                      {activeProject?.name === project.name && (
+                        <IonIcon
+                          icon={ellipsisVertical}
+                          color='dark'
+                          slot='end'
+                          onClick={(e: any) => {
+                            e.persist();
+                            setShowPopover({ showPopover: true, event: e });
+                          }}
+                        />
+                      )}
+                    </IonItem>
+                  );
+                })}
+              </IonList>
+            )}
           </IonList>
           <IonList lines='none' className={`${styles.secondMenu}`}>
             <IonItem
@@ -141,7 +184,10 @@ export const Home: React.FC = () => {
               />
               <p>New project</p>
             </IonItem>
-            <IonItem>
+            <IonItem
+              onClick={() =>
+                LocalStorageService.removeUserIdFromLocalStorage()
+              }>
               <IonIcon
                 icon={exitOutline}
                 color='dark'
@@ -155,8 +201,13 @@ export const Home: React.FC = () => {
       <MenuPopover
         popoverState={popoverState}
         setShowPopover={setShowPopover}
+        activeProject={activeProject as DbProject}
       />
-      <NewTaskAlert newTaskAlertVisibility={newTaskAlertVisibility} />
+      <NewTaskAlert
+        newTaskAlertVisibility={newTaskAlertVisibility}
+        projectId={activeProject?._id as string}
+        projectName={activeProject?.name as string}
+      />
       <NewProjectAlert newProjectAlertVisibility={newProjectAlertVisibility} />
     </div>
   );
