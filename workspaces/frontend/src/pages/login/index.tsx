@@ -36,23 +36,7 @@ export const LoginScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    setShowErrorToast(false);
-    setShowSuccessToast(false);
-
-    if (data && !error && !loading) {
-      LocalStorageService.setUserIdInLocalStorage(data.getUserByEmail._id);
-      setSuccessMessage('Login successful');
-      setShowSuccessToast(true);
-      setTimeout(() => {
-        history.push('/');
-        window.location.reload();
-      }, 1500);
-    }
-
-    if (!data && error && !loading) {
-      setErrorMessage(error.message);
-      setShowErrorToast(true);
-    }
+    console.log(data);
   }, [data]);
 
   return (

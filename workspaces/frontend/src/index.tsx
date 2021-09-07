@@ -13,23 +13,23 @@ import { Error } from './pages/error';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { IonApp } from '@ionic/react';
 import { V2 } from './v2';
+import { LoadingScreen } from './pages/LoadingScreen/LoadingScreen';
 
 ReactDOM.render(
   <IonApp>
     <ApolloProvider client={apolloClient}>
       <Router>
-        {/* <ContextProvider> */}
-        <React.StrictMode>
-          <Switch>
-            <Route exact path='/' component={Home} />
-            <Route path='/login' component={LoginScreen} />
-            <Route path='/signup' component={SignupScreen} />
-
-            <Route path='/error' component={Error} />
-            <Route path='/v2' component={V2} />
-          </Switch>
-        </React.StrictMode>
-        {/* </ContextProvider> */}
+        <ContextProvider>
+          <React.StrictMode>
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route path='/login' component={LoginScreen} />
+              <Route path='/signup' component={SignupScreen} />
+              <Route path='/error' component={Error} />
+              <Route path='/loading' component={LoadingScreen} />
+            </Switch>
+          </React.StrictMode>
+        </ContextProvider>
       </Router>
     </ApolloProvider>
   </IonApp>,

@@ -1,6 +1,4 @@
 import {
-  IonAlert,
-  IonBadge,
   IonButtons,
   IonCheckbox,
   IonContent,
@@ -10,11 +8,8 @@ import {
   IonIcon,
   IonItem,
   IonList,
-  IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonPopover,
-  IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
@@ -27,6 +22,8 @@ import {
 } from 'ionicons/icons';
 import React from 'react';
 import { useState } from 'react';
+import { NewProjectAlert, NewTaskAlert } from '../../components/Alerts';
+import { MenuPopover } from '../../components/MenuPopover';
 import styles from './index.module.scss';
 
 export const Home: React.FC = () => {
@@ -34,13 +31,10 @@ export const Home: React.FC = () => {
     showPopover: false,
     event: undefined,
   });
-  const [deleteProjectConfirm, setDeleteProjectConfirm] =
+  const [newProjectAlertVisibility, setNewProjectAlertVisibility] =
     useState<boolean>(false);
-  const [newProjectAlert, setNewProjectAlert] = useState<boolean>(false);
-  const [shareProjectAlert, setShareProjectlert] = useState<boolean>(false);
-  const [changeProjectNameAlert, setChangeProjectNameAlert] =
+  const [newTaskAlertVisibility, setNewTaskAlertVisibility] =
     useState<boolean>(false);
-  const [newTaskAlert, setNewTaskAlert] = useState<boolean>(false);
 
   return (
     <div>
@@ -78,7 +72,7 @@ export const Home: React.FC = () => {
           <IonFab
             vertical='bottom'
             horizontal='end'
-            onClick={() => setNewTaskAlert(true)}>
+            onClick={() => setNewTaskAlertVisibility(true)}>
             <IonFabButton color='base'>
               <IonIcon icon={add} color='light' />
             </IonFabButton>
@@ -138,7 +132,7 @@ export const Home: React.FC = () => {
           <IonList lines='none' className={`${styles.secondMenu}`}>
             <IonItem
               onClick={() => {
-                setNewProjectAlert(true);
+                setNewProjectAlertVisibility(true);
               }}>
               <IonIcon
                 icon={add}
@@ -158,119 +152,12 @@ export const Home: React.FC = () => {
           </IonList>
         </IonContent>
       </IonMenu>
-      <IonPopover
-        cssClass={`${styles.popover}`}
-        event={popoverState.event}
-        isOpen={popoverState.showPopover}
-        onDidDismiss={() =>
-          setShowPopover({ showPopover: false, event: undefined })
-        }>
-        <IonList>
-          <IonListHeader className={`${styles.popoverTitle}`}>
-            *Project name* Options
-          </IonListHeader>
-          <IonItem
-            onClick={() => {
-              setChangeProjectNameAlert(true);
-            }}>
-            Change name
-          </IonItem>
-          <IonItem
-            onClick={() => {
-              setShareProjectlert(true);
-            }}>
-            Share this project
-          </IonItem>
-          <IonItem
-            onClick={() => {
-              setDeleteProjectConfirm(true);
-            }}>
-            <IonText color='danger'>Delete project</IonText>
-          </IonItem>
-          <IonItem
-            onClick={() =>
-              setShowPopover({
-                showPopover: !popoverState.showPopover,
-                event: undefined,
-              })
-            }>
-            Close
-          </IonItem>
-        </IonList>
-      </IonPopover>
-      <IonAlert
-        isOpen={deleteProjectConfirm}
-        onDidDismiss={() => setDeleteProjectConfirm(false)}
-        cssClass='my-custom-class'
-        header={'Delete *Project name*'}
-        message={'Are you sure yo want to delete *Project name*?'}
-        buttons={['CLOSE', 'OK']}
+      <MenuPopover
+        popoverState={popoverState}
+        setShowPopover={setShowPopover}
       />
-      <IonAlert
-        isOpen={changeProjectNameAlert}
-        header={'New name'}
-        subHeader='New name for *Project Name*'
-        buttons={[
-          'CLOSE',
-          {
-            text: 'OK',
-            handler: (e) => console.log(e.name1),
-          },
-        ]}
-        inputs={[
-          {
-            name: 'newProjectName',
-            type: 'text',
-            label: 'New project name',
-            placeholder: 'New project name',
-          },
-        ]}
-      />
-      <IonAlert
-        isOpen={newProjectAlert}
-        header={'New project'}
-        buttons={[
-          'CLOSE',
-          {
-            text: 'OK',
-            handler: (e) => console.log(e.name1),
-          },
-        ]}
-        inputs={[
-          {
-            name: 'newProjectName',
-            type: 'text',
-            label: 'New project name',
-            placeholder: 'New project name',
-          },
-        ]}
-      />
-      <IonAlert
-        isOpen={shareProjectAlert}
-        header={'Share *Project Name*'}
-        subHeader='Share this code with your friends'
-        message='*ShareCode*'
-        buttons={['CLOSE']}
-      />
-      <IonAlert
-        isOpen={newTaskAlert}
-        header={'New task'}
-        message='New task for *Project name*'
-        buttons={[
-          'CLOSE',
-          {
-            text: 'ADD',
-            handler: (e) => console.log(e.name1),
-          },
-        ]}
-        inputs={[
-          {
-            name: 'newTask',
-            type: 'text',
-            placeholder: 'New task name',
-          },
-        ]}
-      />
+      <NewTaskAlert newTaskAlertVisibility={newTaskAlertVisibility} />
+      <NewProjectAlert newProjectAlertVisibility={newProjectAlertVisibility} />
     </div>
   );
 };

@@ -22,7 +22,7 @@ const splitLink = split(
       definition.operation === 'subscription'
     );
   },
-  wsLink,
+  //wsLink,
   httpLink
 );
 

@@ -2,9 +2,9 @@ import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
   type DbUser {
-    _id: ID!
-    name: String!
-    email: String!
+    _id: ID
+    name: String
+    email: String
   }
 
   type DbTask {
