@@ -32,11 +32,12 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
     variables: { userId: LocalStorageService.getUserIdFromLocalStorage() },
   });
 
-  useEffect(() => {
-    if (!LocalStorageService.getUserIdFromLocalStorage()) {
-      history.push('/login');
-    }
-  }, []);
+  //! Fix a bug where you can't go to signup, beacuse always redirect to login if no user is set
+  // useEffect(() => {
+  //   if (!LocalStorageService.getUserIdFromLocalStorage()) {
+  //     history.push('/login');
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (data && !loading && !error) {

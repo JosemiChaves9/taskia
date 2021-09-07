@@ -1,4 +1,4 @@
-import { GenericDbResponse } from '../../../../DbTypes';
+import { SignupDbResponse } from '../../../../DbTypes';
 import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
 
@@ -14,16 +14,19 @@ export const signup = async (
       err: 'User already exists',
     };
   }
+
+  //! Check if share code already exists
   const shareCode = Math.floor(Math.random() * 99999);
 
-  return requestWithTimeout<GenericDbResponse>(
+  return requestWithTimeout<SignupDbResponse>(
     5000,
     DbServiceSingleton.getInstance()
       .newUser(email, name, shareCode)
-      .then(() => {
+      .then((userId) => {
         return {
           ok: true,
           err: '',
+          newUserId: userId,
         };
       })
   );

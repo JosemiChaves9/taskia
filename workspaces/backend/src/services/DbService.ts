@@ -21,11 +21,7 @@ export class DbService {
     });
   }
 
-  newUser(
-    email: string,
-    name: string,
-    shareCode: number
-  ): Promise<GenericDbResponse> {
+  newUser(email: string, name: string, shareCode: number): Promise<string> {
     return this.getDb()
       .collection('users')
       .insertOne({ name, email })
@@ -36,13 +32,10 @@ export class DbService {
             name: 'Default',
             participants: [res.insertedId],
             shareCode: shareCode,
+          })
+          .then(() => {
+            return res.insertedId;
           });
-      })
-      .then(() => {
-        return {
-          ok: true,
-          err: '',
-        };
       });
   }
 

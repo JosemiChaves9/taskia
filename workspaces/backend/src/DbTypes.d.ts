@@ -2,6 +2,7 @@ export interface DbUser {
   _id: string;
   name: string;
   email: string;
+  password: string;
 }
 
 export interface DbProject {
@@ -31,4 +32,10 @@ export interface GenericDbResponse {
   ok: boolean;
   err: string;
   updated?: DbProject;
+}
+
+export interface SignupDbResponse {
+  ok: boolean;
+  err: string;
+  newUserId: string;
 }
