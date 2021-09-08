@@ -88,6 +88,7 @@ export const MenuPopover = ({
       <ChangeProjectNameAlert
         changeProjectNameAlertVisibility={changeProjectNameAlertVisiblity}
         projectId={activeProject ? activeProject._id : ''}
+        projectName={activeProject ? activeProject.name : ''}
       />
       <ShareProjectAlert
         shareProjectAlertVisibility={shareProjectAlertVisibility}

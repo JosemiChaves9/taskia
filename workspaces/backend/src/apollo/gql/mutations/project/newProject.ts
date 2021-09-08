@@ -1,6 +1,7 @@
 import { GenericDbResponse } from '../../../../DbTypes';
 import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
+import { publishChangesInProject } from '../../subscriptions/changesInProject';
 
 export const newProject = (
   _source: any,
@@ -13,6 +14,8 @@ export const newProject = (
     DbServiceSingleton.getInstance()
       .newProject(projectName, userId, shareCode)
       .then(() => {
+        publishChangesInProject();
+
         return {
           ok: true,
           err: '',

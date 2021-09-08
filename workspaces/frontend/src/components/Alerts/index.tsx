@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client';
 import { IonAlert, IonToast } from '@ionic/react';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
+import { CHANGE_PROJECT_NAME } from '../../gql/mutation/changeProjectName';
 import { DELETE_PROJECT } from '../../gql/mutation/deleteProject';
 import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/mutation/joinToAnExistingProject';
 import { NEW_PROJECT } from '../../gql/mutation/newProject';
@@ -85,20 +86,29 @@ export const DeleteProjectConfirmationAlert = ({
 export const ChangeProjectNameAlert = ({
   changeProjectNameAlertVisibility,
   projectId,
+  projectName,
 }: {
   changeProjectNameAlertVisibility: boolean;
   projectId: string;
+  projectName: string;
 }) => {
+  const [changeProjectName] = useMutation(CHANGE_PROJECT_NAME);
   return (
     <IonAlert
       isOpen={changeProjectNameAlertVisibility}
       header={'New name'}
-      subHeader='New name for *Project Name*'
+      subHeader={`New name for ${projectName}`}
       buttons={[
         'CLOSE',
         {
           text: 'OK',
-          handler: (e) => console.log(e.name1),
+          handler: (e) =>
+            changeProjectName({
+              variables: {
+                projectId: projectId,
+                newProjectName: e.newProjectName,
+              },
+            }),
         },
       ]}
       inputs={[
@@ -228,9 +238,6 @@ export const NewTaskAlert = ({
       if (data?.newTask.ok) {
         setSuccessToastVisibility(true);
         setSuccessToastMesage('Task created successfully');
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
       } else {
         setErrorToastVisibility(true);
         setErrorToastMesage(data?.newTask.err);

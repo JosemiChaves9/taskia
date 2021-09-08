@@ -155,7 +155,11 @@ export class DbService {
       .collection('projects')
       .findOneAndUpdate(
         { _id: new ObjectID(projectId) },
-        { name: newProjectName }
+        {
+          $set: {
+            name: newProjectName,
+          },
+        }
       );
   }
 

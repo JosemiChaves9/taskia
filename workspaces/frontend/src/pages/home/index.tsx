@@ -25,6 +25,7 @@ import {
 } from 'ionicons/icons';
 import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
+import { useParams } from 'react-router';
 import {
   JoinToProjectAlert,
   NewProjectAlert,
@@ -34,9 +35,10 @@ import { MenuPopover } from '../../components/MenuPopover';
 import { UserContext } from '../../context';
 import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
 import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
+import { CHANGES_IN_PROJECT } from '../../gql/susbcription/changesInProject';
 import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
 import { LocalStorageService } from '../../services/LocalStorageService';
-import { DbProject, GenericDbResponse } from '../../types';
+import { DbProject, DbTask, GenericDbResponse } from '../../types';
 import styles from './index.module.scss';
 
 export const Home: React.FC = () => {
@@ -53,8 +55,8 @@ export const Home: React.FC = () => {
   const [showProjects, setShowProjects] = useState<boolean>(false);
   const [joinProjectAlertVisibility, setJoinProjectAlertVisibility] =
     useState<boolean>(false);
-
   const changesInTask = useSubscription(CHANGES_IN_TASK);
+  const changesInProject = useSubscription(CHANGES_IN_PROJECT);
 
   const { data, refetch } = useQuery<{ getAllUserProjects: DbProject[] }>(
     GET_ALL_USER_PROJECTS,
@@ -76,7 +78,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     refetch();
-  }, [changesInTask.data, refetch]);
+  }, [changesInTask.data, changesInProject.data, refetch]);
 
   return (
     <div>
@@ -113,16 +115,15 @@ export const Home: React.FC = () => {
               </IonItem>
             );
           })}
-
-          <IonFab
-            vertical='bottom'
-            horizontal='end'
-            onClick={() => setNewTaskAlertVisibility(true)}>
-            <IonFabButton color='base'>
-              <IonIcon icon={add} color='light' />
-            </IonFabButton>
-          </IonFab>
         </IonList>
+        <IonFab
+          vertical='bottom'
+          horizontal='end'
+          onClick={() => setNewTaskAlertVisibility(true)}>
+          <IonFabButton color='base'>
+            <IonIcon icon={add} color='light' />
+          </IonFabButton>
+        </IonFab>
       </div>
       <IonMenu
         side='start'
