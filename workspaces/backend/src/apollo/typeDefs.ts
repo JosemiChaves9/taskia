@@ -50,6 +50,11 @@ export const typeDefs = gql`
       shareCode: Int!
       userId: String!
     ): GenericMutationResponse!
+    deleteProject(projectId: String!): GenericMutationResponse!
+    changeProjectName(
+      projectId: String!
+      newProjectName: String!
+    ): GenericMutationResponse!
   }
 
   type Subscription {

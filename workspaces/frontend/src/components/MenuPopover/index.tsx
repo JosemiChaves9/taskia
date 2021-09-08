@@ -6,6 +6,7 @@ import {
   IonText,
 } from '@ionic/react';
 import React, { useState } from 'react';
+import { act } from 'react-dom/test-utils';
 import { DbProject } from '../../types';
 import {
   ChangeProjectNameAlert,
@@ -82,13 +83,17 @@ export const MenuPopover = ({
       <DeleteProjectConfirmationAlert
         deleteProjectConfirmVisibility={deleteProjectConfirmVisibility}
         setDeleteProjectConfirmVisibility={setDeleteProjectConfirmVisibility}
-        projectName={activeProject.name}
+        projectName={activeProject ? activeProject.name : ''} //! Fix, crashing because no project set
+        projectId={activeProject ? activeProject._id : ''}
       />
       <ChangeProjectNameAlert
         changeProjectNameAlertVisibility={changeProjectNameAlertVisiblity}
+        projectId={activeProject ? activeProject._id : ''}
       />
       <ShareProjectAlert
         shareProjectAlertVisibility={shareProjectAlertVisibility}
+        projectName={activeProject ? activeProject.name : ''}
+        shareProjectCode={activeProject ? activeProject.shareCode : 0}
       />
     </>
   );

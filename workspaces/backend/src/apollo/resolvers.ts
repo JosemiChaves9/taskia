@@ -1,5 +1,6 @@
 import { IResolvers } from 'apollo-server';
 import { PubSubSingleton } from '../services/pubSubSignleton';
+import { deleteProject } from './gql/mutations/project/deleteProject';
 import { joinToExistingProject } from './gql/mutations/project/joinToExistingProject';
 import { newProject } from './gql/mutations/project/newProject';
 import { markTaskAsCompleted } from './gql/mutations/task/markTaskAsCompleted';
@@ -23,6 +24,7 @@ export const resolvers: IResolvers = {
     newProject: newProject,
     markTaskAsCompleted: markTaskAsCompleted,
     joinToExistingProject: joinToExistingProject,
+    deleteProject: deleteProject,
   },
   Subscription: {
     changesInProject: {

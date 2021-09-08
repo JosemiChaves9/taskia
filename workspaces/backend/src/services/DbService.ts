@@ -144,6 +144,21 @@ export class DbService {
       );
   }
 
+  deleteProject(projectId: string) {
+    return this.getDb()
+      .collection('projects')
+      .findOneAndDelete({ _id: new ObjectID(projectId) });
+  }
+
+  changeProjectName(projectId: string, newProjectName: string) {
+    return this.getDb()
+      .collection('projects')
+      .findOneAndUpdate(
+        { _id: new ObjectID(projectId) },
+        { name: newProjectName }
+      );
+  }
+
   private getDb(): Db {
     if (!this.db) {
       throw new Error("Can't get db");

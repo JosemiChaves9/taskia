@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client';
 import { IonAlert, IonToast } from '@ionic/react';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
+import { DELETE_PROJECT } from '../../gql/mutation/deleteProject';
 import { NEW_PROJECT } from '../../gql/mutation/newProject';
 import { NEW_TASK } from '../../gql/mutation/newTask';
 import { GenericDbResponse } from '../../types';
@@ -10,34 +11,82 @@ export const DeleteProjectConfirmationAlert = ({
   deleteProjectConfirmVisibility,
   setDeleteProjectConfirmVisibility,
   projectName,
+  projectId,
 }: {
   deleteProjectConfirmVisibility: boolean;
   setDeleteProjectConfirmVisibility: React.Dispatch<
     React.SetStateAction<boolean>
   >;
   projectName: string;
+  projectId: string;
 }) => {
+  const [successToastVisibility, setSuccessToastVisibility] =
+    useState<boolean>(false);
+  const [successToastMessage, setSuccessToastMesage] = useState<string>();
+  const [errorToastVisibility, setErrorToastVisibility] =
+    useState<boolean>(false);
+  const [errorToastMessage, setErrorToastMesage] = useState<string>();
+  const [deleteProject, { data, called }] = useMutation<{
+    deleteProject: GenericDbResponse;
+  }>(DELETE_PROJECT);
+
+  useEffect(() => {
+    if (called) {
+      if (data?.deleteProject.ok) {
+        setSuccessToastVisibility(true);
+        setSuccessToastMesage('Project deleted successfully');
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      } else {
+        setErrorToastVisibility(true);
+        setErrorToastMesage(data?.deleteProject.err);
+      }
+    }
+  }, [data]);
   return (
-    <IonAlert
-      isOpen={deleteProjectConfirmVisibility}
-      onDidDismiss={() => setDeleteProjectConfirmVisibility(false)}
-      header={`Delete ${projectName}`}
-      message={'Are you sure yo want to delete *Project name*?'}
-      buttons={[
-        'CLOSE',
-        {
-          text: 'OK',
-          handler: () => {},
-        },
-      ]}
-    />
+    <>
+      <IonAlert
+        isOpen={deleteProjectConfirmVisibility}
+        onDidDismiss={() => setDeleteProjectConfirmVisibility(false)}
+        header={`Delete ${projectName}`}
+        message={`Are you sure yo want to delete ${projectName}?`}
+        buttons={[
+          'CLOSE',
+          {
+            text: 'OK',
+            handler: () => {
+              deleteProject({
+                variables: {
+                  projectId: projectId,
+                },
+              });
+            },
+          },
+        ]}
+      />
+      <IonToast
+        isOpen={successToastVisibility}
+        color='success'
+        message={successToastMessage}
+        duration={1500}
+      />
+      <IonToast
+        isOpen={errorToastVisibility}
+        color='danger'
+        message={errorToastMessage}
+        duration={1500}
+      />
+    </>
   );
 };
 
 export const ChangeProjectNameAlert = ({
   changeProjectNameAlertVisibility,
+  projectId,
 }: {
   changeProjectNameAlertVisibility: boolean;
+  projectId: string;
 }) => {
   return (
     <IonAlert
@@ -137,15 +186,19 @@ export const NewProjectAlert = ({
 
 export const ShareProjectAlert = ({
   shareProjectAlertVisibility,
+  projectName,
+  shareProjectCode,
 }: {
   shareProjectAlertVisibility: boolean;
+  projectName: string;
+  shareProjectCode: number;
 }) => {
   return (
     <IonAlert
       isOpen={shareProjectAlertVisibility}
-      header={'Share *Project Name*'}
+      header={`Share ${projectName}`}
       subHeader='Share this code with your friends'
-      message='*ShareCode*'
+      message={shareProjectCode.toString()}
       buttons={['CLOSE']}
     />
   );
