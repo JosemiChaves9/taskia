@@ -3,6 +3,7 @@ import { IonAlert, IonToast } from '@ionic/react';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
 import { DELETE_PROJECT } from '../../gql/mutation/deleteProject';
+import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/mutation/joinToAnExistingProject';
 import { NEW_PROJECT } from '../../gql/mutation/newProject';
 import { NEW_TASK } from '../../gql/mutation/newTask';
 import { GenericDbResponse } from '../../types';
@@ -43,7 +44,7 @@ export const DeleteProjectConfirmationAlert = ({
         setErrorToastMesage(data?.deleteProject.err);
       }
     }
-  }, [data]);
+  }, [data, called]);
   return (
     <>
       <IonAlert
@@ -138,7 +139,7 @@ export const NewProjectAlert = ({
         setErrorToastMesage(data?.newProject.err);
       }
     }
-  }, [data]);
+  }, [data, called]);
 
   return (
     <>
@@ -235,7 +236,7 @@ export const NewTaskAlert = ({
         setErrorToastMesage(data?.newTask.err);
       }
     }
-  }, [data]);
+  }, [data, called]);
 
   return (
     <>
@@ -258,6 +259,81 @@ export const NewTaskAlert = ({
             name: 'newTask',
             type: 'text',
             placeholder: 'New task name',
+          },
+        ]}
+      />
+      <IonToast
+        isOpen={successToastVisibility}
+        color='success'
+        message={successToastMessage}
+        duration={1500}
+      />
+      <IonToast
+        isOpen={errorToastVisibility}
+        color='danger'
+        message={errorToastMessage}
+        duration={1500}
+      />
+    </>
+  );
+};
+
+export const JoinToProjectAlert = ({
+  joinProjectAlertVisibility,
+}: {
+  joinProjectAlertVisibility: boolean;
+}) => {
+  const { user } = useContext(UserContext);
+  const [successToastVisibility, setSuccessToastVisibility] =
+    useState<boolean>(false);
+  const [successToastMessage, setSuccessToastMesage] = useState<string>();
+  const [errorToastVisibility, setErrorToastVisibility] =
+    useState<boolean>(false);
+  const [errorToastMessage, setErrorToastMesage] = useState<string>();
+  const [joinToExistingProject, { data, called }] = useMutation<{
+    joinToExistingProject: GenericDbResponse;
+  }>(JOIN_TO_AN_EXISTING_PROJECT);
+
+  useEffect(() => {
+    console.log(data);
+    if (called) {
+      if (data?.joinToExistingProject.ok) {
+        setSuccessToastVisibility(true);
+        setSuccessToastMesage('Joined to project successfully');
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      } else {
+        setErrorToastVisibility(true);
+        setErrorToastMesage(data?.joinToExistingProject.err);
+      }
+    }
+  }, [data, called]);
+
+  return (
+    <>
+      <IonAlert
+        isOpen={joinProjectAlertVisibility}
+        header={'Join project'}
+        message={`Join to a friends project!`}
+        buttons={[
+          'CLOSE',
+          {
+            text: 'ADD',
+            handler: (e) =>
+              joinToExistingProject({
+                variables: {
+                  shareCode: parseInt(e.shareCode),
+                  userId: user?._id,
+                },
+              }),
+          },
+        ]}
+        inputs={[
+          {
+            name: 'shareCode',
+            type: 'number',
+            placeholder: 'Project code',
           },
         ]}
       />

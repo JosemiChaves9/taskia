@@ -6,7 +6,6 @@ import {
   IonText,
 } from '@ionic/react';
 import React, { useState } from 'react';
-import { act } from 'react-dom/test-utils';
 import { DbProject } from '../../types';
 import {
   ChangeProjectNameAlert,

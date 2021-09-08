@@ -51,7 +51,7 @@ export const LoginScreen: React.FC = () => {
         setErrorToastMessage("The user doesn't exists");
       }
     }
-  }, [data]);
+  }, [data, called, error, history, loading]);
 
   return (
     <div className={`${styles.bgFix}`}>
