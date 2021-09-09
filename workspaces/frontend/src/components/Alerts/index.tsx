@@ -37,9 +37,6 @@ export const DeleteProjectConfirmationAlert = ({
       if (data?.deleteProject.ok) {
         setSuccessToastVisibility(true);
         setSuccessToastMesage('Project deleted successfully');
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
       } else {
         setErrorToastVisibility(true);
         setErrorToastMesage(data?.deleteProject.err);
@@ -63,6 +60,7 @@ export const DeleteProjectConfirmationAlert = ({
                   projectId: projectId,
                 },
               });
+              setDeleteProjectConfirmVisibility(false);
             },
           },
         ]}
@@ -302,14 +300,10 @@ export const JoinToProjectAlert = ({
   }>(JOIN_TO_AN_EXISTING_PROJECT);
 
   useEffect(() => {
-    console.log(data);
     if (called) {
       if (data?.joinToExistingProject.ok) {
         setSuccessToastVisibility(true);
         setSuccessToastMesage('Joined to project successfully');
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
       } else {
         setErrorToastVisibility(true);
         setErrorToastMesage(data?.joinToExistingProject.err);
