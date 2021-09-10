@@ -25,6 +25,7 @@ import {
 } from 'ionicons/icons';
 import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
+import { useHistory } from 'react-router';
 import {
   JoinToProjectAlert,
   NewProjectAlert,
@@ -41,6 +42,7 @@ import { DbProject, GenericDbResponse } from '../../types';
 import styles from './index.module.scss';
 
 export const Home: React.FC = () => {
+  const history = useHistory();
   const { user } = useContext(UserContext);
   const [popoverState, setShowPopover] = useState({
     showPopover: false,
@@ -56,7 +58,6 @@ export const Home: React.FC = () => {
     useState<boolean>(false);
   const changesInTask = useSubscription(CHANGES_IN_TASK);
   const changesInProject = useSubscription(CHANGES_IN_PROJECT);
-
   const { data, refetch } = useQuery<{ getAllUserProjects: DbProject[] }>(
     GET_ALL_USER_PROJECTS,
     {
@@ -88,6 +89,11 @@ export const Home: React.FC = () => {
     refetch();
   }, [changesInTask.data, changesInProject.data, refetch]);
 
+  useEffect(() => {
+    if (!LocalStorageService.getUserIdFromLocalStorage()) {
+      history.push('/login');
+    }
+  }, []);
   return (
     <div>
       <div className={`${styles.topBar} ion-padding-horizontal`}>

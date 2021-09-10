@@ -2,7 +2,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
-// import { useHistory } from 'react-router-dom';
 import { SIGNUP } from '../gql/mutation/signup';
 import { GET_USER_BY_ID } from '../gql/query/getUserById';
 import { LocalStorageService } from '../services/LocalStorageService';
@@ -24,20 +23,12 @@ export const UserContext = createContext<Context>({
 
 export const ContextProvider: React.FC<{}> = ({ children }) => {
   const [user, setUser] = useState<DbUser>();
-  // const history = useHistory();
   const [userSignup] = useMutation(SIGNUP);
   const { data, loading, refetch, error } = useQuery<{
     getUserById: DbUser;
   }>(GET_USER_BY_ID, {
     variables: { userId: LocalStorageService.getUserIdFromLocalStorage() },
   });
-
-  //! Fix a bug where you can't go to signup, beacuse always redirect to login if no user is set
-  // useEffect(() => {
-  //   if (!LocalStorageService.getUserIdFromLocalStorage()) {
-  //     history.push('/login');
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (data && !loading && !error) {

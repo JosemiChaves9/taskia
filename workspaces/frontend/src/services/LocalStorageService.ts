@@ -15,6 +15,7 @@ export class LocalStorageService {
 
   static removeUserIdFromLocalStorage() {
     localStorage.removeItem('userId');
+    subject.next(1);
   }
 
   static getUserIdFromLocalStorage() {
