@@ -32,7 +32,7 @@ import {
 } from '../../components/Alerts';
 import { MenuPopover } from '../../components/MenuPopover';
 import { UserContext } from '../../context';
-import { MARK_TASK_AS_COMPLETED } from '../../gql/mutation/markTaskAsCompleted';
+import { CHANGE_TASK_STATE } from '../../gql/mutation/changeTaskState';
 import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
 import { CHANGES_IN_PROJECT } from '../../gql/susbcription/changesInProject';
 import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
@@ -67,9 +67,9 @@ export const Home: React.FC = () => {
     }
   );
 
-  const [markTaskAsCompleted] = useMutation<{
-    markTaskAsCompleted: GenericDbResponse;
-  }>(MARK_TASK_AS_COMPLETED);
+  const [changeTaskState] = useMutation<{
+    changeTaskState: GenericDbResponse;
+  }>(CHANGE_TASK_STATE);
 
   useEffect(() => {
     if (LocalStorageService.getProjectIdFromLocalStorage()) {
@@ -103,7 +103,18 @@ export const Home: React.FC = () => {
         <IonList lines='none'>
           {activeProject?.tasks?.map((task) => {
             return task.completed ? (
-              <IonItem className={`${styles.completed}`} key={task._id}>
+              <IonItem
+                className={`${styles.completed}`}
+                key={task._id}
+                onClick={() =>
+                  changeTaskState({
+                    variables: {
+                      projectId: activeProject._id,
+                      taskId: task._id,
+                      taskCompleted: task.completed,
+                    },
+                  })
+                }>
                 <IonCheckbox color='medium' checked={true} />
                 <p>{task.name}</p>
               </IonItem>
@@ -111,10 +122,11 @@ export const Home: React.FC = () => {
               <IonItem
                 key={task._id}
                 onClick={() =>
-                  markTaskAsCompleted({
+                  changeTaskState({
                     variables: {
                       projectId: activeProject._id,
                       taskId: task._id,
+                      taskCompleted: task.completed,
                     },
                   })
                 }>

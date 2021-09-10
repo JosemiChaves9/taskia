@@ -42,9 +42,10 @@ export const typeDefs = gql`
     signup(email: String!, name: String!): SignupMutationResponse!
     newTask(taskName: String!, projectId: String!): GenericMutationResponse!
     newProject(projectName: String!, userId: String!): GenericMutationResponse!
-    markTaskAsCompleted(
+    changeTaskState(
       projectId: String!
       taskId: String!
+      taskCompleted: Boolean!
     ): GenericMutationResponse!
     joinToExistingProject(
       shareCode: Int!

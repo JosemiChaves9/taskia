@@ -1,4 +1,10 @@
-import { Db, MongoClient, ObjectID } from 'mongodb';
+import {
+  Db,
+  MongoClient,
+  ObjectID,
+  UpdateOneOptions,
+  UpdateQuery,
+} from 'mongodb';
 import { DbProject, DbUser, GenericDbResponse } from '../DbTypes';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
@@ -102,10 +108,8 @@ export class DbService {
         _id: new ObjectID(projectId),
       });
   }
-  markTaskAsCompleted(
-    projectId: string,
-    taskId: string
-  ): Promise<GenericDbResponse> {
+
+  markTaskAsCompleted(projectId: string, taskId: string): Promise<any> {
     return this.getDb()
       .collection('projects')
       .updateOne(
@@ -116,13 +120,21 @@ export class DbService {
         {
           $set: { 'tasks.$.completed': true },
         }
-      )
-      .then(() => {
-        return {
-          ok: true,
-          err: '',
-        };
-      });
+      );
+  }
+
+  markTaskAsUncompleted(projectId: string, taskId: string): Promise<any> {
+    return this.getDb()
+      .collection('projects')
+      .updateOne(
+        {
+          _id: new ObjectID(projectId),
+          'tasks._id': new ObjectID(taskId),
+        },
+        {
+          $set: { 'tasks.$.completed': false },
+        }
+      );
   }
 
   getProjectByShareCode(shareCode: number): Promise<DbProject> {
