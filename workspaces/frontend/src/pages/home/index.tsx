@@ -72,7 +72,16 @@ export const Home: React.FC = () => {
   }>(MARK_TASK_AS_COMPLETED);
 
   useEffect(() => {
-    setActiveProject(data?.getAllUserProjects[0]);
+    if (LocalStorageService.getProjectIdFromLocalStorage()) {
+      setActiveProject(
+        data?.getAllUserProjects.find(
+          (project) =>
+            project._id === LocalStorageService.getProjectIdFromLocalStorage()
+        )
+      );
+    } else {
+      setActiveProject(data?.getAllUserProjects[0]);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -164,7 +173,12 @@ export const Home: React.FC = () => {
                   return (
                     <IonItem
                       key={project._id}
-                      onClick={() => setActiveProject(project)}
+                      onClick={() => {
+                        setActiveProject(project);
+                        LocalStorageService.setProjectIdInLocalStorage(
+                          project._id
+                        );
+                      }}
                       className={
                         activeProject?.name === project.name
                           ? styles.selected

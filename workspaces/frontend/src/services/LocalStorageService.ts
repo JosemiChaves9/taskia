@@ -24,5 +24,14 @@ export class LocalStorageService {
   static subscribeToChanges() {
     return subject;
   }
+
+  static setProjectIdInLocalStorage(projectId: string) {
+    localStorage.setItem('projectId', projectId);
+    subject.next(1);
+  }
+
+  static getProjectIdFromLocalStorage() {
+    return localStorage.getItem('projectId');
+  }
 }
 //subscribe to changes, will return the subject
