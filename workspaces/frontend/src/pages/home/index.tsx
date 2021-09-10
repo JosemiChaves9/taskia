@@ -25,7 +25,6 @@ import {
 } from 'ionicons/icons';
 import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
-import { useParams } from 'react-router';
 import {
   JoinToProjectAlert,
   NewProjectAlert,
@@ -38,7 +37,7 @@ import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
 import { CHANGES_IN_PROJECT } from '../../gql/susbcription/changesInProject';
 import { CHANGES_IN_TASK } from '../../gql/susbcription/changesInTask';
 import { LocalStorageService } from '../../services/LocalStorageService';
-import { DbProject, DbTask, GenericDbResponse } from '../../types';
+import { DbProject, GenericDbResponse } from '../../types';
 import styles from './index.module.scss';
 
 export const Home: React.FC = () => {
