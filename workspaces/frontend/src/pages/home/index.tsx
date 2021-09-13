@@ -26,12 +26,11 @@ import {
 import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import {
-  JoinToProjectAlert,
-  NewProjectAlert,
-  NewTaskAlert,
-} from '../../components/Alerts';
-import { MenuPopover } from '../../components/MenuPopover';
+import { JoinToProjectAlert } from '../../components/Alerts/JoinProject';
+import { NewProjectAlert } from '../../components/Alerts/NewProject';
+import { NewTaskAlert } from '../../components/Alerts/NewTask';
+
+import { MenuPopover } from '../../components/MenuPopover/MenuPopover';
 import { UserContext } from '../../context';
 import { CHANGE_TASK_STATE } from '../../gql/mutation/changeTaskState';
 import { GET_ALL_USER_PROJECTS } from '../../gql/query/getAllUserProjects';
@@ -43,7 +42,7 @@ import styles from './index.module.scss';
 
 export const Home: React.FC = () => {
   const history = useHistory();
-  const { user } = useContext(UserContext);
+  const { user, logoutUser } = useContext(UserContext);
   const [popoverState, setShowPopover] = useState({
     showPopover: false,
     event: undefined,
@@ -93,7 +92,8 @@ export const Home: React.FC = () => {
     if (!LocalStorageService.getUserIdFromLocalStorage()) {
       history.push('/login');
     }
-  }, []);
+  }, [history]);
+
   return (
     <div>
       <div className={`${styles.topBar} ion-padding-horizontal`}>
@@ -247,11 +247,7 @@ export const Home: React.FC = () => {
               />
               <p>Join to an existing project</p>
             </IonItem>
-            <IonItem
-              key='logout'
-              onClick={() =>
-                LocalStorageService.removeUserIdFromLocalStorage()
-              }>
+            <IonItem key='logout' onClick={() => logoutUser()}>
               <IonIcon
                 icon={exitOutline}
                 color='dark'

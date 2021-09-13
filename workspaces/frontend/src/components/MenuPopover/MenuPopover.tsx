@@ -7,11 +7,10 @@ import {
 } from '@ionic/react';
 import React, { useState } from 'react';
 import { DbProject } from '../../types';
-import {
-  ChangeProjectNameAlert,
-  DeleteProjectConfirmationAlert,
-  ShareProjectAlert,
-} from '../Alerts';
+import { ChangeProjectNameAlert } from '../Alerts/ChangeProjectName';
+import { DeleteProjectConfirmationAlert } from '../Alerts/DeleteProjectConfirmation';
+import { ShareProjectAlert } from '../Alerts/ShareProject';
+
 import styles from './index.module.scss';
 
 export const MenuPopover = ({
@@ -48,7 +47,6 @@ export const MenuPopover = ({
         <IonList>
           <IonListHeader className={`${styles.popoverTitle}`}>
             {activeProject ? activeProject.name : 'Project'} Options
-            {/* //!Fix this, it's crashing because at the beggining no project is set */}
           </IonListHeader>
           <IonItem
             onClick={() => {
@@ -82,7 +80,7 @@ export const MenuPopover = ({
       <DeleteProjectConfirmationAlert
         deleteProjectConfirmVisibility={deleteProjectConfirmVisibility}
         setDeleteProjectConfirmVisibility={setDeleteProjectConfirmVisibility}
-        projectName={activeProject ? activeProject.name : ''} //! Fix, crashing because no project set
+        projectName={activeProject ? activeProject.name : ''}
         projectId={activeProject ? activeProject._id : ''}
       />
       <ChangeProjectNameAlert

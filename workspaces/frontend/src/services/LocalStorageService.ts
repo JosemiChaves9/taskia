@@ -34,5 +34,9 @@ export class LocalStorageService {
   static getProjectIdFromLocalStorage() {
     return localStorage.getItem('projectId');
   }
+
+  static removeProjectIdFromLocalStorage() {
+    localStorage.removeItem('projectId');
+    subject.next(1);
+  }
 }
-//subscribe to changes, will return the subject

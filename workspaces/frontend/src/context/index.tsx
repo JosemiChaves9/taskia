@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
+import { useHistory } from 'react-router';
 import { SIGNUP } from '../gql/mutation/signup';
 import { GET_USER_BY_ID } from '../gql/query/getUserById';
 import { LocalStorageService } from '../services/LocalStorageService';
@@ -22,6 +23,7 @@ export const UserContext = createContext<Context>({
 });
 
 export const ContextProvider: React.FC<{}> = ({ children }) => {
+  const history = useHistory();
   const [user, setUser] = useState<DbUser>();
   const [userSignup] = useMutation(SIGNUP);
   const { data, loading, refetch, error } = useQuery<{
@@ -42,8 +44,9 @@ export const ContextProvider: React.FC<{}> = ({ children }) => {
   };
 
   const logoutUser = () => {
+    LocalStorageService.removeProjectIdFromLocalStorage();
     LocalStorageService.removeUserIdFromLocalStorage();
-    window.location.reload();
+    history.push('/login');
   };
 
   const signupUser = (email: string, name: string) => {
