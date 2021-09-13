@@ -20,6 +20,6 @@
     "start": "nodemon src/index.ts",
     "dev": "node src/index.ts",
     "build": "tsc",
-    "debug": "nodemon src/index.ts --inspect"
+    "debug": "nodemon src/index.ts"
   }
 }

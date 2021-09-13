@@ -1,3 +1,8 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
 @import './variables.scss';
 
 /* Core CSS required for Ionic components to work properly */
@@ -12,13 +17,6 @@
 @import '@ionic/react/css/padding.css';
 @import '@ionic/react/css/float-elements.css';
 @import '@ionic/react/css/text-alignment.css';
-@import '@ionic/react/css/text-transformation.css';
-@import '@ionic/react/css/flex-utils.css';
-@import '@ionic/react/css/display.css';
-* {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-// Variables
+//@import '@ionic/react/css/text-transformation.css';
+//@import '@ionic/react/css/flex-utils.css';
+//@import '@ionic/react/css/display.css';

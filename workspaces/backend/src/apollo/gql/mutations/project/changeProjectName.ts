@@ -1,18 +1,18 @@
 import { GenericDbResponse } from '../../../../DbTypes';
 import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
-import { publishChangesInTask } from '../../subscriptions/changesInTask';
+import { publishChangesInProject } from '../../subscriptions/changesInProject';
 
-export const newTask = (
+export const changeProjectName = (
   _source: any,
-  { taskName, projectId }: { taskName: string; projectId: string }
+  { projectId, newProjectName }: { projectId: string; newProjectName: string }
 ) => {
   return requestWithTimeout<GenericDbResponse>(
     5000,
     DbServiceSingleton.getInstance()
-      .newTask(taskName, projectId)
+      .changeProjectName(projectId, newProjectName)
       .then(() => {
-        publishChangesInTask();
+        publishChangesInProject();
         return {
           ok: true,
           err: '',

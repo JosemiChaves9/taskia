@@ -16,7 +16,6 @@ export const LoadingScreen: React.FC = () => {
           color='light'
           className={`${styles.spinnerFix}`}
         />
-        {/* //? Why can't change the color from here, what is the meaning of --color? */}
       </IonItemGroup>
     </div>
   );

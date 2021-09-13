@@ -18,13 +18,13 @@ import { useHistory } from 'react-router-dom';
 
 export const LoginScreen: React.FC = () => {
   const [showErrorToast, setShowErrorToast] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const [showSuccessToast, setShowSuccessToast] = useState(true);
-  const [successMessage, setSuccessMessage] = useState<string>();
+  const [errorToastMessage, setErrorToastMessage] = useState<string>();
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [successToastMessage, setSuccessToastMessage] = useState<string>();
 
   const { register, handleSubmit } = useForm();
   const history = useHistory();
-  const [userLogin, { data, loading, error }] =
+  const [userLogin, { data, loading, error, called }] =
     useLazyQuery<{ getUserByEmail: DbUser }>(GET_USER_BY_EMAIL);
 
   const onSubmit = (input: { email: string }) => {
@@ -36,8 +36,22 @@ export const LoginScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    if (called) {
+      if (data?.getUserByEmail && !loading && !error) {
+        setShowSuccessToast(true);
+        setSuccessToastMessage('Login successful!');
+        LocalStorageService.setUserIdInLocalStorage(data.getUserByEmail._id);
+        setTimeout(() => {
+          history.push('/');
+          window.location.reload();
+        }, 1500);
+      }
+      if (!data?.getUserByEmail) {
+        setShowErrorToast(true);
+        setErrorToastMessage("The user doesn't exists");
+      }
+    }
+  }, [data, called, error, history, loading]);
 
   return (
     <div className={`${styles.bgFix}`}>
@@ -75,13 +89,13 @@ export const LoginScreen: React.FC = () => {
         </div>
         <IonToast
           isOpen={showErrorToast}
-          message={errorMessage}
+          message={errorToastMessage}
           duration={1500}
           color='danger'
         />
         <IonToast
           isOpen={showSuccessToast}
-          message={successMessage}
+          message={successToastMessage}
           duration={1500}
           color='success'
         />

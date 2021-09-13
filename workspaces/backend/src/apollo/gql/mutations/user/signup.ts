@@ -15,19 +15,27 @@ export const signup = async (
     };
   }
 
-  //! Check if share code already exists
-  const shareCode = Math.floor(Math.random() * 99999);
+  const createNewUser = async () => {
+    const generateShareCode = () => Math.floor(Math.random() * 99999);
 
-  return requestWithTimeout<SignupDbResponse>(
-    5000,
-    DbServiceSingleton.getInstance()
-      .newUser(email, name, shareCode)
-      .then((userId) => {
-        return {
-          ok: true,
-          err: '',
-          newUserId: userId,
-        };
-      })
-  );
+    const shareCode = generateShareCode();
+
+    const checkIfShareCodeExists =
+      await DbServiceSingleton.getInstance().getProjectByShareCode(shareCode);
+
+    if (!checkIfShareCodeExists) {
+      return DbServiceSingleton.getInstance()
+        .newUser(email, name, shareCode)
+        .then((userId) => {
+          return {
+            ok: true,
+            err: '',
+            newUserId: userId,
+          };
+        });
+    } else {
+      createNewUser();
+    }
+  };
+  return createNewUser();
 };

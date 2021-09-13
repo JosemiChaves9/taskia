@@ -12,7 +12,6 @@ import { ContextProvider } from './context';
 import { Error } from './pages/error';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { IonApp } from '@ionic/react';
-import { V2 } from './v2';
 import { LoadingScreen } from './pages/LoadingScreen/LoadingScreen';
 
 ReactDOM.render(

@@ -1,18 +1,18 @@
 import { GenericDbResponse } from '../../../../DbTypes';
 import { DbServiceSingleton } from '../../../../services/DbServiceSingleton';
 import { requestWithTimeout } from '../../../../utils/timeout';
-import { publishChangesInTask } from '../../subscriptions/changesInTask';
+import { publishChangesInProject } from '../../subscriptions/changesInProject';
 
-export const markTaskAsCompleted = (
+export const deleteProject = (
   _source: any,
-  { projectId, taskId }: { projectId: string; taskId: string }
+  { projectId }: { projectId: string }
 ) => {
   return requestWithTimeout<GenericDbResponse>(
     5000,
     DbServiceSingleton.getInstance()
-      .markTaskAsCompleted(projectId, taskId)
+      .deleteProject(projectId)
       .then(() => {
-        publishChangesInTask();
+        publishChangesInProject();
         return {
           ok: true,
           err: '',

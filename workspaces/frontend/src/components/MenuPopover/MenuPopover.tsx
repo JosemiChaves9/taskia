@@ -6,16 +6,17 @@ import {
   IonText,
 } from '@ionic/react';
 import React, { useState } from 'react';
-import {
-  ChangeProjectNameAlert,
-  DeleteProjectConfirmationAlert,
-  ShareProjectAlert,
-} from '../Alerts';
+import { DbProject } from '../../types';
+import { ChangeProjectNameAlert } from '../Alerts/ChangeProjectName';
+import { DeleteProjectConfirmationAlert } from '../Alerts/DeleteProjectConfirmation';
+import { ShareProjectAlert } from '../Alerts/ShareProject';
+
 import styles from './index.module.scss';
 
 export const MenuPopover = ({
   popoverState,
   setShowPopover,
+  activeProject,
 }: {
   popoverState: { showPopover: boolean; event: any };
   setShowPopover: React.Dispatch<
@@ -24,6 +25,7 @@ export const MenuPopover = ({
       event: undefined;
     }>
   >;
+  activeProject: DbProject;
 }) => {
   const [deleteProjectConfirmVisibility, setDeleteProjectConfirmVisibility] =
     useState<boolean>(false);
@@ -44,7 +46,7 @@ export const MenuPopover = ({
         }>
         <IonList>
           <IonListHeader className={`${styles.popoverTitle}`}>
-            *Project name* Options
+            {activeProject ? activeProject.name : 'Project'} Options
           </IonListHeader>
           <IonItem
             onClick={() => {
@@ -78,12 +80,18 @@ export const MenuPopover = ({
       <DeleteProjectConfirmationAlert
         deleteProjectConfirmVisibility={deleteProjectConfirmVisibility}
         setDeleteProjectConfirmVisibility={setDeleteProjectConfirmVisibility}
+        projectName={activeProject ? activeProject.name : ''}
+        projectId={activeProject ? activeProject._id : ''}
       />
       <ChangeProjectNameAlert
         changeProjectNameAlertVisibility={changeProjectNameAlertVisiblity}
+        projectId={activeProject ? activeProject._id : ''}
+        projectName={activeProject ? activeProject.name : ''}
       />
       <ShareProjectAlert
         shareProjectAlertVisibility={shareProjectAlertVisibility}
+        projectName={activeProject ? activeProject.name : ''}
+        shareProjectCode={activeProject ? activeProject.shareCode : 0}
       />
     </>
   );

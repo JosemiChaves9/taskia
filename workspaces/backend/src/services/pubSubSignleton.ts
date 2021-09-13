@@ -1,6 +1,6 @@
 import { PubSub } from 'apollo-server';
 
-let pubsub: PubSub;
+let pubsub: PubSub | undefined;
 
 export class PubSubSingleton {
   static getInstance() {

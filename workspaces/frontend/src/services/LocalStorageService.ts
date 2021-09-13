@@ -15,6 +15,7 @@ export class LocalStorageService {
 
   static removeUserIdFromLocalStorage() {
     localStorage.removeItem('userId');
+    subject.next(1);
   }
 
   static getUserIdFromLocalStorage() {
@@ -24,5 +25,18 @@ export class LocalStorageService {
   static subscribeToChanges() {
     return subject;
   }
+
+  static setProjectIdInLocalStorage(projectId: string) {
+    localStorage.setItem('projectId', projectId);
+    subject.next(1);
+  }
+
+  static getProjectIdFromLocalStorage() {
+    return localStorage.getItem('projectId');
+  }
+
+  static removeProjectIdFromLocalStorage() {
+    localStorage.removeItem('projectId');
+    subject.next(1);
+  }
 }
-//subscribe to changes, will return the subject
