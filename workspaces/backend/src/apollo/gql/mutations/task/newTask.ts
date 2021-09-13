@@ -13,8 +13,10 @@ export const newTask = (
       .newTask(taskName, projectId)
       .then(() => {
         publishChangesInTask();
-
-        return { ok: true, err: '' };
+        return {
+          ok: true,
+          err: '',
+        };
       })
   );
 };

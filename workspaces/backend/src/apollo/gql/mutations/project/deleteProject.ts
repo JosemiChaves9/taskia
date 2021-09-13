@@ -13,7 +13,6 @@ export const deleteProject = (
       .deleteProject(projectId)
       .then(() => {
         publishChangesInProject();
-
         return {
           ok: true,
           err: '',

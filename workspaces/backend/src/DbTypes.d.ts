@@ -2,7 +2,6 @@ export interface DbUser {
   _id: string;
   name: string;
   email: string;
-  password: string;
 }
 
 export interface DbProject {
@@ -17,15 +16,6 @@ export interface DbTask {
   _id: string;
   name: string;
   completed: boolean;
-}
-
-export interface DbFindAndModifyReponse {
-  lastErrorObject: {
-    n: number;
-    updatedExisting: boolean;
-  };
-  value: DbProject;
-  ok: number;
 }
 
 export interface GenericDbResponse {

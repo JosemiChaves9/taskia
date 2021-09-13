@@ -1,11 +1,15 @@
 import {
   Db,
+  FindAndModifyWriteOpResultObject,
+  FindOneAndDeleteOption,
+  FindOneAndUpdateOption,
+  InsertOneWriteOpResult,
   MongoClient,
   ObjectID,
   UpdateOneOptions,
-  UpdateQuery,
+  UpdateWriteOpResult,
 } from 'mongodb';
-import { DbProject, DbUser, GenericDbResponse } from '../DbTypes';
+import { DbProject, DbTask, DbUser, GenericDbResponse } from '../DbTypes';
 import { EnviromentVariables } from './EnviromentVariablesService';
 
 export class DbService {
@@ -53,7 +57,10 @@ export class DbService {
     return this.getDb().collection('users').findOne(new ObjectID(userId));
   }
 
-  newTask(taskName: string, projectId: string): Promise<GenericDbResponse> {
+  newTask(
+    taskName: string,
+    projectId: string
+  ): Promise<FindAndModifyWriteOpResultObject<DbTask>> {
     return this.getDb()
       .collection('projects')
       .findOneAndUpdate(
@@ -66,16 +73,14 @@ export class DbService {
           },
         },
         { upsert: true }
-      )
-      .then(() => {
-        return {
-          ok: true,
-          err: '',
-        };
-      });
+      );
   }
 
-  newProject(projectName: string, userId: string, shareCode: number) {
+  newProject(
+    projectName: string,
+    userId: string,
+    shareCode: number
+  ): Promise<InsertOneWriteOpResult<DbProject>> {
     return this.getDb()
       .collection('projects')
       .insertOne({
@@ -83,12 +88,6 @@ export class DbService {
         participants: [new ObjectID(userId)],
         tasks: [],
         shareCode: shareCode,
-      })
-      .then(() => {
-        return {
-          ok: true,
-          err: '',
-        };
       });
   }
 
@@ -109,7 +108,10 @@ export class DbService {
       });
   }
 
-  markTaskAsCompleted(projectId: string, taskId: string): Promise<any> {
+  markTaskAsCompleted(
+    projectId: string,
+    taskId: string
+  ): Promise<UpdateWriteOpResult> {
     return this.getDb()
       .collection('projects')
       .updateOne(
@@ -123,7 +125,10 @@ export class DbService {
       );
   }
 
-  markTaskAsUncompleted(projectId: string, taskId: string): Promise<any> {
+  markTaskAsUncompleted(
+    projectId: string,
+    taskId: string
+  ): Promise<UpdateWriteOpResult> {
     return this.getDb()
       .collection('projects')
       .updateOne(
@@ -143,7 +148,10 @@ export class DbService {
     });
   }
 
-  joinToAnExistingProject(shareCode: number, userId: string) {
+  joinToAnExistingProject(
+    shareCode: number,
+    userId: string
+  ): Promise<FindAndModifyWriteOpResultObject<DbProject>> {
     return this.getDb()
       .collection('projects')
       .findOneAndUpdate(
@@ -156,13 +164,18 @@ export class DbService {
       );
   }
 
-  deleteProject(projectId: string) {
+  deleteProject(
+    projectId: string
+  ): Promise<FindAndModifyWriteOpResultObject<DbProject>> {
     return this.getDb()
       .collection('projects')
       .findOneAndDelete({ _id: new ObjectID(projectId) });
   }
 
-  changeProjectName(projectId: string, newProjectName: string) {
+  changeProjectName(
+    projectId: string,
+    newProjectName: string
+  ): Promise<FindAndModifyWriteOpResultObject<DbProject>> {
     return this.getDb()
       .collection('projects')
       .findOneAndUpdate(

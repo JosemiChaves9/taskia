@@ -15,7 +15,6 @@ export const newProject = (
       .newProject(projectName, userId, shareCode)
       .then(() => {
         publishChangesInProject();
-
         return {
           ok: true,
           err: '',
