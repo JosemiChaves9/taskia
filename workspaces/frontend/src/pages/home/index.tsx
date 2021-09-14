@@ -267,10 +267,15 @@ export const Home: React.FC = () => {
         newTaskAlertVisibility={newTaskAlertVisibility}
         projectId={activeProject?._id as string}
         projectName={activeProject?.name as string}
+        setNewTaskAlertVisibility={setNewTaskAlertVisibility}
       />
-      <NewProjectAlert newProjectAlertVisibility={newProjectAlertVisibility} />
+      <NewProjectAlert
+        newProjectAlertVisibility={newProjectAlertVisibility}
+        setNewProjectAlertVisibility={setNewProjectAlertVisibility}
+      />
       <JoinToProjectAlert
         joinProjectAlertVisibility={joinProjectAlertVisibility}
+        setJoinProjectAlertVisibility={setJoinProjectAlertVisibility}
       />
     </div>
   );

@@ -46,6 +46,7 @@ export const SignupScreen: React.FC = () => {
       );
       setTimeout(() => {
         history.push('/');
+        window.location.reload();
       }, 1500);
     }
   };

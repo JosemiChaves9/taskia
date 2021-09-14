@@ -39,7 +39,7 @@ export class DbService {
         return this.getDb()
           .collection('projects')
           .insertOne({
-            name: 'Default',
+            name: `Default project of ${name}`,
             participants: [res.insertedId],
             shareCode: shareCode,
           })

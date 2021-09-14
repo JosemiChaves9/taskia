@@ -77,21 +77,23 @@ export const MenuPopover = ({
           </IonItem>
         </IonList>
       </IonPopover>
-      <DeleteProjectConfirmationAlert
-        deleteProjectConfirmVisibility={deleteProjectConfirmVisibility}
-        setDeleteProjectConfirmVisibility={setDeleteProjectConfirmVisibility}
-        projectName={activeProject ? activeProject.name : ''}
-        projectId={activeProject ? activeProject._id : ''}
-      />
       <ChangeProjectNameAlert
         changeProjectNameAlertVisibility={changeProjectNameAlertVisiblity}
+        setChangeProjectNameAlertVisiblity={setChangeProjectNameAlertVisiblity}
         projectId={activeProject ? activeProject._id : ''}
         projectName={activeProject ? activeProject.name : ''}
       />
       <ShareProjectAlert
         shareProjectAlertVisibility={shareProjectAlertVisibility}
+        setShareProjectAlertVisibility={setShareProjectAlertVisibility}
         projectName={activeProject ? activeProject.name : ''}
         shareProjectCode={activeProject ? activeProject.shareCode : 0}
+      />
+      <DeleteProjectConfirmationAlert
+        deleteProjectConfirmVisibility={deleteProjectConfirmVisibility}
+        setDeleteProjectConfirmVisibility={setDeleteProjectConfirmVisibility}
+        projectName={activeProject ? activeProject.name : ''}
+        projectId={activeProject ? activeProject._id : ''}
       />
     </>
   );

@@ -1,14 +1,16 @@
 import { useMutation } from '@apollo/client';
 import { IonAlert, IonToast } from '@ionic/react';
-import { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context';
 import { JOIN_TO_AN_EXISTING_PROJECT } from '../../gql/mutation/joinToAnExistingProject';
 import { GenericDbResponse } from '../../types';
 
 export const JoinToProjectAlert = ({
   joinProjectAlertVisibility,
+  setJoinProjectAlertVisibility,
 }: {
   joinProjectAlertVisibility: boolean;
+  setJoinProjectAlertVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { user } = useContext(UserContext);
   const [successToastVisibility, setSuccessToastVisibility] =
@@ -39,17 +41,22 @@ export const JoinToProjectAlert = ({
         isOpen={joinProjectAlertVisibility}
         header={'Join project'}
         message={`Join to a friends project!`}
+        onDidDismiss={() =>
+          setJoinProjectAlertVisibility(!joinProjectAlertVisibility)
+        }
         buttons={[
           'CLOSE',
           {
             text: 'ADD',
-            handler: (e) =>
+            handler: (e) => {
               joinToExistingProject({
                 variables: {
                   shareCode: parseInt(e.shareCode),
                   userId: user?._id,
                 },
-              }),
+              });
+              setJoinProjectAlertVisibility(!joinProjectAlertVisibility);
+            },
           },
         ]}
         inputs={[

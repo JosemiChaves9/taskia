@@ -8,10 +8,12 @@ export const NewTaskAlert = ({
   newTaskAlertVisibility,
   projectId,
   projectName,
+  setNewTaskAlertVisibility,
 }: {
   newTaskAlertVisibility: boolean;
   projectId: string;
   projectName: string;
+  setNewTaskAlertVisibility: any;
 }) => {
   const [successToastVisibility, setSuccessToastVisibility] =
     useState<boolean>(false);
@@ -40,14 +42,17 @@ export const NewTaskAlert = ({
         isOpen={newTaskAlertVisibility}
         header={'New task'}
         message={`New task for ${projectName}`}
+        onDidDismiss={() => setNewTaskAlertVisibility(false)}
         buttons={[
           'CLOSE',
           {
             text: 'ADD',
-            handler: (e) =>
+            handler: (e) => {
               newTaskMutation({
                 variables: { taskName: e.newTask, projectId: projectId },
-              }),
+              });
+              setNewTaskAlertVisibility(!newTaskAlertVisibility);
+            },
           },
         ]}
         inputs={[

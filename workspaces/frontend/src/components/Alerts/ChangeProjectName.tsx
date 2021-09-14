@@ -4,10 +4,15 @@ import { CHANGE_PROJECT_NAME } from '../../gql/mutation/changeProjectName';
 
 export const ChangeProjectNameAlert = ({
   changeProjectNameAlertVisibility,
+  setChangeProjectNameAlertVisiblity,
   projectId,
   projectName,
 }: {
   changeProjectNameAlertVisibility: boolean;
+  setChangeProjectNameAlertVisiblity: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+
   projectId: string;
   projectName: string;
 }) => {
@@ -17,17 +22,24 @@ export const ChangeProjectNameAlert = ({
       isOpen={changeProjectNameAlertVisibility}
       header={'New name'}
       subHeader={`New name for ${projectName}`}
+      onDidDismiss={() =>
+        setChangeProjectNameAlertVisiblity(!changeProjectNameAlertVisibility)
+      }
       buttons={[
         'CLOSE',
         {
           text: 'OK',
-          handler: (e) =>
+          handler: (e) => {
             changeProjectName({
               variables: {
                 projectId: projectId,
                 newProjectName: e.newProjectName,
               },
-            }),
+            });
+            setChangeProjectNameAlertVisiblity(
+              !changeProjectNameAlertVisibility
+            );
+          },
         },
       ]}
       inputs={[

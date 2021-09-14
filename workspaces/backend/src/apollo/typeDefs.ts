@@ -33,9 +33,9 @@ export const typeDefs = gql`
 
   type Query {
     getUserByEmail(email: String!): DbUser
-    getUserById(userId: String!): DbUser
+    getUserById(userId: String): DbUser
     getProjectById(projectId: String!): DbProject
-    getAllUserProjects(userId: String!): [DbProject!]
+    getAllUserProjects(userId: String): [DbProject!]
   }
 
   type Mutation {
